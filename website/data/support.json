@@ -1,0 +1,3201 @@
+{
+ "frames": [
+  {
+   "name": "Content group description",
+   "v22": {
+    "id": "TT1",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TIT1",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TIT1",
+    "section": "4.2.1"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Title/songname/content description",
+   "v22": {
+    "id": "TT2",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TIT2",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TIT2",
+    "section": "4.2.1"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Subtitle/Description refinement",
+   "v22": {
+    "id": "TT3",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TIT3",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TIT3",
+    "section": "4.2.1"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Album/Movie/Show title",
+   "v22": {
+    "id": "TAL",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TALB",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TALB",
+    "section": "4.2.1"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Original album/movie/show title",
+   "v22": {
+    "id": "TOT",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TOAL",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TOAL",
+    "section": "4.2.1"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Track number/Position in set",
+   "v22": {
+    "id": "TRK",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TRCK",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TRCK",
+    "section": "4.2.1"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Part of a set",
+   "v22": {
+    "id": "TPA",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TPOS",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TPOS",
+    "section": "4.2.1"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Set subtitle",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "TSST",
+    "section": "4.2.1"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "ISRC (international standard recording code)",
+   "v22": {
+    "id": "TRC",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TSRC",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TSRC",
+    "section": "4.2.1"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Lead performer(s)/Soloist(s)",
+   "v22": {
+    "id": "TP1",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TPE1",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TPE1",
+    "section": "4.2.2"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Band/orchestra/accompaniment",
+   "v22": {
+    "id": "TP2",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TPE2",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TPE2",
+    "section": "4.2.2"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Conductor/performer refinement",
+   "v22": {
+    "id": "TP3",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TPE3",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TPE3",
+    "section": "4.2.2"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Interpreted, remixed, or otherwise modified by",
+   "v22": {
+    "id": "TP4",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TPE4",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TPE4",
+    "section": "4.2.2"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Original artist(s)/performer(s)",
+   "v22": {
+    "id": "TOA",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TOPE",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TOPE",
+    "section": "4.2.2"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Lyricist/Text writer",
+   "v22": {
+    "id": "TXT",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TEXT",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TEXT",
+    "section": "4.2.2"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Original lyricist(s)/text writer(s)",
+   "v22": {
+    "id": "TOL",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TOLY",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TOLY",
+    "section": "4.2.2"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Composer",
+   "v22": {
+    "id": "TCM",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TCOM",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TCOM",
+    "section": "4.2.2"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Musician credits list",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "TMCL",
+    "section": "4.2.2"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Involved people list",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "TIPL",
+    "section": "4.2.2"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Encoded by",
+   "v22": {
+    "id": "TEN",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TENC",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TENC",
+    "section": "4.2.2"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "BPM (beats per minute)",
+   "v22": {
+    "id": "TBP",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TBPM",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TBPM",
+    "section": "4.2.3"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Length",
+   "v22": {
+    "id": "TLE",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TLEN",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TLEN",
+    "section": "4.2.3"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Initial key",
+   "v22": {
+    "id": "TKE",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TKEY",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TKEY",
+    "section": "4.2.3"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Language(s)",
+   "v22": {
+    "id": "TLA",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TLAN",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TLAN",
+    "section": "4.2.3"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Content type",
+   "v22": {
+    "id": "TCO",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TCON",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TCON",
+    "section": "4.2.3"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "File type",
+   "v22": {
+    "id": "TFT",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TFLT",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TFLT",
+    "section": "4.2.3"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Media type",
+   "v22": {
+    "id": "TMT",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TMED",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TMED",
+    "section": "4.2.3"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Mood",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "TMOO",
+    "section": "4.2.3"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Copyright message",
+   "v22": {
+    "id": "TCR",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TCOP",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TCOP",
+    "section": "4.2.4"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Produced notice",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "TPRO",
+    "section": "4.2.4"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Publisher",
+   "v22": {
+    "id": "TPB",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TPUB",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TPUB",
+    "section": "4.2.4"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "File owner/licensee",
+   "v22": null,
+   "v23": {
+    "id": "TOWN",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TOWN",
+    "section": "4.2.4"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Internet radio station name",
+   "v22": null,
+   "v23": {
+    "id": "TRSN",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TRSN",
+    "section": "4.2.4"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Internet radio station owner",
+   "v22": null,
+   "v23": {
+    "id": "TRSO",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TRSO",
+    "section": "4.2.4"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Original filename",
+   "v22": {
+    "id": "TOF",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TOFN",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TOFN",
+    "section": "4.2.5"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Playlist delay",
+   "v22": {
+    "id": "TDY",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TDLY",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TDLY",
+    "section": "4.2.5"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Encoding time",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "TDEN",
+    "section": "4.2.5"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Original release time",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "TDOR",
+    "section": "4.2.5"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Recording time",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "TDRC",
+    "section": "4.2.5"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Release time",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "TDRL",
+    "section": "4.2.5"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Tagging time",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "TDTG",
+    "section": "4.2.5"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Software/Hardware and settings used for encoding",
+   "v22": {
+    "id": "TSS",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TSSE",
+    "section": "4.2.1"
+   },
+   "v24": {
+    "id": "TSSE",
+    "section": "4.2.5"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Album sort order",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "TSOA",
+    "section": "4.2.5"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Performer sort order",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "TSOP",
+    "section": "4.2.5"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Title sort order",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "TSOT",
+    "section": "4.2.5"
+   },
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Year",
+   "v22": {
+    "id": "TYE",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TYER",
+    "section": "4.2.1"
+   },
+   "v24": null,
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Date",
+   "v22": {
+    "id": "TDA",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TDAT",
+    "section": "4.2.1"
+   },
+   "v24": null,
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Time",
+   "v22": {
+    "id": "TIM",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TIME",
+    "section": "4.2.1"
+   },
+   "v24": null,
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Original release year",
+   "v22": {
+    "id": "TOR",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TORY",
+    "section": "4.2.1"
+   },
+   "v24": null,
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Recording dates",
+   "v22": {
+    "id": "TRD",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TRDA",
+    "section": "4.2.1"
+   },
+   "v24": null,
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "Size",
+   "v22": {
+    "id": "TSI",
+    "section": "4.2.1"
+   },
+   "v23": {
+    "id": "TSIZ",
+    "section": "4.2.1"
+   },
+   "v24": null,
+   "layout": "text",
+   "source": "spec"
+  },
+  {
+   "name": "User defined text information frame",
+   "v22": {
+    "id": "TXX",
+    "section": "4.2.2"
+   },
+   "v23": {
+    "id": "TXXX",
+    "section": "4.2.2"
+   },
+   "v24": {
+    "id": "TXXX",
+    "section": "4.2.6"
+   },
+   "layout": "user-text",
+   "source": "spec"
+  },
+  {
+   "name": "Commercial information",
+   "v22": {
+    "id": "WCM",
+    "section": "4.3.1"
+   },
+   "v23": {
+    "id": "WCOM",
+    "section": "4.3.1"
+   },
+   "v24": {
+    "id": "WCOM",
+    "section": "4.3.1"
+   },
+   "layout": "url",
+   "source": "spec"
+  },
+  {
+   "name": "Copyright/Legal information",
+   "v22": {
+    "id": "WCP",
+    "section": "4.3.1"
+   },
+   "v23": {
+    "id": "WCOP",
+    "section": "4.3.1"
+   },
+   "v24": {
+    "id": "WCOP",
+    "section": "4.3.1"
+   },
+   "layout": "url",
+   "source": "spec"
+  },
+  {
+   "name": "Official audio file webpage",
+   "v22": {
+    "id": "WAF",
+    "section": "4.3.1"
+   },
+   "v23": {
+    "id": "WOAF",
+    "section": "4.3.1"
+   },
+   "v24": {
+    "id": "WOAF",
+    "section": "4.3.1"
+   },
+   "layout": "url",
+   "source": "spec"
+  },
+  {
+   "name": "Official artist/performer webpage",
+   "v22": {
+    "id": "WAR",
+    "section": "4.3.1"
+   },
+   "v23": {
+    "id": "WOAR",
+    "section": "4.3.1"
+   },
+   "v24": {
+    "id": "WOAR",
+    "section": "4.3.1"
+   },
+   "layout": "url",
+   "source": "spec"
+  },
+  {
+   "name": "Official audio source webpage",
+   "v22": {
+    "id": "WAS",
+    "section": "4.3.1"
+   },
+   "v23": {
+    "id": "WOAS",
+    "section": "4.3.1"
+   },
+   "v24": {
+    "id": "WOAS",
+    "section": "4.3.1"
+   },
+   "layout": "url",
+   "source": "spec"
+  },
+  {
+   "name": "Official Internet radio station homepage",
+   "v22": null,
+   "v23": {
+    "id": "WORS",
+    "section": "4.3.1"
+   },
+   "v24": {
+    "id": "WORS",
+    "section": "4.3.1"
+   },
+   "layout": "url",
+   "source": "spec"
+  },
+  {
+   "name": "Payment",
+   "v22": null,
+   "v23": {
+    "id": "WPAY",
+    "section": "4.3.1"
+   },
+   "v24": {
+    "id": "WPAY",
+    "section": "4.3.1"
+   },
+   "layout": "url",
+   "source": "spec"
+  },
+  {
+   "name": "Publishers official webpage",
+   "v22": {
+    "id": "WPB",
+    "section": "4.3.1"
+   },
+   "v23": {
+    "id": "WPUB",
+    "section": "4.3.1"
+   },
+   "v24": {
+    "id": "WPUB",
+    "section": "4.3.1"
+   },
+   "layout": "url",
+   "source": "spec"
+  },
+  {
+   "name": "User defined URL link frame",
+   "v22": {
+    "id": "WXX",
+    "section": "4.3.2"
+   },
+   "v23": {
+    "id": "WXXX",
+    "section": "4.3.2"
+   },
+   "v24": {
+    "id": "WXXX",
+    "section": "4.3.2"
+   },
+   "layout": "user-url",
+   "source": "spec"
+  },
+  {
+   "name": "Involved people list",
+   "v22": {
+    "id": "IPL",
+    "section": "4.4"
+   },
+   "v23": {
+    "id": "IPLS",
+    "section": "4.4"
+   },
+   "v24": null,
+   "layout": "involved-people",
+   "source": "spec"
+  },
+  {
+   "name": "Unique file identifier",
+   "v22": {
+    "id": "UFI",
+    "section": "4.1"
+   },
+   "v23": {
+    "id": "UFID",
+    "section": "4.1"
+   },
+   "v24": {
+    "id": "UFID",
+    "section": "4.1"
+   },
+   "layout": "ufid",
+   "source": "spec"
+  },
+  {
+   "name": "Music CD identifier",
+   "v22": {
+    "id": "MCI",
+    "section": "4.5"
+   },
+   "v23": {
+    "id": "MCDI",
+    "section": "4.5"
+   },
+   "v24": {
+    "id": "MCDI",
+    "section": "4.4"
+   },
+   "layout": "mcdi",
+   "source": "spec"
+  },
+  {
+   "name": "Event timing codes",
+   "v22": {
+    "id": "ETC",
+    "section": "4.6"
+   },
+   "v23": {
+    "id": "ETCO",
+    "section": "4.6"
+   },
+   "v24": {
+    "id": "ETCO",
+    "section": "4.5"
+   },
+   "layout": "etco",
+   "source": "spec"
+  },
+  {
+   "name": "MPEG location lookup table",
+   "v22": {
+    "id": "MLL",
+    "section": "4.7"
+   },
+   "v23": {
+    "id": "MLLT",
+    "section": "4.7"
+   },
+   "v24": {
+    "id": "MLLT",
+    "section": "4.6"
+   },
+   "layout": "mllt",
+   "source": "spec"
+  },
+  {
+   "name": "Synchronised tempo codes",
+   "v22": {
+    "id": "STC",
+    "section": "4.8"
+   },
+   "v23": {
+    "id": "SYTC",
+    "section": "4.8"
+   },
+   "v24": {
+    "id": "SYTC",
+    "section": "4.7"
+   },
+   "layout": "sytc",
+   "source": "spec"
+  },
+  {
+   "name": "Unsynchronised lyrics/text transcription",
+   "v22": {
+    "id": "ULT",
+    "section": "4.9"
+   },
+   "v23": {
+    "id": "USLT",
+    "section": "4.9"
+   },
+   "v24": {
+    "id": "USLT",
+    "section": "4.8"
+   },
+   "layout": "uslt",
+   "source": "spec"
+  },
+  {
+   "name": "Synchronised lyrics/text",
+   "v22": {
+    "id": "SLT",
+    "section": "4.10"
+   },
+   "v23": {
+    "id": "SYLT",
+    "section": "4.10"
+   },
+   "v24": {
+    "id": "SYLT",
+    "section": "4.9"
+   },
+   "layout": "sylt",
+   "source": "spec"
+  },
+  {
+   "name": "Comments",
+   "v22": {
+    "id": "COM",
+    "section": "4.11"
+   },
+   "v23": {
+    "id": "COMM",
+    "section": "4.11"
+   },
+   "v24": {
+    "id": "COMM",
+    "section": "4.10"
+   },
+   "layout": "comment",
+   "source": "spec"
+  },
+  {
+   "name": "Relative volume adjustment",
+   "v22": {
+    "id": "RVA",
+    "section": "4.12"
+   },
+   "v23": {
+    "id": "RVAD",
+    "section": "4.12"
+   },
+   "v24": null,
+   "layout": "rvad",
+   "source": "spec"
+  },
+  {
+   "name": "Relative volume adjustment (2)",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "RVA2",
+    "section": "4.11"
+   },
+   "layout": "rva2",
+   "source": "spec"
+  },
+  {
+   "name": "Equalisation",
+   "v22": {
+    "id": "EQU",
+    "section": "4.13"
+   },
+   "v23": {
+    "id": "EQUA",
+    "section": "4.13"
+   },
+   "v24": null,
+   "layout": "equa",
+   "source": "spec"
+  },
+  {
+   "name": "Equalisation (2)",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "EQU2",
+    "section": "4.12"
+   },
+   "layout": "equ2",
+   "source": "spec"
+  },
+  {
+   "name": "Reverb",
+   "v22": {
+    "id": "REV",
+    "section": "4.14"
+   },
+   "v23": {
+    "id": "RVRB",
+    "section": "4.14"
+   },
+   "v24": {
+    "id": "RVRB",
+    "section": "4.13"
+   },
+   "layout": "rvrb",
+   "source": "spec"
+  },
+  {
+   "name": "Attached picture",
+   "v22": {
+    "id": "PIC",
+    "section": "4.15"
+   },
+   "v23": {
+    "id": "APIC",
+    "section": "4.15"
+   },
+   "v24": {
+    "id": "APIC",
+    "section": "4.14"
+   },
+   "layout": "picture",
+   "source": "spec"
+  },
+  {
+   "name": "General encapsulated object",
+   "v22": {
+    "id": "GEO",
+    "section": "4.16"
+   },
+   "v23": {
+    "id": "GEOB",
+    "section": "4.16"
+   },
+   "v24": {
+    "id": "GEOB",
+    "section": "4.15"
+   },
+   "layout": "geob",
+   "source": "spec"
+  },
+  {
+   "name": "Play counter",
+   "v22": {
+    "id": "CNT",
+    "section": "4.17"
+   },
+   "v23": {
+    "id": "PCNT",
+    "section": "4.17"
+   },
+   "v24": {
+    "id": "PCNT",
+    "section": "4.16"
+   },
+   "layout": "pcnt",
+   "source": "spec"
+  },
+  {
+   "name": "Popularimeter",
+   "v22": {
+    "id": "POP",
+    "section": "4.18"
+   },
+   "v23": {
+    "id": "POPM",
+    "section": "4.18"
+   },
+   "v24": {
+    "id": "POPM",
+    "section": "4.17"
+   },
+   "layout": "popm",
+   "source": "spec"
+  },
+  {
+   "name": "Recommended buffer size",
+   "v22": {
+    "id": "BUF",
+    "section": "4.19"
+   },
+   "v23": {
+    "id": "RBUF",
+    "section": "4.19"
+   },
+   "v24": {
+    "id": "RBUF",
+    "section": "4.18"
+   },
+   "layout": "rbuf",
+   "source": "spec"
+  },
+  {
+   "name": "Encrypted meta frame",
+   "v22": {
+    "id": "CRM",
+    "section": "4.20"
+   },
+   "v23": null,
+   "v24": null,
+   "layout": "crm",
+   "source": "spec"
+  },
+  {
+   "name": "Audio encryption",
+   "v22": {
+    "id": "CRA",
+    "section": "4.21"
+   },
+   "v23": {
+    "id": "AENC",
+    "section": "4.20"
+   },
+   "v24": {
+    "id": "AENC",
+    "section": "4.19"
+   },
+   "layout": "aenc",
+   "source": "spec"
+  },
+  {
+   "name": "Linked information",
+   "v22": {
+    "id": "LNK",
+    "section": "4.22"
+   },
+   "v23": {
+    "id": "LINK",
+    "section": "4.21"
+   },
+   "v24": {
+    "id": "LINK",
+    "section": "4.20"
+   },
+   "layout": "link",
+   "source": "spec"
+  },
+  {
+   "name": "Position synchronisation frame",
+   "v22": null,
+   "v23": {
+    "id": "POSS",
+    "section": "4.22"
+   },
+   "v24": {
+    "id": "POSS",
+    "section": "4.21"
+   },
+   "layout": "poss",
+   "source": "spec"
+  },
+  {
+   "name": "Terms of use",
+   "v22": null,
+   "v23": {
+    "id": "USER",
+    "section": "4.23"
+   },
+   "v24": {
+    "id": "USER",
+    "section": "4.22"
+   },
+   "layout": "user",
+   "source": "spec"
+  },
+  {
+   "name": "Ownership frame",
+   "v22": null,
+   "v23": {
+    "id": "OWNE",
+    "section": "4.24"
+   },
+   "v24": {
+    "id": "OWNE",
+    "section": "4.23"
+   },
+   "layout": "owne",
+   "source": "spec"
+  },
+  {
+   "name": "Commercial frame",
+   "v22": null,
+   "v23": {
+    "id": "COMR",
+    "section": "4.25"
+   },
+   "v24": {
+    "id": "COMR",
+    "section": "4.24"
+   },
+   "layout": "comr",
+   "source": "spec"
+  },
+  {
+   "name": "Encryption method registration",
+   "v22": null,
+   "v23": {
+    "id": "ENCR",
+    "section": "4.26"
+   },
+   "v24": {
+    "id": "ENCR",
+    "section": "4.25"
+   },
+   "layout": "encr",
+   "source": "spec"
+  },
+  {
+   "name": "Group identification registration",
+   "v22": null,
+   "v23": {
+    "id": "GRID",
+    "section": "4.27"
+   },
+   "v24": {
+    "id": "GRID",
+    "section": "4.26"
+   },
+   "layout": "grid",
+   "source": "spec"
+  },
+  {
+   "name": "Private frame",
+   "v22": null,
+   "v23": {
+    "id": "PRIV",
+    "section": "4.28"
+   },
+   "v24": {
+    "id": "PRIV",
+    "section": "4.27"
+   },
+   "layout": "priv",
+   "source": "spec"
+  },
+  {
+   "name": "Signature frame",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "SIGN",
+    "section": "4.28"
+   },
+   "layout": "sign",
+   "source": "spec"
+  },
+  {
+   "name": "Seek frame",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "SEEK",
+    "section": "4.29"
+   },
+   "layout": "seek",
+   "source": "spec"
+  },
+  {
+   "name": "Audio seek point index",
+   "v22": null,
+   "v23": null,
+   "v24": {
+    "id": "ASPI",
+    "section": "4.30"
+   },
+   "layout": "aspi",
+   "source": "spec"
+  },
+  {
+   "name": "Chapter",
+   "v22": null,
+   "v23": {
+    "id": "CHAP",
+    "section": "3.1"
+   },
+   "v24": {
+    "id": "CHAP",
+    "section": "3.1"
+   },
+   "layout": "chap",
+   "source": "chapters addendum"
+  },
+  {
+   "name": "Table of contents",
+   "v22": null,
+   "v23": {
+    "id": "CTOC",
+    "section": "3.2"
+   },
+   "v24": {
+    "id": "CTOC",
+    "section": "3.2"
+   },
+   "layout": "ctoc",
+   "source": "chapters addendum"
+  },
+  {
+   "name": "Audio-text",
+   "v22": null,
+   "v23": {
+    "id": "ATXT",
+    "section": "4"
+   },
+   "v24": {
+    "id": "ATXT",
+    "section": "4"
+   },
+   "layout": "atxt",
+   "source": "accessibility addendum"
+  },
+  {
+   "name": "iTunes compilation flag",
+   "v22": {
+    "id": "TCP",
+    "section": null
+   },
+   "v23": {
+    "id": "TCMP",
+    "section": null
+   },
+   "v24": {
+    "id": "TCMP",
+    "section": null
+   },
+   "layout": "text",
+   "source": "unofficial"
+  },
+  {
+   "name": "iTunes album artist sort order",
+   "v22": {
+    "id": "TS2",
+    "section": null
+   },
+   "v23": {
+    "id": "TSO2",
+    "section": null
+   },
+   "v24": {
+    "id": "TSO2",
+    "section": null
+   },
+   "layout": "text",
+   "source": "unofficial"
+  },
+  {
+   "name": "iTunes composer sort order",
+   "v22": {
+    "id": "TSC",
+    "section": null
+   },
+   "v23": {
+    "id": "TSOC",
+    "section": null
+   },
+   "v24": {
+    "id": "TSOC",
+    "section": null
+   },
+   "layout": "text",
+   "source": "unofficial"
+  },
+  {
+   "name": "iTunes title sort order",
+   "v22": {
+    "id": "TST",
+    "section": null
+   },
+   "v23": {
+    "id": "TSOT",
+    "section": null
+   },
+   "v24": {
+    "id": "TSOT",
+    "section": null
+   },
+   "layout": "text",
+   "source": "unofficial"
+  },
+  {
+   "name": "iTunes performer sort order",
+   "v22": {
+    "id": "TSP",
+    "section": null
+   },
+   "v23": {
+    "id": "TSOP",
+    "section": null
+   },
+   "v24": {
+    "id": "TSOP",
+    "section": null
+   },
+   "layout": "text",
+   "source": "unofficial"
+  },
+  {
+   "name": "iTunes album sort order",
+   "v22": {
+    "id": "TSA",
+    "section": null
+   },
+   "v23": {
+    "id": "TSOA",
+    "section": null
+   },
+   "v24": {
+    "id": "TSOA",
+    "section": null
+   },
+   "layout": "text",
+   "source": "unofficial"
+  },
+  {
+   "name": "Experimental RVA2",
+   "v22": null,
+   "v23": {
+    "id": "XRVA",
+    "section": null
+   },
+   "v24": null,
+   "layout": "rva2",
+   "source": "unofficial"
+  },
+  {
+   "name": "Replay Gain Adjustment",
+   "v22": null,
+   "v23": {
+    "id": "RGAD",
+    "section": null
+   },
+   "v24": {
+    "id": "RGAD",
+    "section": null
+   },
+   "layout": "rgad",
+   "source": "unofficial"
+  }
+ ],
+ "mapping": {
+  "formats": [
+   "ID3v2.4",
+   "ID3v2.3",
+   "ID3v2.2",
+   "MP4",
+   "FLAC · Ogg",
+   "WAV INFO",
+   "AIFF text"
+  ],
+  "rows": [
+   {
+    "field": "title",
+    "places": [
+     [
+      "TIT2"
+     ],
+     [
+      "TIT2"
+     ],
+     [
+      "TT2"
+     ],
+     [
+      "©nam"
+     ],
+     [
+      "TITLE"
+     ],
+     [
+      "INAM"
+     ],
+     [
+      "NAME"
+     ]
+    ]
+   },
+   {
+    "field": "subtitle",
+    "places": [
+     [
+      "TIT3"
+     ],
+     [
+      "TIT3"
+     ],
+     [
+      "TT3"
+     ],
+     [
+      "----:SUBTITLE"
+     ],
+     [
+      "SUBTITLE"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "grouping",
+    "places": [
+     [
+      "TIT1"
+     ],
+     [
+      "TIT1"
+     ],
+     [
+      "TT1"
+     ],
+     [
+      "©grp"
+     ],
+     [
+      "GROUPING"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "artist",
+    "places": [
+     [
+      "TPE1"
+     ],
+     [
+      "TPE1"
+     ],
+     [
+      "TP1"
+     ],
+     [
+      "©ART"
+     ],
+     [
+      "ARTIST"
+     ],
+     [
+      "IART"
+     ],
+     [
+      "AUTH"
+     ]
+    ]
+   },
+   {
+    "field": "albumArtist",
+    "places": [
+     [
+      "TPE2"
+     ],
+     [
+      "TPE2"
+     ],
+     [
+      "TP2"
+     ],
+     [
+      "aART"
+     ],
+     [
+      "ALBUMARTIST"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "album",
+    "places": [
+     [
+      "TALB"
+     ],
+     [
+      "TALB"
+     ],
+     [
+      "TAL"
+     ],
+     [
+      "©alb"
+     ],
+     [
+      "ALBUM"
+     ],
+     [
+      "IPRD"
+     ],
+     []
+    ]
+   },
+   {
+    "field": "setSubtitle",
+    "places": [
+     [
+      "TSST"
+     ],
+     [
+      "TXXX:TSST"
+     ],
+     [
+      "TXX:TSST"
+     ],
+     [
+      "----:DISCSUBTITLE"
+     ],
+     [
+      "DISCSUBTITLE"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "composer",
+    "places": [
+     [
+      "TCOM"
+     ],
+     [
+      "TCOM"
+     ],
+     [
+      "TCM"
+     ],
+     [
+      "©wrt"
+     ],
+     [
+      "COMPOSER"
+     ],
+     [
+      "IMUS"
+     ],
+     []
+    ]
+   },
+   {
+    "field": "lyricist",
+    "places": [
+     [
+      "TEXT"
+     ],
+     [
+      "TEXT"
+     ],
+     [
+      "TXT"
+     ],
+     [
+      "----:LYRICIST"
+     ],
+     [
+      "LYRICIST"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "conductor",
+    "places": [
+     [
+      "TPE3"
+     ],
+     [
+      "TPE3"
+     ],
+     [
+      "TP3"
+     ],
+     [
+      "©con"
+     ],
+     [
+      "CONDUCTOR"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "remixer",
+    "places": [
+     [
+      "TPE4"
+     ],
+     [
+      "TPE4"
+     ],
+     [
+      "TP4"
+     ],
+     [
+      "----:REMIXER"
+     ],
+     [
+      "REMIXER"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "publisher",
+    "places": [
+     [
+      "TPUB"
+     ],
+     [
+      "TPUB"
+     ],
+     [
+      "TPB"
+     ],
+     [
+      "----:LABEL"
+     ],
+     [
+      "LABEL"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "copyright",
+    "places": [
+     [
+      "TCOP"
+     ],
+     [
+      "TCOP"
+     ],
+     [
+      "TCR"
+     ],
+     [
+      "cprt"
+     ],
+     [
+      "COPYRIGHT"
+     ],
+     [
+      "ICOP"
+     ],
+     [
+      "(c) "
+     ]
+    ]
+   },
+   {
+    "field": "encodedBy",
+    "places": [
+     [
+      "TENC"
+     ],
+     [
+      "TENC"
+     ],
+     [
+      "TEN"
+     ],
+     [
+      "©enc"
+     ],
+     [
+      "ENCODEDBY"
+     ],
+     [
+      "IENC"
+     ],
+     []
+    ]
+   },
+   {
+    "field": "encoderSettings",
+    "places": [
+     [
+      "TSSE"
+     ],
+     [
+      "TSSE"
+     ],
+     [
+      "TSS"
+     ],
+     [
+      "©too"
+     ],
+     [
+      "ENCODERSETTINGS"
+     ],
+     [
+      "ISFT"
+     ],
+     []
+    ]
+   },
+   {
+    "field": "isrc",
+    "places": [
+     [
+      "TSRC"
+     ],
+     [
+      "TSRC"
+     ],
+     [
+      "TRC"
+     ],
+     [
+      "----:ISRC"
+     ],
+     [
+      "ISRC"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "language",
+    "places": [
+     [
+      "TLAN"
+     ],
+     [
+      "TLAN"
+     ],
+     [
+      "TLA"
+     ],
+     [
+      "----:LANGUAGE"
+     ],
+     [
+      "LANGUAGE"
+     ],
+     [
+      "ILNG"
+     ],
+     []
+    ]
+   },
+   {
+    "field": "mood",
+    "places": [
+     [
+      "TMOO"
+     ],
+     [
+      "TXXX:TMOO"
+     ],
+     [
+      "TXX:TMOO"
+     ],
+     [
+      "----:MOOD"
+     ],
+     [
+      "MOOD"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "key",
+    "places": [
+     [
+      "TKEY"
+     ],
+     [
+      "TKEY"
+     ],
+     [
+      "TKE"
+     ],
+     [
+      "----:initialkey"
+     ],
+     [
+      "KEY"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "bpm",
+    "places": [
+     [
+      "TBPM"
+     ],
+     [
+      "TBPM"
+     ],
+     [
+      "TBP"
+     ],
+     [
+      "tmpo"
+     ],
+     [
+      "BPM"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "length",
+    "places": [
+     [
+      "TLEN"
+     ],
+     [
+      "TLEN"
+     ],
+     [
+      "TLE"
+     ],
+     [],
+     [],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "track",
+    "places": [
+     [
+      "TRCK"
+     ],
+     [
+      "TRCK"
+     ],
+     [
+      "TRK"
+     ],
+     [
+      "trkn"
+     ],
+     [
+      "TRACKNUMBER",
+      "TRACKTOTAL"
+     ],
+     [
+      "ITRK"
+     ],
+     []
+    ]
+   },
+   {
+    "field": "disc",
+    "places": [
+     [
+      "TPOS"
+     ],
+     [
+      "TPOS"
+     ],
+     [
+      "TPA"
+     ],
+     [
+      "disk"
+     ],
+     [
+      "DISCNUMBER",
+      "DISCTOTAL"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "genre",
+    "places": [
+     [
+      "TCON"
+     ],
+     [
+      "TCON"
+     ],
+     [
+      "TCO"
+     ],
+     [
+      "©gen"
+     ],
+     [
+      "GENRE"
+     ],
+     [
+      "IGNR"
+     ],
+     []
+    ]
+   },
+   {
+    "field": "recordingTime",
+    "places": [
+     [
+      "TDRC"
+     ],
+     [
+      "TYER",
+      "TDAT"
+     ],
+     [
+      "TYE",
+      "TDA"
+     ],
+     [
+      "©day"
+     ],
+     [
+      "DATE"
+     ],
+     [
+      "ICRD"
+     ],
+     []
+    ]
+   },
+   {
+    "field": "releaseTime",
+    "places": [
+     [
+      "TDRL"
+     ],
+     [
+      "TXXX:TDRL"
+     ],
+     [
+      "TXX:TDRL"
+     ],
+     [
+      "----:RELEASEDATE"
+     ],
+     [
+      "RELEASEDATE"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "originalReleaseTime",
+    "places": [
+     [
+      "TDOR"
+     ],
+     [
+      "TORY"
+     ],
+     [
+      "TOR"
+     ],
+     [],
+     [
+      "ORIGINALDATE"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "encodingTime",
+    "places": [
+     [
+      "TDEN"
+     ],
+     [
+      "TXXX:TDEN"
+     ],
+     [
+      "TXX:TDEN"
+     ],
+     [],
+     [],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "taggingTime",
+    "places": [
+     [
+      "TDTG"
+     ],
+     [
+      "TXXX:TDTG"
+     ],
+     [
+      "TXX:TDTG"
+     ],
+     [],
+     [],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "comments",
+    "places": [
+     [
+      "COMM"
+     ],
+     [
+      "COMM"
+     ],
+     [
+      "COM"
+     ],
+     [
+      "©cmt"
+     ],
+     [
+      "COMMENT"
+     ],
+     [
+      "ICMT"
+     ],
+     []
+    ]
+   },
+   {
+    "field": "lyrics",
+    "places": [
+     [
+      "USLT"
+     ],
+     [
+      "USLT"
+     ],
+     [
+      "ULT"
+     ],
+     [
+      "©lyr"
+     ],
+     [
+      "LYRICS"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "pictures",
+    "places": [
+     [
+      "APIC"
+     ],
+     [
+      "APIC"
+     ],
+     [
+      "PIC"
+     ],
+     [
+      "covr"
+     ],
+     [
+      "PICTURE block · METADATA_BLOCK_PICTURE"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "ratings",
+    "places": [
+     [
+      "POPM"
+     ],
+     [
+      "POPM"
+     ],
+     [
+      "POP"
+     ],
+     [],
+     [],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "playCount",
+    "places": [
+     [
+      "PCNT"
+     ],
+     [
+      "PCNT"
+     ],
+     [
+      "CNT"
+     ],
+     [],
+     [],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "compilation",
+    "places": [
+     [
+      "TCMP"
+     ],
+     [
+      "TCMP"
+     ],
+     [
+      "TCP"
+     ],
+     [
+      "cpil"
+     ],
+     [
+      "COMPILATION"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "sort",
+    "places": [
+     [
+      "TSOT",
+      "TSOP",
+      "TSOA",
+      "TSO2",
+      "TSOC"
+     ],
+     [
+      "TSOT",
+      "TSOP",
+      "TSOA",
+      "TSO2",
+      "TSOC"
+     ],
+     [
+      "TST",
+      "TSP",
+      "TSA",
+      "TS2",
+      "TSC"
+     ],
+     [
+      "sonm",
+      "soar",
+      "soal",
+      "soaa",
+      "soco"
+     ],
+     [
+      "TITLESORT",
+      "ARTISTSORT",
+      "ALBUMSORT",
+      "ALBUMARTISTSORT",
+      "COMPOSERSORT"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "userText",
+    "places": [
+     [
+      "TXXX:<name>"
+     ],
+     [
+      "TXXX:<name>"
+     ],
+     [
+      "TXX:<name>"
+     ],
+     [
+      "----:<name>"
+     ],
+     [
+      "<NAME>"
+     ],
+     [],
+     []
+    ]
+   },
+   {
+    "field": "userUrls",
+    "places": [
+     [
+      "WXXX:<name>"
+     ],
+     [
+      "WXXX:<name>"
+     ],
+     [
+      "WXX:<name>"
+     ],
+     [
+      "----:<name>"
+     ],
+     [],
+     [],
+     []
+    ]
+   }
+  ]
+ },
+ "genres": {
+  "none": 255,
+  "list": [
+   {
+    "id": 0,
+    "name": "Blues",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 1,
+    "name": "Classic Rock",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 2,
+    "name": "Country",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 3,
+    "name": "Dance",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 4,
+    "name": "Disco",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 5,
+    "name": "Funk",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 6,
+    "name": "Grunge",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 7,
+    "name": "Hip-Hop",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 8,
+    "name": "Jazz",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 9,
+    "name": "Metal",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 10,
+    "name": "New Age",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 11,
+    "name": "Oldies",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 12,
+    "name": "Other",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 13,
+    "name": "Pop",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 14,
+    "name": "R&B",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 15,
+    "name": "Rap",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 16,
+    "name": "Reggae",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 17,
+    "name": "Rock",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 18,
+    "name": "Techno",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 19,
+    "name": "Industrial",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 20,
+    "name": "Alternative",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 21,
+    "name": "Ska",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 22,
+    "name": "Death Metal",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 23,
+    "name": "Pranks",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 24,
+    "name": "Soundtrack",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 25,
+    "name": "Euro-Techno",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 26,
+    "name": "Ambient",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 27,
+    "name": "Trip-Hop",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 28,
+    "name": "Vocal",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 29,
+    "name": "Jazz+Funk",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 30,
+    "name": "Fusion",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 31,
+    "name": "Trance",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 32,
+    "name": "Classical",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 33,
+    "name": "Instrumental",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 34,
+    "name": "Acid",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 35,
+    "name": "House",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 36,
+    "name": "Game",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 37,
+    "name": "Sound Clip",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 38,
+    "name": "Gospel",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 39,
+    "name": "Noise",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 40,
+    "name": "AlternRock",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 41,
+    "name": "Bass",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 42,
+    "name": "Soul",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 43,
+    "name": "Punk",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 44,
+    "name": "Space",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 45,
+    "name": "Meditative",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 46,
+    "name": "Instrumental Pop",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 47,
+    "name": "Instrumental Rock",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 48,
+    "name": "Ethnic",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 49,
+    "name": "Gothic",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 50,
+    "name": "Darkwave",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 51,
+    "name": "Techno-Industrial",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 52,
+    "name": "Electronic",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 53,
+    "name": "Pop-Folk",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 54,
+    "name": "Eurodance",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 55,
+    "name": "Dream",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 56,
+    "name": "Southern Rock",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 57,
+    "name": "Comedy",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 58,
+    "name": "Cult",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 59,
+    "name": "Gangsta",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 60,
+    "name": "Top 40",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 61,
+    "name": "Christian Rap",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 62,
+    "name": "Pop/Funk",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 63,
+    "name": "Jungle",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 64,
+    "name": "Native American",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 65,
+    "name": "Cabaret",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 66,
+    "name": "New Wave",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 67,
+    "name": "Psychedelic",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 68,
+    "name": "Rave",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 69,
+    "name": "Showtunes",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 70,
+    "name": "Trailer",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 71,
+    "name": "Lo-Fi",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 72,
+    "name": "Tribal",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 73,
+    "name": "Acid Punk",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 74,
+    "name": "Acid Jazz",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 75,
+    "name": "Polka",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 76,
+    "name": "Retro",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 77,
+    "name": "Musical",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 78,
+    "name": "Rock & Roll",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 79,
+    "name": "Hard Rock",
+    "source": "ID3v1 (v2.4 Appendix A)"
+   },
+   {
+    "id": 80,
+    "name": "Folk",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 81,
+    "name": "Folk-Rock",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 82,
+    "name": "National Folk",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 83,
+    "name": "Swing",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 84,
+    "name": "Fast Fusion",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 85,
+    "name": "Bebob",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 86,
+    "name": "Latin",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 87,
+    "name": "Revival",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 88,
+    "name": "Celtic",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 89,
+    "name": "Bluegrass",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 90,
+    "name": "Avantgarde",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 91,
+    "name": "Gothic Rock",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 92,
+    "name": "Progressive Rock",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 93,
+    "name": "Psychedelic Rock",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 94,
+    "name": "Symphonic Rock",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 95,
+    "name": "Slow Rock",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 96,
+    "name": "Big Band",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 97,
+    "name": "Chorus",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 98,
+    "name": "Easy Listening",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 99,
+    "name": "Acoustic",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 100,
+    "name": "Humour",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 101,
+    "name": "Speech",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 102,
+    "name": "Chanson",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 103,
+    "name": "Opera",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 104,
+    "name": "Chamber Music",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 105,
+    "name": "Sonata",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 106,
+    "name": "Symphony",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 107,
+    "name": "Booty Bass",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 108,
+    "name": "Primus",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 109,
+    "name": "Porn Groove",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 110,
+    "name": "Satire",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 111,
+    "name": "Slow Jam",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 112,
+    "name": "Club",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 113,
+    "name": "Tango",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 114,
+    "name": "Samba",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 115,
+    "name": "Folklore",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 116,
+    "name": "Ballad",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 117,
+    "name": "Power Ballad",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 118,
+    "name": "Rhythmic Soul",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 119,
+    "name": "Freestyle",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 120,
+    "name": "Duet",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 121,
+    "name": "Punk Rock",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 122,
+    "name": "Drum Solo",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 123,
+    "name": "Acapella",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 124,
+    "name": "Euro-House",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 125,
+    "name": "Dance Hall",
+    "source": "Winamp extension (v2.3 Appendix A)"
+   },
+   {
+    "id": 126,
+    "name": "Goa",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 127,
+    "name": "Drum & Bass",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 128,
+    "name": "Club-House",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 129,
+    "name": "Hardcore",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 130,
+    "name": "Terror",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 131,
+    "name": "Indie",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 132,
+    "name": "BritPop",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 133,
+    "name": "Negerpunk",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 134,
+    "name": "Polsk Punk",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 135,
+    "name": "Beat",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 136,
+    "name": "Christian",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 137,
+    "name": "Heavy Metal",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 138,
+    "name": "Black Metal",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 139,
+    "name": "Crossover",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 140,
+    "name": "Contemporary",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 141,
+    "name": "Christian Rock",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 142,
+    "name": "Merengue",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 143,
+    "name": "Salsa",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 144,
+    "name": "Thrash Metal",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 145,
+    "name": "Anime",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 146,
+    "name": "JPop",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   },
+   {
+    "id": 147,
+    "name": "Synthpop",
+    "source": "Winamp, named only in the ID3v1 test suite"
+   }
+  ]
+ }
+}

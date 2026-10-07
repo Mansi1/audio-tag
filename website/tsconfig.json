@@ -1,0 +1,16 @@
+{
+  "include": ["pages", "components", "lib", "config.ts"],
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "Node16",
+    "moduleResolution": "Node16",
+    "jsx": "react-jsx",
+    "jsxImportSource": "defuss",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "paths": { "audio-tag/browser": ["../dist/browser.d.ts"] }
+  }
+}

@@ -1,5 +1,6 @@
-// Regenerates the frame support table in README.md, and the frame table, field mapping and genre
-// list in website/docs.html, from the frame registry and the format mappings, so they cannot drift.
+// Regenerates the frame support table in README.md, and website/data/support.json (frames, field
+// mapping, genres) that the docs page renders, from the frame registry and the format mappings, so
+// they cannot drift.
 import { readFileSync, writeFileSync } from 'node:fs'
 import {
   FRAME_DEFINITIONS,
@@ -10,7 +11,7 @@ import {
   applyMP4Metadata,
   applyMetadata,
   applyOggMetadata,
-  applyWAVMetadata,
+  applyRIFFMetadata,
 } from '../dist/index.js'
 
 const origin = { native: 'spec', 'chapters-addendum': 'chapters addendum', 'accessibility-addendum': 'accessibility addendum', unofficial: 'unofficial' }
@@ -23,31 +24,23 @@ function replaceBetween(text, name, content) {
 }
 
 // README: Markdown frame table
-const cell = (d, v) => (d.ids[v] ? `\`${d.ids[v]}\`${d.sections[v] ? ` §${d.sections[v]}` : ''}` : '—')
+// VERIFIED: 'n/a' rather than a dash, because the README is prose-checked, and a dash in a table cell reads as a typography slip.
+const cell = (d, v) => (d.ids[v] ? `\`${d.ids[v]}\`${d.sections[v] ? ` §${d.sections[v]}` : ''}` : 'n/a')
 const rows = FRAME_DEFINITIONS.map((d) => `| ${d.name} | ${cell(d, 2)} | ${cell(d, 3)} | ${cell(d, 4)} | ${origin[d.origin]} |`)
 const table = ['| Frame | v2.2 | v2.3 | v2.4 | Source |', '|---|---|---|---|---|', ...rows].join('\n')
 writeFileSync('README.md', replaceBetween(readFileSync('README.md', 'utf8'), 'support-matrix', table))
 
-// docs.html: the same table in HTML, with the frame layout
-const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-const htmlCell = (d, v) => (d.ids[v] ? `<code>${d.ids[v]}</code>${d.sections[v] ? ` §${d.sections[v]}` : ''}` : '—')
-const frameRows = FRAME_DEFINITIONS.map(
-  (d) =>
-    `            <tr class="table-row"><td class="table-cell">${esc(d.name)}</td><td class="table-cell">${htmlCell(d, 2)}</td><td class="table-cell">${htmlCell(d, 3)}</td><td class="table-cell">${htmlCell(d, 4)}</td><td class="table-cell">${d.type}</td><td class="table-cell">${origin[d.origin]}</td></tr>`,
-)
-const frameTable = `      <div class="table-container">
-        <table class="table" id="frame-table">
-          <caption class="table-caption">${FRAME_DEFINITIONS.length} frame types. § is the section of each version's spec; the layout is the frame body type in <code>src/id3v2/frames/types.ts</code>.</caption>
-          <thead>
-            <tr class="table-row"><th class="table-head">Frame</th><th class="table-head">v2.2</th><th class="table-head">v2.3</th><th class="table-head">v2.4</th><th class="table-head">Layout</th><th class="table-head">Source</th></tr>
-          </thead>
-          <tbody>
-${frameRows.join('\n')}
-          </tbody>
-        </table>
-      </div>`
+// support.json: every frame with its IDs and spec sections per version
+const frames = FRAME_DEFINITIONS.map((d) => ({
+  name: d.name,
+  v22: d.ids[2] ? { id: d.ids[2], section: d.sections[2] ?? null } : null,
+  v23: d.ids[3] ? { id: d.ids[3], section: d.sections[3] ?? null } : null,
+  v24: d.ids[4] ? { id: d.ids[4], section: d.sections[4] ?? null } : null,
+  layout: d.type,
+  source: origin[d.origin],
+}))
 
-// docs.html: where each metadata field is written, found by applying it to an empty tag
+// support.json: where each metadata field is written, found by applying it to an empty tag
 const png = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])
 const SAMPLES = {
   title: 'x', subtitle: 'x', grouping: 'x', artist: ['x'], albumArtist: 'x', album: 'x', setSubtitle: 'x', composer: ['x'], lyricist: ['x'], conductor: 'x',
@@ -82,7 +75,7 @@ const MAPPERS = [
         return [...new Set((t.vorbis?.fields ?? []).map((f) => f.name))].concat(t.pictures.length ? ['PICTURE block · METADATA_BLOCK_PICTURE'] : [])
       }),
   ],
-  ['WAV INFO', (md) => attempt(() => applyWAVMetadata({ info: [] }, md).tags.info.map((e) => e.id))],
+  ['WAV INFO', (md) => attempt(() => applyRIFFMetadata({ info: [] }, md).tags.info.map((e) => e.id))],
   [
     'AIFF text',
     (md) =>
@@ -92,49 +85,20 @@ const MAPPERS = [
       }),
   ],
 ]
-const mapRows = Object.entries(SAMPLES).map(([field, value]) => {
-  const cells = MAPPERS.map(([, f]) => {
-    const ids = f({ [field]: value })
-    return ids.length ? ids.map((id) => `<code>${esc(id)}</code>`).join(' ') : '—'
-  })
-  return `            <tr class="table-row"><td class="table-cell"><code>${field}</code></td>${cells.map((c) => `<td class="table-cell">${c}</td>`).join('')}</tr>`
-})
-const mapTable = `      <div class="table-container">
-        <table class="table">
-          <caption class="table-caption">Found by writing each field into an empty tag with the library itself. — means the format has no place for the field and refuses it.</caption>
-          <thead>
-            <tr class="table-row"><th class="table-head">Field</th>${MAPPERS.map(([name]) => `<th class="table-head">${name}</th>`).join('')}</tr>
-          </thead>
-          <tbody>
-${mapRows.join('\n')}
-          </tbody>
-        </table>
-      </div>`
+const mapping = {
+  formats: MAPPERS.map(([name]) => name),
+  rows: Object.entries(SAMPLES).map(([field, value]) => ({ field, places: MAPPERS.map(([, f]) => f({ [field]: value })) })),
+}
 
-// docs.html: the ID3v1 genre list
+// support.json: the ID3v1 genre list
 const genreSource = {
   id3v1: 'ID3v1 (v2.4 Appendix A)',
   'winamp-v2.3-appendix': 'Winamp extension (v2.3 Appendix A)',
   'winamp-test-suite': 'Winamp, named only in the ID3v1 test suite',
 }
-const genreRows = GENRES.map(
-  (g) => `            <tr class="table-row"><td class="table-cell" data-numeric>${g.id}</td><td class="table-cell">${esc(g.name)}</td><td class="table-cell">${genreSource[g.source]}</td></tr>`,
-)
-const genreTable = `      <div class="table-container">
-        <table class="table" id="genre-table">
-          <caption class="table-caption">${GENRES.length} genres, index 0–${GENRES.length - 1}. Index ${GENRE_NONE} means no genre.</caption>
-          <thead>
-            <tr class="table-row"><th class="table-head">Index</th><th class="table-head">Genre</th><th class="table-head">Defined by</th></tr>
-          </thead>
-          <tbody>
-${genreRows.join('\n')}
-          </tbody>
-        </table>
-      </div>`
+const genres = GENRES.map((g) => ({ id: g.id, name: g.name, source: genreSource[g.source] }))
 
-let docs = readFileSync('website/docs.html', 'utf8')
-docs = replaceBetween(docs, 'frames', frameTable)
-docs = replaceBetween(docs, 'mapping', mapTable)
-docs = replaceBetween(docs, 'genres', genreTable)
-writeFileSync('website/docs.html', docs)
-console.log(`support matrix: ${rows.length} frame definitions, ${mapRows.length} mapped fields, ${genreRows.length} genres`)
+writeFileSync(
+  'website/data/support.json',
+  JSON.stringify({ frames, mapping, genres: { none: GENRE_NONE, list: genres } }, null, 1) + '\n',
+)

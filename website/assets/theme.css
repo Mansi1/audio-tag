@@ -1,0 +1,91 @@
+/* The README banner palette as defuss-shadcn design tokens (light + dark), plus one color per format.
+   Loaded after ui.css, so these values win. */
+
+:root {
+  --brand-from: #3b82f6;
+  --brand-to: #7c3aed;
+  --brand-gradient: linear-gradient(135deg, var(--brand-from), var(--brand-to));
+  --hero-from: #0f172a;
+  --hero-to: #1e1b4b;
+
+  /* one color per format, as in the README diagrams */
+  --fmt-mpeg: #3b82f6;
+  --fmt-mp4: #8b5cf6;
+  --fmt-flac: #10b981;
+  --fmt-ogg: #f59e0b;
+  --fmt-aiff: #ec4899;
+  --fmt-riff: #06b6d4;
+
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #5b4ff5;
+  --primary-foreground: #ffffff;
+  --secondary: #eef2ff;
+  --secondary-foreground: #312e81;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #ede9fe;
+  --accent-foreground: #4c1d95;
+  --border: #e2e8f0;
+  --input: #cbd5e1;
+  --ring: #7c3aed;
+  --radius: 0.75rem;
+  --font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  /* the README diagrams, inlined (lib/themed-svg.ts): light card */
+  --dg-bg: #ffffff;
+  --dg-box: #f8fafc;
+  --dg-line: #cbd5e1;
+  --dg-hatch: #e2e8f0;
+  --dg-hatch-stripe: #cbd5e1;
+  --dg-strong: #0f172a;
+  --dg-text: #1e293b;
+  --dg-muted: #64748b;
+  --dg-arrow: #94a3b8;
+  --dg-label-mpeg: #2563eb;
+  --dg-label-mp4: #7c3aed;
+  --dg-label-flac: #047857;
+  --dg-label-ogg: #b45309;
+  --dg-label-aiff: #be185d;
+  --dg-label-riff: #0e7490;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+.dark {
+  --background: #0b1020;
+  --foreground: #e2e8f0;
+  --card: #0f172a;
+  --card-foreground: #e2e8f0;
+  --popover: #111c33;
+  --popover-foreground: #e2e8f0;
+  --primary: #7c6cff;
+  --primary-foreground: #ffffff;
+  --secondary: #1e1b4b;
+  --secondary-foreground: #c7d2fe;
+  --muted: #111c33;
+  --muted-foreground: #94a3b8;
+  --accent: #1e1b4b;
+  --accent-foreground: #ddd6fe;
+  --border: #1e293b;
+  --input: #334155;
+  --ring: #a78bfa;
+  /* the diagrams as drawn in the README: dark card */
+  --dg-bg: #0f172a;
+  --dg-box: #111c33;
+  --dg-line: #334155;
+  --dg-hatch: #1e293b;
+  --dg-hatch-stripe: #273449;
+  --dg-strong: #f8fafc;
+  --dg-text: #e2e8f0;
+  --dg-muted: #94a3b8;
+  --dg-arrow: #64748b;
+  --dg-label-mpeg: #60a5fa;
+  --dg-label-mp4: #a78bfa;
+  --dg-label-flac: #34d399;
+  --dg-label-ogg: #fbbf24;
+  --dg-label-aiff: #f472b6;
+  --dg-label-riff: #22d3ee;
+}

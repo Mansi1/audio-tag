@@ -3,15 +3,20 @@
   "version": "0.1.0",
   "description": "Spec-exact reader and writer for audio file tags: ID3v1, ID3v2.2-2.4 and Lyrics3, MP4/M4A, FLAC, Ogg (Vorbis, Opus), AIFF and WAV. Zero dependencies, works in browsers and Node.",
   "license": "MIT",
+  "author": {
+    "name": "Michael Mannseicher",
+    "url": "https://michael.mannseicher.com"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Mansi1/audio-tag.git"
   },
-  "homepage": "https://github.com/Mansi1/audio-tag#readme",
+  "homepage": "https://mansi1.github.io/audio-tag/",
   "bugs": {
     "url": "https://github.com/Mansi1/audio-tag/issues"
   },
   "type": "module",
+  "packageManager": "npm@10.8.2",
   "sideEffects": false,
   "main": "./dist/cjs/index.cjs",
   "module": "./dist/index.js",
@@ -49,7 +54,11 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "website/dist",
+    "!website/dist/404.html",
+    "!website/dist/config.js",
+    "scripts/serve.mjs"
   ],
   "engines": {
     "node": ">=18"
@@ -69,6 +78,7 @@
   ],
   "scripts": {
     "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json && tsup && node scripts/minify.mjs",
+    "site": "cd website && bun run build",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.platform.json --noEmit && tsc -p tsconfig.test.json --noEmit",
@@ -77,15 +87,16 @@
     "docs:matrix": "node scripts/support-matrix.mjs",
     "prepublishOnly": "npm run typecheck && npm test && npm run build && npm run lint:platform && npm run size",
     "coverage": "vitest run --project node --coverage --coverage.include=src/**",
-    "serve": "npm run build && node scripts/serve.mjs",
+    "serve": "npm run build && npm run site && node scripts/serve.mjs",
     "serve:only": "node scripts/serve.mjs",
-    "website": "npm run build && node scripts/serve.mjs --open"
+    "website": "npm run build && npm run site && node scripts/serve.mjs --open"
   },
   "devDependencies": {
     "@types/node": "^20.19.43",
     "@vitest/coverage-v8": "^2.1.9",
     "esbuild": "^0.28.2",
     "jsdom": "^25.0.1",
+    "playwright": "^1.63.0",
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",
     "vitest": "^2.1.9"

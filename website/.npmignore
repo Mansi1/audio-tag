@@ -1,0 +1,3 @@
+# npm would otherwise apply .gitignore here, which leaves out dist/: the built site the package ships.
+node_modules/
+.ssg-temp/

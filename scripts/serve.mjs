@@ -1,14 +1,23 @@
-// Serves the project root so the website can load ../dist/*.js as ES modules.
-// Usage: npm run serve   (PORT=8080 npm run serve to change the port)
+// Serves the project root, so the built website (website/dist/, with its ES modules) opens over HTTP.
+// Usage: npm run serve   (npm run serve -- --port 8080, or PORT=8080, to change the port)
 //        npm run website (the same, and opens the website in the browser)
+// It is also in the npm package: node node_modules/audio-tag/scripts/serve.mjs --open [--port 8080]
 import { execFile } from 'node:child_process'
 import { createReadStream } from 'node:fs'
 import { stat } from 'node:fs/promises'
 import { createServer } from 'node:http'
-import { extname, join, normalize, resolve, sep } from 'node:path'
+import { extname, join, normalize, sep } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const root = resolve(import.meta.dirname, '..')
-const port = Number(process.env.PORT ?? 5173)
+// the folder above scripts/ (import.meta.dirname would need Node 20.11; the package supports 18)
+const root = fileURLToPath(new URL('..', import.meta.url)).replace(/[\\/]$/, '')
+// VERIFIED: --port works the same in every shell, where PORT=… needs shell-specific syntax; PORT still works.
+const flag = process.argv.indexOf('--port')
+const port = Number(flag > 0 ? process.argv[flag + 1] : (process.env.PORT ?? 5173))
+if (!Number.isInteger(port) || port < 1 || port > 65535) {
+  console.error('The port must be a whole number from 1 to 65535, for example --port 8080')
+  process.exit(1)
+}
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -29,18 +38,21 @@ const TYPES = {
 const server = createServer(async (req, res) => {
   const url = new URL(req.url ?? '/', 'http://localhost')
   if (url.pathname === '/') {
-    res.writeHead(302, { Location: '/website/index.html' }).end()
+    res.writeHead(302, { Location: '/website/dist/' }).end()
     return
   }
   // stay inside the project root
-  const path = normalize(join(root, decodeURIComponent(url.pathname)))
+  let path = normalize(join(root, decodeURIComponent(url.pathname)))
   if (path !== root && !path.startsWith(root + sep)) {
     res.writeHead(403).end('Forbidden')
     return
   }
   try {
-    const s = await stat(path)
-    if (!s.isFile()) throw new Error('not a file')
+    // as GitHub Pages does: a folder serves its index.html, a path without an extension its .html file
+    let s = await stat(path).catch(() => null)
+    if (s?.isDirectory()) s = await stat((path = join(path, 'index.html'))).catch(() => null)
+    else if (!s && !extname(path)) s = await stat((path += '.html')).catch(() => null)
+    if (!s?.isFile()) throw new Error('not a file')
     res.writeHead(200, {
       'Content-Type': TYPES[extname(path)] ?? 'application/octet-stream',
       'Content-Length': s.size,
@@ -53,11 +65,12 @@ const server = createServer(async (req, res) => {
   console.log(`${res.statusCode} ${req.method} ${url.pathname}`)
 })
 
-server.listen(port, () => {
+// VERIFIED: listening on localhost keeps other machines out (a LAN address is refused); the server hands out every file of its folder.
+server.listen(port, 'localhost', () => {
   console.log(`Serving ${root}`)
-  console.log(`Website: http://localhost:${port}/website/index.html`)
+  console.log(`Website: http://localhost:${port}/website/dist/`)
   if (process.argv.includes('--open')) {
-    const url = `http://localhost:${port}/website/index.html`
+    const url = `http://localhost:${port}/website/dist/`
     const [cmd, args] = process.platform === 'darwin' ? ['open', [url]] : process.platform === 'win32' ? ['cmd', ['/c', 'start', '', url]] : ['xdg-open', [url]]
     execFile(cmd, args, (err) => err && console.log(`Open ${url} in your browser`))
   }
