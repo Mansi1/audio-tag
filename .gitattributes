@@ -1,2 +1,3 @@
-# docs/ holds verbatim copies of the specifications: keep their bytes (line endings included)
-docs/** -text
+# Test fixtures are byte-exact inputs (MP3 files, the suite log with its line endings): keep their bytes.
+test/fixtures/** -text
+input/** -text
