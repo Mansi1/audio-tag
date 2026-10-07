@@ -1,0 +1,2 @@
+# docs/ holds verbatim copies of the specifications: keep their bytes (line endings included)
+docs/** -text

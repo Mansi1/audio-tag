@@ -1,0 +1,93 @@
+{
+  "name": "audio-tag",
+  "version": "0.1.0",
+  "description": "Spec-exact reader and writer for audio file tags: ID3v1, ID3v2.2-2.4 and Lyrics3, MP4/M4A, FLAC, Ogg (Vorbis, Opus), AIFF and WAV. Zero dependencies, works in browsers and Node.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mansi1/audio-tag.git"
+  },
+  "homepage": "https://github.com/Mansi1/audio-tag#readme",
+  "bugs": {
+    "url": "https://github.com/Mansi1/audio-tag/issues"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.cts",
+        "default": "./dist/cjs/index.cjs"
+      }
+    },
+    "./browser": {
+      "import": {
+        "types": "./dist/browser.d.ts",
+        "default": "./dist/browser.js"
+      },
+      "require": {
+        "types": "./dist/cjs/browser.d.cts",
+        "default": "./dist/cjs/browser.cjs"
+      }
+    },
+    "./node": {
+      "import": {
+        "types": "./dist/node.d.ts",
+        "default": "./dist/node.js"
+      },
+      "require": {
+        "types": "./dist/cjs/node.d.cts",
+        "default": "./dist/cjs/node.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "id3",
+    "id3v1",
+    "id3v2",
+    "mp3",
+    "tags",
+    "metadata",
+    "lyrics3",
+    "browser",
+    "m4a",
+    "mp4",
+    "audio"
+  ],
+  "scripts": {
+    "build": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && tsc -p tsconfig.build.json && tsup && node scripts/minify.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.platform.json --noEmit && tsc -p tsconfig.test.json --noEmit",
+    "lint:platform": "node scripts/check-platform.mjs",
+    "size": "node scripts/check-size.mjs",
+    "docs:matrix": "node scripts/support-matrix.mjs",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build && npm run lint:platform && npm run size",
+    "coverage": "vitest run --project node --coverage --coverage.include=src/**",
+    "serve": "npm run build && node scripts/serve.mjs",
+    "serve:only": "node scripts/serve.mjs",
+    "website": "npm run build && node scripts/serve.mjs --open"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43",
+    "@vitest/coverage-v8": "^2.1.9",
+    "esbuild": "^0.28.2",
+    "jsdom": "^25.0.1",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^2.1.9"
+  }
+}
