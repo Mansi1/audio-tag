@@ -3,13 +3,13 @@ import { decodeLatin1, isLatin1Representable, isValidUtf8 } from '../core/encodi
 import { TagWriteError, type WarningSink } from '../core/errors.js'
 import { afterID3v2 } from '../file/detect.js'
 
-// SPEC: docs/riff/riffmci.pdf Chapter 2 "Chunks": a chunk is a four-character ID, a 32-bit
+// SPEC: spec/riff/riffmci.md Chapter 2 "Chunks": a chunk is a four-character ID, a 32-bit
 // little-endian ("Intel format") ckSize and the data; "If the chunk size is an odd number of bytes,
 // a pad byte with value zero is written after ckData. ... The ckSize value does not include the
 // pad byte." A RIFF form is RIFF(<formType> <ck>...); WAVE files have form type 'WAVE'.
 
-export class WAVWriteError extends TagWriteError {
-  override name = 'WAVWriteError'
+export class RIFFWriteError extends TagWriteError {
+  override name = 'RIFFWriteError'
 }
 
 export interface Chunk {
@@ -22,7 +22,7 @@ export interface Chunk {
   data?: Uint8Array
 }
 
-export interface WAVLayout {
+export interface RIFFLayout {
   /** Offset of the RIFF chunk: after any ID3v2 tags in front of it, which are kept (W7). */
   start: number
   /** RIFF ckSize from the header. */
@@ -62,28 +62,28 @@ export function riffHeader(head: Uint8Array, start = 0): { formSize: number } | 
   return { formSize: u32le(head, start + 4) }
 }
 
-export function newLayout(start: number, fileLength: number, formSize: number, w: WarningSink): WAVLayout {
-  const layout: WAVLayout = { start, formSize, chunks: [], fileLength, truncated: false }
+export function newLayout(start: number, fileLength: number, formSize: number, w: WarningSink): RIFFLayout {
+  const layout: RIFFLayout = { start, formSize, chunks: [], fileLength, truncated: false }
   if (start + 8 + formSize > fileLength) {
     layout.truncated = true
-    w.warn('wav-riff-size', `the RIFF chunk claims ${formSize} bytes but the file ends after ${fileLength - start - 8}`)
+    w.warn('riff-riff-size', `the RIFF chunk claims ${formSize} bytes but the file ends after ${fileLength - start - 8}`)
   }
   return layout
 }
 
 /** End of the RIFF form's data in the file. */
-export function formEnd(layout: WAVLayout): number {
+export function formEnd(layout: RIFFLayout): number {
   return Math.min(layout.fileLength, layout.start + 8 + layout.formSize)
 }
 
 /** Adds the chunk whose 8-byte header `h` is at `pos`; returns it and the next position (undefined after a truncated chunk). */
-export function addChunk(layout: WAVLayout, pos: number, h: Uint8Array, w: WarningSink): { chunk: Chunk; next: number | undefined } {
+export function addChunk(layout: RIFFLayout, pos: number, h: Uint8Array, w: WarningSink): { chunk: Chunk; next: number | undefined } {
   const { id, size } = chunkHeader(h)
   const end = formEnd(layout)
   const truncated = pos + 8 + size > end
   if (truncated) {
     layout.truncated = true
-    w.warn('wav-truncated', `chunk '${id}' runs past the end of the RIFF form`, { offset: pos })
+    w.warn('riff-truncated', `chunk '${id}' runs past the end of the RIFF form`, { offset: pos })
   }
   const chunk: Chunk = { id, start: pos, size: truncated ? end - pos - 8 : size }
   layout.chunks.push(chunk)
@@ -99,7 +99,7 @@ export function serializeChunk(id: string, data: Uint8Array): Uint8Array {
   return out
 }
 
-export interface WAVFormat {
+export interface RIFFFormat {
   /** wFormatTag: 1 = PCM. */
   formatTag: number
   channels: number
@@ -113,12 +113,12 @@ export interface WAVFormat {
 }
 
 /** SPEC: Chapter 3 "WAVE Format Chunk": wFormatTag, wChannels, dwSamplesPerSec, dwAvgBytesPerSec, wBlockAlign. */
-export function parseFormat(data: Uint8Array, w: WarningSink): WAVFormat | undefined {
+export function parseFormat(data: Uint8Array, w: WarningSink): RIFFFormat | undefined {
   if (data.length < 14) {
-    w.warn('wav-fmt', `the format chunk is ${data.length} bytes, less than 14`)
+    w.warn('riff-fmt', `the format chunk is ${data.length} bytes, less than 14`)
     return undefined
   }
-  const f: WAVFormat = { formatTag: u16le(data, 0), channels: u16le(data, 2), sampleRate: u32le(data, 4), byteRate: u32le(data, 8), blockAlign: u16le(data, 12) }
+  const f: RIFFFormat = { formatTag: u16le(data, 0), channels: u16le(data, 2), sampleRate: u32le(data, 4), byteRate: u32le(data, 8), blockAlign: u16le(data, 12) }
   if (data.length >= 16) f.bitsPerSample = u16le(data, 14)
   return f
 }
@@ -144,9 +144,9 @@ const utf8 = new TextDecoder('utf-8')
 /** W4: ISO-8859-1 (or UTF-8 by CSET 65001, or valid multi-byte UTF-8 without CSET). */
 function decodeInfo(id: string, bytes: Uint8Array, codePage: number, w: WarningSink): string {
   if (codePage === 65001) return utf8.decode(bytes)
-  if (codePage !== 0 && codePage !== 28591) w.warn('wav-info-codepage', `code page ${codePage} is read as ISO-8859-1`)
+  if (codePage !== 0 && codePage !== 28591) w.warn('riff-info-codepage', `code page ${codePage} is read as ISO-8859-1`)
   if (codePage === 0 && bytes.some((b) => b > 0x7f) && isValidUtf8(bytes)) {
-    w.warn('wav-info-utf8', `'${id}' is valid UTF-8 without a CSET chunk; read as UTF-8`)
+    w.warn('riff-info-utf8', `'${id}' is valid UTF-8 without a CSET chunk; read as UTF-8`)
     return utf8.decode(bytes)
   }
   return decodeLatin1(bytes)
@@ -162,7 +162,7 @@ export function parseInfo(data: Uint8Array, codePage: number, w: WarningSink): I
   while (pos + 8 <= data.length) {
     const { id, size } = chunkHeader(data.subarray(pos, pos + 8))
     if (pos + 8 + size > data.length) {
-      w.warn('wav-info-truncated', `INFO entry '${id}' runs past the end of the list`)
+      w.warn('riff-info-truncated', `INFO entry '${id}' runs past the end of the list`)
       break
     }
     let text = data.subarray(pos + 8, pos + 8 + size)
@@ -180,8 +180,8 @@ export function parseInfo(data: Uint8Array, codePage: number, w: WarningSink): I
 export function serializeInfo(entries: readonly InfoEntry[]): Uint8Array {
   const parts: Uint8Array[] = [ascii('INFO')]
   for (const e of entries) {
-    if (!/^[\x20-\x7e]{4}$/.test(e.id)) throw new WAVWriteError('wav-info-id', `INFO ID ${JSON.stringify(e.id)} must be four printable ASCII characters`)
-    if (!isLatin1Representable(e.value)) throw new WAVWriteError('wav-info-latin1', `INFO '${e.id}' can only hold ISO-8859-1 text`)
+    if (!/^[\x20-\x7e]{4}$/.test(e.id)) throw new RIFFWriteError('riff-info-id', `INFO ID ${JSON.stringify(e.id)} must be four printable ASCII characters`)
+    if (!isLatin1Representable(e.value)) throw new RIFFWriteError('riff-info-latin1', `INFO '${e.id}' can only hold ISO-8859-1 text`)
     const text = new Uint8Array(e.value.length + 1)
     for (let i = 0; i < e.value.length; i++) text[i] = e.value.charCodeAt(i)
     parts.push(serializeChunk(e.id, text))

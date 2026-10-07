@@ -52,7 +52,7 @@ export function comt(comments: { timeStamp: number; marker: number; text: string
 }
 
 /**
- * SPEC: docs/aiff/AIFF-1.3.pdf Appendix A: COMM (2 channels, 88200 frames, 16 bits, 44100 Hz),
+ * SPEC: spec/aiff/AIFF-1.3.md Appendix A: COMM (2 channels, 88200 frames, 16 bits, 44100 Hz),
  * MARK (markers 1 "beg loop" at 44100 and 2 "end loop" at 88200), INST and SSND (176408 bytes).
  * Its FORM ckSize is 176516.
  */

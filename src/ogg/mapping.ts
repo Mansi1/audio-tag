@@ -2,8 +2,7 @@ import { getFLACMetadata, applyFLACMetadata } from '../flac/mapping.js'
 import type { Metadata, MetadataUpdate } from '../metadata/metadata.js'
 import type { OggStream, OggTags } from './file.js'
 
-// The comment fields map as for FLAC (tasks/30-flac.md F1, F2, F7); pictures are the
-// METADATA_BLOCK_PICTURE fields (tasks/33-ogg.md G3).
+// The comment fields map as for FLAC; pictures are the METADATA_BLOCK_PICTURE fields.
 
 /** Friendly metadata from Ogg tags; `length` from the last granule position (G6). */
 export function getOggMetadata(tags: OggTags, stream?: OggStream, granule?: bigint): Metadata {

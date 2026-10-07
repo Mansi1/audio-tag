@@ -6,9 +6,9 @@ import { parsePosition } from '../id3v2/frames/text-helpers.js'
 import { applyMetadata, getID3v2Metadata } from '../id3v2/mapping.js'
 import type { Metadata, MetadataUpdate } from '../metadata/metadata.js'
 import type { InfoEntry } from './chunks.js'
-import type { WAVAudio, WAVTags } from './file.js'
+import type { RIFFAudio, RIFFTags } from './file.js'
 
-// tasks/32-wav.md W1-W3: the ID3 chunk holds the metadata; the INFO list is a fallback that is
+// The ID3 chunk holds the metadata; the INFO list is a fallback that is
 // kept in step with it. INFO IDs are Picard's RIFF INFO column, plus ISFT.
 
 const STRING_IDS = { title: 'INAM', album: 'IPRD', copyright: 'ICOP', recordingTime: 'ICRD', encodedBy: 'IENC', encoderSettings: 'ISFT' } as const
@@ -17,7 +17,7 @@ const LIST_IDS = { artist: 'IART', composer: 'IMUS', genre: 'IGNR', language: 'I
 const SEPARATOR = '; '
 
 /** Friendly metadata: the ID3 chunk first, then the INFO list; `length` from fmt/data/fact (W6). */
-export function getWAVMetadata(tags: WAVTags, audio?: WAVAudio): Metadata {
+export function getRIFFMetadata(tags: RIFFTags, audio?: RIFFAudio): Metadata {
   const m: Metadata = tags.id3v2 ? getID3v2Metadata(tags.id3v2) : {}
   const rec = m as Record<string, unknown>
   const info = (id: string) => tags.info?.find((e) => e.id === id && e.value !== '')?.value
@@ -42,7 +42,7 @@ export function getWAVMetadata(tags: WAVTags, audio?: WAVAudio): Metadata {
  * Applies metadata changes: to the ID3 chunk's tag (created when missing, in `version` or 4), and
  * to the INFO list when the file has one (W2). The input is not modified.
  */
-export function applyWAVMetadata(tags: WAVTags, metadata: MetadataUpdate, version?: MajorVersion): { tags: WAVTags; warnings: Warning[] } {
+export function applyRIFFMetadata(tags: RIFFTags, metadata: MetadataUpdate, version?: MajorVersion): { tags: RIFFTags; warnings: Warning[] } {
   const warnings: Warning[] = []
   let tag = tags.id3v2
   const major = version ?? tag?.version.major ?? 4
@@ -51,7 +51,7 @@ export function applyWAVMetadata(tags: WAVTags, metadata: MetadataUpdate, versio
     tag = c.tag
     warnings.push(...c.warnings)
   }
-  const out: WAVTags = { ...tags }
+  const out: RIFFTags = { ...tags }
   const id3 = applyMetadata(tag, metadata, major)
   if (id3.frames.length) out.id3v2 = id3
   else delete out.id3v2
@@ -64,7 +64,7 @@ export function applyWAVMetadata(tags: WAVTags, metadata: MetadataUpdate, versio
       const kept = info.filter((e) => e.id !== id)
       // W4: the INFO list holds ISO-8859-1; other text stays only in the ID3 chunk.
       if (value !== null && value !== '' && !isLatin1Representable(value)) {
-        warnings.push({ code: 'wav-info-latin1', message: `INFO '${id}' can only hold ISO-8859-1 text; the entry is removed and the ID3 chunk keeps the value` })
+        warnings.push({ code: 'riff-info-latin1', message: `INFO '${id}' can only hold ISO-8859-1 text; the entry is removed and the ID3 chunk keeps the value` })
         value = null
       }
       if (value !== null && value !== '') kept.splice(i < 0 ? kept.length : i, 0, { id, value })

@@ -6,7 +6,7 @@ import type { ID3ReadResult, ID3WriteInput, ID3WriteOptions } from './api/api-id
 import type { AIFFFileWriteOptions, AIFFReadResult, AIFFWriteInput } from './api/api-aiff.js'
 import type { FLACReadResult, FLACWriteInput } from './api/api-flac.js'
 import type { OggFileWriteOptions, OggReadResult, OggWriteInput } from './api/api-ogg.js'
-import type { WAVFileWriteOptions, WAVReadResult, WAVWriteInput } from './api/api-wav.js'
+import type { RIFFFileWriteOptions, RIFFReadResult, RIFFWriteInput } from './api/api-riff.js'
 import type { MP4ReadResult, MP4WriteInput } from './api/api-mp4.js'
 import type { LocateOptions } from './file/layout.js'
 import { planWrite, readRandomAccess } from './file/partial.js'
@@ -15,7 +15,7 @@ import { planAIFFFileWrite, readAIFFRandomAccess } from './file/partial-aiff.js'
 import { planFLACFileWrite, readFLACRandomAccess } from './file/partial-flac.js'
 import { planMP4FileWrite, readMP4RandomAccess } from './file/partial-mp4.js'
 import { planOggFileWrite, readOggRandomAccess } from './file/partial-ogg.js'
-import { planWAVFileWrite, readWAVRandomAccess } from './file/partial-wav.js'
+import { planRIFFFileWrite, readRIFFRandomAccess } from './file/partial-riff.js'
 import type { FLACWriteOptions } from './flac/file.js'
 import type { MP4WriteOptions } from './mp4/file.js'
 import { blobBytes, readBlob, writeBlob } from './platform/blob.js'
@@ -86,16 +86,16 @@ export function writeAIFFToBlob<B extends Blob>(blob: B, input: AIFFWriteInput, 
 }
 
 /** Reads the tags of a WAV Blob or File (ID3 chunk and INFO list). The sound data is not read. */
-export function readWAVFromBlob(blob: Blob, options: { strict?: boolean } = {}): Promise<WAVReadResult> {
-  return readBlob(readWAVRandomAccess, blob, options)
+export function readRIFFFromBlob(blob: Blob, options: { strict?: boolean } = {}): Promise<RIFFReadResult> {
+  return readBlob(readRIFFRandomAccess, blob, options)
 }
 
 /**
  * Writes WAV tags and returns a new Blob (a File when given a File, keeping its name and type).
  * The sound data is referenced with Blob.slice, never copied into memory.
  */
-export function writeWAVToBlob<B extends Blob>(blob: B, input: WAVWriteInput, options: WAVFileWriteOptions = {}): Promise<B extends File ? File : Blob> {
-  return writeBlob(planWAVFileWrite, blob, input, options)
+export function writeRIFFToBlob<B extends Blob>(blob: B, input: RIFFWriteInput, options: RIFFFileWriteOptions = {}): Promise<B extends File ? File : Blob> {
+  return writeBlob(planRIFFFileWrite, blob, input, options)
 }
 
 /** Reads the comment header of an Ogg (Vorbis, Opus, FLAC) Blob or File. The audio pages are not read. */

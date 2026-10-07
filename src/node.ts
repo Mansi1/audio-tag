@@ -6,7 +6,7 @@ import type { ID3ReadResult, ID3WriteInput, ID3WriteOptions } from './api/api-id
 import type { AIFFFileWriteOptions, AIFFReadResult, AIFFWriteInput } from './api/api-aiff.js'
 import type { FLACReadResult, FLACWriteInput } from './api/api-flac.js'
 import type { OggFileWriteOptions, OggReadResult, OggWriteInput } from './api/api-ogg.js'
-import type { WAVFileWriteOptions, WAVReadResult, WAVWriteInput } from './api/api-wav.js'
+import type { RIFFFileWriteOptions, RIFFReadResult, RIFFWriteInput } from './api/api-riff.js'
 import type { MP4ReadResult, MP4WriteInput } from './api/api-mp4.js'
 import type { LocateOptions } from './file/layout.js'
 import { planWrite, readRandomAccess } from './file/partial.js'
@@ -15,7 +15,7 @@ import { planAIFFFileWrite, readAIFFRandomAccess } from './file/partial-aiff.js'
 import { planFLACFileWrite, readFLACRandomAccess } from './file/partial-flac.js'
 import { planMP4FileWrite, readMP4RandomAccess } from './file/partial-mp4.js'
 import { planOggFileWrite, readOggRandomAccess } from './file/partial-ogg.js'
-import { planWAVFileWrite, readWAVRandomAccess } from './file/partial-wav.js'
+import { planRIFFFileWrite, readRIFFRandomAccess } from './file/partial-riff.js'
 import type { FLACWriteOptions } from './flac/file.js'
 import type { MP4WriteOptions } from './mp4/file.js'
 import { type FileWriteResult, readPath, removalInput, writePath } from './platform/file.js'
@@ -91,16 +91,16 @@ export function writeAIFFToFile(path: string, input: AIFFWriteInput, options: AI
 }
 
 /** Reads the tags of a WAV file (ID3 chunk and INFO list). The sound data is not read. */
-export function readWAVFromFile(path: string, options: { strict?: boolean } = {}): Promise<WAVReadResult> {
-  return readPath(readWAVRandomAccess, path, options)
+export function readRIFFFromFile(path: string, options: { strict?: boolean } = {}): Promise<RIFFReadResult> {
+  return readPath(readRIFFRandomAccess, path, options)
 }
 
 /**
  * Writes WAV tags into a file: in place when nothing moves (the ID3 chunk keeps its size),
  * otherwise through a temporary file that replaces the original atomically.
  */
-export function writeWAVToFile(path: string, input: WAVWriteInput, options: WAVFileWriteOptions = {}): Promise<FileWriteResult> {
-  return writePath(planWAVFileWrite, path, input, options)
+export function writeRIFFToFile(path: string, input: RIFFWriteInput, options: RIFFFileWriteOptions = {}): Promise<FileWriteResult> {
+  return writePath(planRIFFFileWrite, path, input, options)
 }
 
 /** Reads the comment header of an Ogg (Vorbis, Opus, FLAC) file. The audio pages are not read. */

@@ -3,7 +3,7 @@ import { decodeLatin1, encodeLatin1, isValidUtf8 } from '../core/encoding.js'
 import { TagWriteError, WarningSink, type Warning } from '../core/errors.js'
 import { GENRE_NONE, genreName } from './genres.js'
 
-// SPEC: docs/id3v1/ID3v1.txt and v2.2 Appendix A. The tag is the last 128 bytes of the file:
+// SPEC: spec/id3v1/ID3v1.md and v2.2 Appendix A. The tag is the last 128 bytes of the file:
 //   0..2 "TAG" | 3..32 title | 33..62 artist | 63..92 album | 93..96 year | 97..126 comment | 127 genre
 // ID3v1.1 (A.4): comment is 28 chars, byte 125 is $00 and byte 126 is the track number.
 

@@ -1,4 +1,4 @@
-// Conformance against Martin Nilsson's ID3v1/ID3v1.1 test suite (docs/test-suites/id3v1).
+// Conformance against Martin Nilsson's ID3v1/ID3v1.1 test suite (test/fixtures/id3v1).
 // Node-only because it reads fixture files from disk.
 import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
@@ -6,7 +6,7 @@ import { describe, expect, it } from 'vitest'
 import { decodeLatin1 } from '../src/core/encoding'
 import { parseID3v1, serializeID3v1 } from '../src/id3v1/id3v1'
 
-const dir = join(__dirname, '..', 'docs', 'test-suites', 'id3v1')
+const dir = join(__dirname, 'fixtures', 'id3v1')
 
 interface Case {
   n: number

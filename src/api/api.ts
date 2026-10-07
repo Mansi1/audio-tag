@@ -1,5 +1,5 @@
 // One read() and write() for every supported file: a switch on detectFormat() sends each format to
-// its API: api-id3.ts (MPEG audio), api-mp4.ts, api-flac.ts, api-ogg.ts, api-aiff.ts and api-wav.ts.
+// its API: api-id3.ts (MPEG audio), api-mp4.ts, api-flac.ts, api-ogg.ts, api-aiff.ts and api-riff.ts.
 // Unrecognised data throws UnknownFormatError. Use the per-format APIs directly when the format is
 // known (bare tags, for example): an import of only the ID3 functions then bundles no code for the
 // other formats.
@@ -12,19 +12,19 @@ import type { MetadataUpdate } from '../metadata/metadata.js'
 import type { MP4WriteOptions } from '../mp4/file.js'
 import type { MP4Tags } from '../mp4/meta.js'
 import type { OggTags } from '../ogg/file.js'
-import type { WAVTags } from '../wav/file.js'
+import type { RIFFTags } from '../riff/file.js'
 import { type AIFFFileWriteOptions, type AIFFReadResult, type AIFFWriteInput, readAIFFFile, writeAIFFFile } from './api-aiff.js'
 import { type FLACReadResult, type FLACWriteInput, readFLACFile, writeFLACFile } from './api-flac.js'
 import { type ID3ReadResult, type ID3WriteInput, type ID3WriteOptions, readID3File, writeID3File } from './api-id3.js'
 import { type MP4ReadResult, type MP4WriteInput, readMP4File, writeMP4File } from './api-mp4.js'
 import { type OggFileWriteOptions, type OggReadResult, type OggWriteInput, readOggFile, writeOggFile } from './api-ogg.js'
-import { type WAVFileWriteOptions, type WAVReadResult, type WAVWriteInput, readWAVFile, writeWAVFile } from './api-wav.js'
+import { type RIFFFileWriteOptions, type RIFFReadResult, type RIFFWriteInput, readRIFFFile, writeRIFFFile } from './api-riff.js'
 
 /** Formats whose tags read()/write() handle: every detected format but 'unknown'. */
 export type SupportedFormat = Exclude<AudioFormat, 'unknown'>
 
 /** The result of read(): narrow it with `format`; each format has its own result. */
-export type ReadResult = (ID3ReadResult & { format: 'mpeg' }) | MP4ReadResult | FLACReadResult | OggReadResult | AIFFReadResult | WAVReadResult
+export type ReadResult = (ID3ReadResult & { format: 'mpeg' }) | MP4ReadResult | FLACReadResult | OggReadResult | AIFFReadResult | RIFFReadResult
 
 /** Input for write(): `metadata` works for every format; the other fields only for their own. */
 export interface WriteInput {
@@ -45,7 +45,7 @@ export interface WriteInput {
   /** AIFF files only. */
   aiff?: AIFFTags
   /** WAV files only. */
-  wav?: WAVTags
+  riff?: RIFFTags
 }
 
 /**
@@ -78,8 +78,8 @@ export function read(data: Uint8Array, options: LocateOptions = {}): ReadResult 
       return readOggFile(data, strict)
     case 'aiff':
       return readAIFFFile(data, strict)
-    case 'wav':
-      return readWAVFile(data, strict)
+    case 'riff':
+      return readRIFFFile(data, strict)
     case 'unknown':
       throw unknownFormat()
     default:
@@ -102,8 +102,8 @@ export function write(data: Uint8Array, input: WriteInput, options: WriteOptions
       return done(writeOggFile(data, toOggInput(input), toOggOptions(options)))
     case 'aiff':
       return done(writeAIFFFile(data, toAIFFInput(input), toAIFFOptions(options)))
-    case 'wav':
-      return done(writeWAVFile(data, toWAVInput(input), toWAVOptions(options)))
+    case 'riff':
+      return done(writeRIFFFile(data, toRIFFInput(input), toRIFFOptions(options)))
     case 'unknown':
       throw unknownFormat()
     default:
@@ -118,18 +118,18 @@ export function unknownFormat(): UnknownFormatError {
 
 const ID3_INPUTS = ['id3v2', 'id3v1', 'lyrics3'] as const
 const ID3_OPTIONS = ['version', 'id3v1', 'id3v2Location', 'appendFrame', 'locate', 'originalSize', 'unsynchronisation', 'alteration', 'encrypt', 'compressionLevel', 'littleEndian'] as const
-type Native = 'mp4' | 'flac' | 'ogg' | 'aiff' | 'wav'
-const NAMES: Record<Native, string> = { mp4: 'MP4', flac: 'FLAC', ogg: 'Ogg', aiff: 'AIFF', wav: 'WAV' }
-const A_FILE: Record<Native, string> = { mp4: 'an MP4 file', flac: 'a FLAC file', ogg: 'an Ogg file', aiff: 'an AIFF file', wav: 'a WAV file' }
+type Native = 'mp4' | 'flac' | 'ogg' | 'aiff' | 'riff'
+const NAMES: Record<Native, string> = { mp4: 'MP4', flac: 'FLAC', ogg: 'Ogg', aiff: 'AIFF', riff: 'WAV' }
+const A_FILE: Record<Native, string> = { mp4: 'an MP4 file', flac: 'a FLAC file', ogg: 'an Ogg file', aiff: 'an AIFF file', riff: 'a WAV file' }
 /** ID3 inputs each format takes: AIFF and WAV keep an ID3v2 tag in their ID3 chunk (A7, W8). */
-const ID3_INPUTS_OF: Record<Native, readonly string[]> = { mp4: [], flac: [], ogg: [], aiff: ['id3v2'], wav: ['id3v2'] }
+const ID3_INPUTS_OF: Record<Native, readonly string[]> = { mp4: [], flac: [], ogg: [], aiff: ['id3v2'], riff: ['id3v2'] }
 /** ID3 options each format takes; the rest are refused rather than silently ignored. */
 const ID3_OPTIONS_OF: Record<Native, readonly string[]> = {
   mp4: [],
   flac: [],
   ogg: [],
   aiff: ['version', 'unsynchronisation', 'alteration', 'encrypt', 'compressionLevel', 'littleEndian', 'originalSize'],
-  wav: ['version', 'unsynchronisation', 'alteration', 'encrypt', 'compressionLevel', 'littleEndian', 'originalSize'],
+  riff: ['version', 'unsynchronisation', 'alteration', 'encrypt', 'compressionLevel', 'littleEndian', 'originalSize'],
 }
 
 /** Refuses the inputs of every format but `format` ('id3' for the ID3 fields). */
@@ -141,7 +141,7 @@ function refuseOthers(input: WriteInput, format: Native | 'id3'): void {
       if (input[k] !== undefined && !ID3_INPUTS_OF[format].includes(k)) throw new TagWriteError(`${format}-id3-input`, `"${k}" cannot be written into ${target}; ${hint}`)
     }
   }
-  for (const other of ['mp4', 'flac', 'ogg', 'aiff', 'wav'] as const) {
+  for (const other of ['mp4', 'flac', 'ogg', 'aiff', 'riff'] as const) {
     if (other !== format && input[other] !== undefined) {
       throw new TagWriteError(`${format}-${other}-input`, `"${other}" can only be written into ${A_FILE[other]}; ${hint}`)
     }
@@ -186,11 +186,11 @@ export function toAIFFInput(input: WriteInput): AIFFWriteInput {
 }
 
 /** The WAV part of a write input: `id3v2` is the ID3 chunk's tag. */
-export function toWAVInput(input: WriteInput): WAVWriteInput {
-  refuseOthers(input, 'wav')
-  const out: WAVWriteInput = {}
+export function toRIFFInput(input: WriteInput): RIFFWriteInput {
+  refuseOthers(input, 'riff')
+  const out: RIFFWriteInput = {}
   if (input.metadata) out.metadata = input.metadata
-  if (input.wav) out.wav = input.wav
+  if (input.riff) out.riff = input.riff
   if (input.id3v2 !== undefined) out.id3v2 = input.id3v2
   return out
 }
@@ -231,13 +231,13 @@ export function toOggOptions(options: WriteOptions): OggFileWriteOptions {
 }
 
 /** Options for the ID3 chunk of an AIFF (or WAV) file; the ID3 file-layout options are refused (A7). */
-export function toAIFFOptions(options: WriteOptions, format: 'aiff' | 'wav' = 'aiff'): AIFFFileWriteOptions {
+export function toAIFFOptions(options: WriteOptions, format: 'aiff' | 'riff' = 'aiff'): AIFFFileWriteOptions {
   nativeOptions(options, format)
   const { id3v1: _, id3v2Location: __, appendFrame: ___, locate: ____, originalSize: _____, ...rest } = options
   return rest
 }
 
 /** Options for the ID3 chunk of a WAV file; the ID3 file-layout options are refused (W8). */
-export function toWAVOptions(options: WriteOptions): WAVFileWriteOptions {
-  return toAIFFOptions(options, 'wav')
+export function toRIFFOptions(options: WriteOptions): RIFFFileWriteOptions {
+  return toAIFFOptions(options, 'riff')
 }

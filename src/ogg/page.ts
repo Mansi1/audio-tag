@@ -2,7 +2,7 @@ import { startsWith } from '../core/bytes.js'
 import { TagWriteError } from '../core/errors.js'
 import { oggCrc } from './crc.js'
 
-// SPEC: docs/ogg/rfc3533.txt §6. A page is "OggS", version 0, header_type, granule_position (8),
+// SPEC: spec/ogg/rfc3533.md §6. A page is "OggS", version 0, header_type, granule_position (8),
 // bitstream_serial_number (4), page_sequence_number (4), CRC_checksum (4), number_page_segments,
 // segment_table, then the data. "Fields with more than one byte length are encoded LSB (least
 // significant byte) first." A packet is a run of lacing values of 255 ended by one below 255.

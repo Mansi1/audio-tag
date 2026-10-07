@@ -493,7 +493,7 @@ function checkTextFormat(f: FrameOf<'text'>, major: MajorVersion, out: Issues): 
     case 'TYER':
     case 'TORY':
       // SPEC: v2.3 TYER "always four characters long"; TORY "formatted as in the TYER frame"
-      // (tasks/README.md D4: v2.2 TOR says "TDY", read as TYE).
+      // (the v2.2 TOR entry says "TDY", read as TYE).
       for (const v of values) if (!/^\d{4}$/.test(v)) bad('year-format', 'a four-digit year')(v)
       break
     case 'TDAT':
@@ -524,7 +524,7 @@ function checkTextFormat(f: FrameOf<'text'>, major: MajorVersion, out: Issues): 
       break
     case 'TSRC':
       // SPEC: "should contain the International Standard Recording Code (12 characters)"; ISO 3901
-      // allows 0-9 and A-Z only (docs/reference/ISO-3901-ISRC.html).
+      // allows 0-9 and A-Z only (spec/id3v2/reference/ISO-3901-ISRC.md).
       for (const v of values) if (!/^[A-Z0-9]{12}$/.test(v)) out.warn('isrc-format', `"${v}" is not a 12-character ISRC`, ref, id)
       break
     case 'TLAN':

@@ -249,13 +249,13 @@ add('atxt', [null, 'ATXT', 'ATXT'], 'Audio-text', [null, '4', '4'], {
   uniqueness: { all: by('equivalent text', (f: { equivalentText: string }) => f.equivalentText) },
 })
 
-// --- Unofficial frames seen in the wild (docs/misc/Developer-Information.txt) ----------------------
+// --- Unofficial frames seen in the wild (spec/id3/Developer-Information.md) ----------------------
 const unofficialText = (ids: [string | null, string | null, string | null], name: string) =>
   add('text', ids, name, [null, null, null], { origin: 'unofficial' })
 unofficialText(['TCP', 'TCMP', 'TCMP'], 'iTunes compilation flag')
 unofficialText(['TS2', 'TSO2', 'TSO2'], 'iTunes album artist sort order')
 unofficialText(['TSC', 'TSOC', 'TSOC'], 'iTunes composer sort order')
-// iTunes v2.2/v2.3 equivalents of the v2.4 sort order frames (docs/extensions/iTunes.html)
+// iTunes v2.2/v2.3 equivalents of the v2.4 sort order frames (spec/id3v2/extensions/iTunes.md)
 unofficialText(['TST', 'TSOT', 'TSOT'], 'iTunes title sort order')
 unofficialText(['TSP', 'TSOP', 'TSOP'], 'iTunes performer sort order')
 unofficialText(['TSA', 'TSOA', 'TSOA'], 'iTunes album sort order')

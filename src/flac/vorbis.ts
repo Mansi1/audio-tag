@@ -2,7 +2,7 @@ import { isValidUtf8 } from '../core/encoding.js'
 import type { WarningSink } from '../core/errors.js'
 import { FLACWriteError } from './blocks.js'
 
-// SPEC: docs/flac/rfc9639.txt §8.6 and docs/ogg/v-comment.html. A vendor string, then a list of
+// SPEC: spec/flac/rfc9639.md §8.6 and spec/ogg/v-comment.md. A vendor string, then a list of
 // "NAME=value" fields, each with a 32-bit little-endian length; all text is UTF-8. The layout is
 // the same in Ogg (Vorbis, Opus), where a framing bit or signature is added around it.
 

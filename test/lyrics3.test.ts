@@ -24,7 +24,7 @@ import {
 } from '../src/lyrics3/lyrics3'
 import { bytes } from './helpers'
 
-// The example from docs/lyrics3/Lyrics3v2.txt, reproduced byte for byte: each [CR][LF] becomes
+// The example from spec/lyrics3/Lyrics3v2.md, reproduced byte for byte: each [CR][LF] becomes
 // "\r\n" and no other newline is added ("unless a [CR][LF] is at the end of the line, no [CR] or
 // [LF] should be added between lines").
 const EXAMPLE_LINES = [

@@ -1,6 +1,6 @@
 // SPEC: genre list. 0-79 come from ID3v1 (v2.4 frames Appendix A). 80-125 are the Winamp
 // extensions listed in v2.3 Appendix A and v2.2 Appendix A.3. 126-147 are only named in the
-// official ID3v1 test suite (docs/test-suites/id3v1/generation.log). See tasks/README.md D3.
+// official ID3v1 test suite (test/fixtures/id3v1/generation.log).
 // Names follow v2.4 Appendix A; v2.3 spells 67 "Psychadelic", which genreId() also accepts.
 
 export type GenreSource = 'id3v1' | 'winamp-v2.3-appendix' | 'winamp-test-suite'

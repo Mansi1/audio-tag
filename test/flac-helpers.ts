@@ -11,7 +11,7 @@ export function fromDump(dump: string): Uint8Array {
   return Uint8Array.from(hex.match(/../g)!, (b) => parseInt(b, 16))
 }
 
-/** SPEC: docs/flac/rfc9639.txt D.1.1, a streaminfo block and one audio frame. */
+/** SPEC: spec/flac/rfc9639.md D.1.1, a streaminfo block and one audio frame. */
 export const RFC_EXAMPLE_1 = fromDump(`
 00000000: 664c 6143 8000 0022 1000 1000  fLaC..."....
 0000000c: 0000 0f00 000f 0ac4 42f0 0000  ........B...
@@ -20,7 +20,7 @@ export const RFC_EXAMPLE_1 = fromDump(`
 00000030: bf03 58fd 0312 8baa 9a         ..X......
 `)
 
-/** SPEC: docs/flac/rfc9639.txt D.2.1, with a seek table, a Vorbis comment and padding. */
+/** SPEC: spec/flac/rfc9639.md D.2.1, with a seek table, a Vorbis comment and padding. */
 export const RFC_EXAMPLE_2 = fromDump(`
 00000000: 664c 6143 0000 0022 0010 0010  fLaC..."....
 0000000c: 0000 1700 0044 0ac4 42f0 0000  .....D..B...

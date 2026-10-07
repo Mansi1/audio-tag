@@ -121,13 +121,13 @@ export { aiffLayout, planAIFFWrite, readAIFFChunks, type AIFFTags, type AIFFWrit
 export { applyAIFFMetadata, getAIFFMetadata } from './aiff/mapping.js'
 
 // High-level WAV API
-export { planWAVFile, readWAVFile, wavResult, writeWAVFile, type WAVFileWriteOptions, type WAVFileWriteResult, type WAVReadResult, type WAVWriteInput } from './api/api-wav.js'
-export { planWAVFileWrite, readWAVRandomAccess } from './file/partial-wav.js'
+export { planRIFFFile, readRIFFFile, riffResult, writeRIFFFile, type RIFFFileWriteOptions, type RIFFFileWriteResult, type RIFFReadResult, type RIFFWriteInput } from './api/api-riff.js'
+export { planRIFFFileWrite, readRIFFRandomAccess } from './file/partial-riff.js'
 
 // WAV (RIFF) chunks and the INFO list
-export { WAVWriteError, parseFormat, parseInfo, serializeInfo, type InfoEntry, type WAVFormat, type WAVLayout, type Chunk as WAVChunk } from './wav/chunks.js'
-export { planWAVWrite, readWAVChunks, wavLayout, type ReadWAVResult, type WAVAudio, type WAVTags, type WAVWriteOptions, type WAVWriteResult } from './wav/file.js'
-export { applyWAVMetadata, getWAVMetadata } from './wav/mapping.js'
+export { RIFFWriteError, parseFormat, parseInfo, serializeInfo, type InfoEntry, type RIFFFormat, type RIFFLayout, type Chunk as RIFFChunk } from './riff/chunks.js'
+export { planRIFFWrite, readRIFFChunks, riffLayout, type ReadRIFFResult, type RIFFAudio, type RIFFTags, type RIFFWriteOptions, type RIFFWriteResult } from './riff/file.js'
+export { applyRIFFMetadata, getRIFFMetadata } from './riff/mapping.js'
 
 // High-level Ogg API
 export { oggInput, oggResult, readOggFile, writeOggFile, type OggFileWriteOptions, type OggFileWriteResult, type OggReadResult, type OggWriteInput } from './api/api-ogg.js'

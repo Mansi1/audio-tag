@@ -6,7 +6,7 @@ import type { Metadata, MetadataUpdate } from '../metadata/metadata.js'
 import { type CommonChunk, isASCII } from './chunks.js'
 import type { AIFFTags } from './file.js'
 
-// tasks/31-aiff.md A1, A2: the ID3 chunk holds the metadata; the text chunks are fallbacks that are
+// The ID3 chunk holds the metadata; the text chunks are fallbacks that are
 // kept in step with it.
 
 /** Friendly metadata: the ID3 chunk first, then NAME, AUTH, (c), COMT and ANNO; `length` from COMM (A5). */

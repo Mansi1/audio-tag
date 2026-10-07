@@ -22,7 +22,7 @@ describe('format detection (task 23)', () => {
     expect(detectFormat(bytes('fLaC', [0, 0, 0, 34]))).toBe('flac')
     expect(detectFormat(bytes('ID3', [4, 0, 0], [0, 0, 0, 2], [0, 0], 'fLaC'))).toBe('flac')
     expect(detectFormat(bytes('OggS', [0]))).toBe('ogg')
-    expect(detectFormat(bytes('RIFF', u32(4), 'WAVE'))).toBe('wav')
+    expect(detectFormat(bytes('RIFF', u32(4), 'WAVE'))).toBe('riff')
     expect(detectFormat(bytes('FORM', u32(4), 'AIFF'))).toBe('aiff')
     expect(detectFormat(bytes([0xff, 0xfb, 0x90, 0]))).toBe('mpeg')
     expect(detectFormat(bytes('hello'))).toBe('unknown')

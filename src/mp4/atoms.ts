@@ -1,7 +1,7 @@
 import { ByteWriter, asciiString, concat, isBytes } from '../core/bytes.js'
 import { TagWriteError, type WarningSink } from '../core/errors.js'
 
-// SPEC: docs/mp4/qtff/Atoms.md. An atom is a 32-bit size and a 32-bit type, then its data.
+// SPEC: spec/mp4/qtff/Atoms.md. An atom is a 32-bit size and a 32-bit type, then its data.
 // Size 1: a 64-bit extended size follows the type. Size 0: "allowed only for a top-level atom,
 // designates the last atom in the file and indicates that the atom extends to the end of the
 // file". "The actual size of an atom cannot be less than 8 bytes."
@@ -117,8 +117,8 @@ export interface AtomNode {
 export const CONTAINERS = new Set(['moov', 'trak', 'mdia', 'minf', 'stbl', 'udta', 'edts', 'dinf', 'mvex', 'moof', 'traf', 'ilst'])
 
 /**
- * SPEC: docs/mp4/qtff/Metadata_atom.md shows 'meta' as a plain atom, but ISO 14496-12 and iTunes
- * write it as a full atom (tasks/README.md M2). It is full when a child type follows 4 bytes in.
+ * SPEC: spec/mp4/qtff/Metadata_atom.md shows 'meta' as a plain atom, but ISO 14496-12 and iTunes
+ * write it as a full atom. It is full when a child type follows 4 bytes in.
  */
 export function metaIsFull(data: Uint8Array, h: AtomHeader): boolean {
   const p = h.start + h.headerSize

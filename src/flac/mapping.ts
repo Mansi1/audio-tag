@@ -5,8 +5,8 @@ import { type FLACPicture, FLACWriteError, type StreamInfo } from './blocks.js'
 import type { FLACTags } from './file.js'
 import type { VorbisField } from './vorbis.js'
 
-// Field <-> Vorbis comment name mapping (tasks/30-flac.md F1). Names are written as listed first
-// (Picard's Vorbis column, docs/mp4/picard-tag-mapping.rst); the others are only read.
+// Field <-> Vorbis comment name mapping. Names are written as listed first
+// (Picard's Vorbis column, spec/mp4/picard-tag-mapping.rst.md); the others are only read.
 
 /** Single text fields. */
 const STRING_FIELDS: Record<string, string[]> = {

@@ -13,7 +13,7 @@ export interface FrameReadOptions {
   /** Accept iTunes-style plain sizes in v2.4 tags (Compliance Issues). Default true. */
   v24SizeFallback?: boolean
   decrypt?: DecryptHook
-  /** v2.3 LINK frame identifier length; see tasks/README.md D1. Default: detect. */
+  /** v2.3 LINK frame identifier length (the v2.3 spec says 3 bytes, frame IDs have 4). Default: detect. */
   link23IdLength?: 3 | 4
 }
 

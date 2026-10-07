@@ -2,7 +2,7 @@ import { ascii, asciiString, concat, startsWith } from '../core/bytes.js'
 import { decodeLatin1, encodeLatin1 } from '../core/encoding.js'
 import { TagWriteError, WarningSink, type Warning } from '../core/errors.js'
 
-// SPEC: docs/lyrics3/Lyrics3.txt and docs/lyrics3/Lyrics3v2.txt.
+// SPEC: spec/lyrics3/Lyrics3.md and spec/lyrics3/Lyrics3v2.md.
 // Lyrics3 sits "between the audio and the ID3 tag". v1: "LYRICSBEGIN" + text + "LYRICSEND".
 // v2.00: "LYRICSBEGIN" + fields + 6-digit size + "LYRICS200", each field being a 3-character ID,
 // a 5-digit size and the data.

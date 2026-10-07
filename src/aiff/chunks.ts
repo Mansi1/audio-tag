@@ -3,7 +3,7 @@ import { decodeLatin1 } from '../core/encoding.js'
 import { TagWriteError, type WarningSink } from '../core/errors.js'
 import { afterID3v2 } from '../file/detect.js'
 
-// SPEC: docs/aiff/AIFF-1.3.pdf "File Structure". A FORM chunk ('FORM', size, form type 'AIFF' or
+// SPEC: spec/aiff/AIFF-1.3.md "File Structure". A FORM chunk ('FORM', size, form type 'AIFF' or
 // 'AIFC') holds local chunks: a 4-character ID, a 32-bit big-endian size and the data, padded with
 // a zero byte to an even length ("The pad byte is not included in ckSize").
 

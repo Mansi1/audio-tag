@@ -4,8 +4,8 @@ import { MP4WriteError } from './atoms.js'
 import type { MP4Item, MP4Tags, QuickTimeItem } from './meta.js'
 import { DataType, type MP4Value, decodePair, encodePair, imageMime, imageType, intValue, textValue, valueInt, valueText } from './values.js'
 
-// Field <-> atom mapping (tasks/28-mp4-api.md). Sources: ExifTool ItemList, mutagen, and Picard's
-// tag mapping (docs/mp4/picard-id3-mp4-mapping.txt) for the freeform "----:com.apple.iTunes:*" names.
+// Field <-> atom mapping. Sources: ExifTool ItemList, mutagen, and Picard's
+// tag mapping (spec/mp4/picard-id3-mp4-mapping.md) for the freeform "----:com.apple.iTunes:*" names.
 
 const FF = (name: string) => `----:com.apple.iTunes:${name}`
 
@@ -46,7 +46,7 @@ const ITUNES_NS = '----:com.apple.iTunes:'
 
 /**
  * M8: userUrls are freeform items whose values use data type 15, "URL: absolute, in UTF-8
- * characters" (iTunes data types, docs/mp4/mutagen-mp4.txt). That type is what tells them apart
+ * characters" (iTunes data types, spec/mp4/mutagen-mp4.md). That type is what tells them apart
  * from userText (type 1, UTF-8) when reading.
  */
 function isUrlItem(it: MP4Item): boolean {

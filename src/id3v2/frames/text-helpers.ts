@@ -180,7 +180,7 @@ export function displayCopyright(value: string, kind: 'TCOP' | 'TPRO' = 'TCOP'):
   return kind === 'TCOP' ? `Copyright © ${value}` : `Produced ℗ ${value}`
 }
 
-/** iTunNORM comment (docs/extensions/iTunes-Normalization-settings.html): 10 hex values. */
+/** iTunNORM comment (spec/id3v2/extensions/iTunes-Normalization-settings.md): 10 hex values. */
 export function parseITunNorm(text: string): number[] | undefined {
   const parts = text.trim().split(/\s+/)
   if (parts.length !== 10 || !parts.every((p) => /^[0-9A-Fa-f]{8}$/.test(p))) return undefined

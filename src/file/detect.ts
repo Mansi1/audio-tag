@@ -2,7 +2,7 @@ import { asciiString, startsWith } from '../core/bytes.js'
 import { decodeSynchsafe } from '../core/synchsafe.js'
 import { isTagHeader } from '../id3v2/header.js'
 
-export type AudioFormat = 'mpeg' | 'mp4' | 'flac' | 'ogg' | 'wav' | 'aiff' | 'unknown'
+export type AudioFormat = 'mpeg' | 'mp4' | 'flac' | 'ogg' | 'riff' | 'aiff' | 'unknown'
 
 const MP4_TOP_LEVEL = new Set(['ftyp', 'moov', 'mdat', 'free', 'skip', 'wide', 'pnot'])
 
@@ -27,7 +27,7 @@ export function detectFormat(data: Uint8Array): AudioFormat {
   const p = afterID3v2(data)
   if (startsWith(data, 'fLaC', p)) return 'flac'
   if (startsWith(data, 'OggS', p)) return 'ogg'
-  if (startsWith(data, 'RIFF', p) && startsWith(data, 'WAVE', p + 8)) return 'wav'
+  if (startsWith(data, 'RIFF', p) && startsWith(data, 'WAVE', p + 8)) return 'riff'
   if (startsWith(data, 'FORM', p) && (startsWith(data, 'AIFF', p + 8) || startsWith(data, 'AIFC', p + 8))) return 'aiff'
   if (p > 0) return 'mpeg'
   // MPEG audio frame sync: 11 set bits
@@ -40,7 +40,7 @@ export const FORMAT_NAMES: Record<AudioFormat, string> = {
   mp4: 'MP4/M4A',
   flac: 'FLAC',
   ogg: 'Ogg',
-  wav: 'WAV',
+  riff: 'WAV',
   aiff: 'AIFF',
   unknown: 'unknown',
 }
@@ -50,6 +50,6 @@ export const NATIVE_TAGS: Partial<Record<AudioFormat, string>> = {
   mp4: 'MP4 metadata atoms (moov/udta/meta/ilst)',
   flac: 'Vorbis comments in a METADATA_BLOCK',
   ogg: 'Vorbis comments',
-  wav: 'RIFF INFO chunks (or an "id3 " chunk)',
+  riff: 'RIFF INFO chunks (or an "id3 " chunk)',
   aiff: 'AIFF chunks (or an "ID3 " chunk)',
 }

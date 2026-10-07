@@ -155,7 +155,7 @@ export function encodeCrm(f: Fields<EncryptedMetaFrame>, w: FrameWriter): void {
 
 // SPEC: v2.4 §4.20 LINK: frame identifier $xx xx xx xx, URL <text string> $00, ID and additional
 // data <text string(s)>. v2.2 §4.22 LNK uses a 3-byte identifier. v2.3 §4.21 also lists 3 bytes,
-// which contradicts its 4-character frame IDs; see tasks/README.md D1.
+// which contradicts its 4-character frame IDs.
 export function decodeLink(r: FrameReader): Fields<LinkFrame> {
   let idLen = r.ctx.major === 2 ? 3 : 4
   if (r.ctx.major === 3) {

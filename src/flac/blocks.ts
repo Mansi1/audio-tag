@@ -2,7 +2,7 @@ import { ByteReader, ByteWriter, asciiString, startsWith } from '../core/bytes.j
 import { TagWriteError, type WarningSink } from '../core/errors.js'
 import { afterID3v2 } from '../file/detect.js'
 
-// SPEC: docs/flac/rfc9639.txt §8.1. A metadata block is a 4-byte header (last-block flag, 7-bit
+// SPEC: spec/flac/rfc9639.md §8.1. A metadata block is a 4-byte header (last-block flag, 7-bit
 // type, 24-bit big-endian size) and its data.
 
 export class FLACWriteError extends TagWriteError {

@@ -3,7 +3,7 @@ import { MP4WriteError } from './atoms.js'
 
 /**
  * Data type codes. QTFF Well-known_types.md defines 0-5, 13, 14, 21-24, 27, 28, 65-79.
- * iTunes adds codes documented by mutagen (docs/mp4/mutagen-mp4.txt); see M5 for the overlaps.
+ * iTunes adds codes documented by mutagen (spec/mp4/mutagen-mp4.md); see M5 for the overlaps.
  */
 export const DataType = {
   Implicit: 0,

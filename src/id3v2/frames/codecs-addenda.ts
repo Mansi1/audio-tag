@@ -104,7 +104,7 @@ export function atxtNeedsUnsync(mimeType: string): boolean {
   return /^audio\/(mpeg|mp3|mpa|mpeg3|x-mpeg|aac|aacp|mp4a-latm|x-aac)$/i.test(mimeType)
 }
 
-// RGAD (docs/extensions/Replay-Gain-Adjustment.html): peak amplitude $xx xx xx xx, radio replay
+// RGAD (spec/id3v2/extensions/Replay-Gain-Adjustment.md): peak amplitude $xx xx xx xx, radio replay
 // gain adjustment $xx xx, audiophile replay gain adjustment $xx xx.
 export function decodeRgad(r: FrameReader): Fields<ReplayGainFrame> {
   const f = { peakAmplitude: r.u32(), radioAdjustment: r.u16(), audiophileAdjustment: r.u16() }

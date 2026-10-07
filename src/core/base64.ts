@@ -1,4 +1,4 @@
-// RFC 4648 §4 base64 with padding, for METADATA_BLOCK_PICTURE (docs/ogg/xiph-VorbisComment.html:
+// RFC 4648 §4 base64 with padding, for METADATA_BLOCK_PICTURE (spec/ogg/xiph-VorbisComment.md:
 // "line feeds are not allowed and padding characters ('=') are required").
 
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'

@@ -1,4 +1,4 @@
-// SPEC: docs/ogg/rfc3533.txt §6 "CRC_checksum: a 4 Byte field containing a 32 bit CRC checksum of the
+// SPEC: spec/ogg/rfc3533.md §6 "CRC_checksum: a 4 Byte field containing a 32 bit CRC checksum of the
 // page (including header with zero CRC field and page content). The generator polynomial is
 // 0x04c11db7." Unlike zlib's CRC-32 (core/crc32.ts) it is computed MSB first, with initial value 0
 // and no final XOR (the reference implementation, libogg framing.c).

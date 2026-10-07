@@ -15,7 +15,7 @@ const NOT_FLAC = 'not a FLAC file; check the format with detectFormat() and use 
 async function flacHead(src: RandomAccess): Promise<Uint8Array> {
   const start = await headEnd(src)
   if (!startsWith(await src.read(start, 4), 'fLaC')) return src.read(0, Math.min(src.size, start + 4))
-  // SPEC: docs/flac/rfc9639.txt §8.1: walk the block headers until the last-block flag.
+  // SPEC: spec/flac/rfc9639.md §8.1: walk the block headers until the last-block flag.
   let pos = start + 4
   while (pos + 4 <= src.size) {
     const h = parseBlockHeader(await src.read(pos, 4))

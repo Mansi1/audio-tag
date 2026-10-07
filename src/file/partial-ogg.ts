@@ -1,6 +1,6 @@
 // Random-access reading and writing of Ogg files, the counterpart of the other partial-*.ts files:
 // the header pages and the end of the file are read; the audio pages only when they must be
-// renumbered (tasks/33-ogg.md G5).
+// renumbered.
 import { type OggFileWriteOptions, type OggReadResult, type OggWriteInput, oggInput, oggResult } from '../api/api-ogg.js'
 import { TagReadError, WarningSink } from '../core/errors.js'
 import { NeedMoreData, type ReadOggResult, lastGranule, planOggWrite, readOggHead } from '../ogg/file.js'
