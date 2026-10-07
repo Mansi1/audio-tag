@@ -13,7 +13,7 @@ const budgets = [
   ['readMP4File()', "export { readMP4File } from './dist/index.js'", 14 * 1024],
   ['readFLACFile()', "export { readFLACFile } from './dist/index.js'", 14 * 1024],
   ['readAIFFFile()', "export { readAIFFFile } from './dist/index.js'", 30 * 1024],
-  ['readWAVFile()', "export { readWAVFile } from './dist/index.js'", 30 * 1024],
+  ['readRIFFFile()', "export { readRIFFFile } from './dist/index.js'", 30 * 1024],
   ['readOggFile()', "export { readOggFile } from './dist/index.js'", 16 * 1024],
   ['parseID3v1()', "export { parseID3v1 } from './dist/index.js'", 8 * 1024],
   ['ID3 Blob I/O', "export { readID3FromBlob, writeID3ToBlob } from './dist/browser.js'", 36 * 1024, true],
@@ -26,7 +26,7 @@ for (const [name, contents, max, id3Only] of budgets) {
   let note = ''
   // modules that end up in the output (imported but fully tree-shaken ones have 0 bytes)
   const used = Object.values(out.metafile.outputs).flatMap((o) => Object.entries(o.inputs).filter(([, i]) => i.bytesInOutput > 0).map(([f]) => f))
-  const mp4Modules = used.filter((f) => /dist\/(mp4|flac|ogg|aiff|wav)\/|-(mp4|flac|ogg|aiff|wav)\.js$/.test(f))
+  const mp4Modules = used.filter((f) => /dist\/(mp4|flac|ogg|aiff|riff)\/|-(mp4|flac|ogg|aiff|riff)\.js$/.test(f))
   if (id3Only && mp4Modules.length) {
     ok = false
     note = ` — bundles code for other formats: ${mp4Modules.join(', ')}`
