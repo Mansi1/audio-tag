@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "skills": {
+    "defuss-shadcn": {
+      "source": "kyr0/defuss-shadcn",
+      "sourceType": "github",
+      "skillPath": "skills/defuss-shadcn/SKILL.md",
+      "computedHash": "fe28e0d53124dea6970d9534c4b207f5170a8920d53857693be9b691e2343be1"
+    },
+    "doc": {
+      "source": "kyr0/defuss-vae",
+      "sourceType": "github",
+      "skillPath": "plugin/skills/doc/SKILL.md",
+      "computedHash": "0f8f22d3b0fc8ec65c69b6b45c586f04880b63b4f6130b6213953b2fd59e03a5"
+    },
+    "doc-edit": {
+      "source": "kyr0/defuss-vae",
+      "sourceType": "github",
+      "skillPath": "plugin/skills/doc-edit/SKILL.md",
+      "computedHash": "2392a7b73c8726a762b18c9a1f09142f2d803a1a4e1758f908ed47cadcc09982"
+    },
+    "implement": {
+      "source": "kyr0/defuss-vae",
+      "sourceType": "github",
+      "skillPath": "plugin/skills/implement/SKILL.md",
+      "computedHash": "0ebef45dfdd2d43dd23ebc6bcdc8aef5bfbb11fdc3739a930bf57987a7e28563"
+    },
+    "plan": {
+      "source": "kyr0/defuss-vae",
+      "sourceType": "github",
+      "skillPath": "plugin/skills/plan/SKILL.md",
+      "computedHash": "62add08e42bbfde1e202b6b9ebd698517a710cae21c1c59ad318134bc64404cd"
+    },
+    "status": {
+      "source": "kyr0/defuss-vae",
+      "sourceType": "github",
+      "skillPath": "plugin/skills/status/SKILL.md",
+      "computedHash": "5cae22adcc39b7e41433a667db1057d791e7df3517fbd954e7f446d557d00950"
+    },
+    "verify": {
+      "source": "kyr0/defuss-vae",
+      "sourceType": "github",
+      "skillPath": "plugin/skills/verify/SKILL.md",
+      "computedHash": "7903aa1708ac43476a423bad24191a52e021b23c5fbdd5d38a568acd3d29ab73"
+    },
+    "wrap": {
+      "source": "kyr0/defuss-vae",
+      "sourceType": "github",
+      "skillPath": "plugin/skills/wrap/SKILL.md",
+      "computedHash": "387d7efe37528a757025773958453f08963185adc23930e6d27f91fa7ad0017e"
+    }
+  }
+}
