@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 40 960 436" width="960" height="436" role="img" aria-labelledby="t d">
+  <title id="t">Where the tags live</title>
+  <desc id="d">Each supported file drawn as a bar from start to end, with the tag regions audio-tag reads and writes in color and the audio data in grey. MP3: ID3v2 at the start, Lyrics3 and ID3v1 at the end. M4A: the ilst item list inside moov, next to the chunk offsets. FLAC: VORBIS_COMMENT and PICTURE metadata blocks. Ogg: the comment header packet. AIFF: text chunks and an ID3 chunk after the sound data. WAV: the LIST INFO list and an id3 chunk after the data chunk.</desc>
+  <defs>
+    <pattern id="audio" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="8" height="8" fill="#1e293b"/>
+      <rect width="3" height="8" fill="#273449"/>
+    </pattern>
+  </defs>
+  <style>
+    .sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size: 11.5px; }
+    .seg { font-weight: 600; text-anchor: middle; }
+    .on { fill: #ffffff; }
+    .grey { fill: #94a3b8; font-weight: 400; }
+  </style>
+  <rect y="40" width="960" height="436" rx="20" fill="#0f172a"/>
+
+  <text x="32" y="70" class="sans" font-size="14" fill="#94a3b8">Each file from its first byte to its last. Color: tags audio-tag reads and writes. Grey: audio data. Not to scale.</text>
+
+  <!-- MP3 -->
+  <g transform="translate(0 96)">
+    <text x="32" y="15" class="sans" font-size="16" font-weight="700" fill="#60a5fa">MP3</text>
+    <text x="32" y="32" class="mono grey">.mp3</text>
+    <rect x="170" y="0" width="170" height="34" rx="6" fill="#3b82f6"/>
+    <text x="255" y="21" class="mono seg on">ID3v2 header + frames</text>
+    <rect x="342" y="0" width="50" height="34" rx="6" fill="none" stroke="#3b82f6" stroke-dasharray="4 3"/>
+    <text x="367" y="21" class="mono seg" fill="#93c5fd">pad</text>
+    <rect x="394" y="0" width="392" height="34" rx="6" fill="url(#audio)"/>
+    <text x="590" y="21" class="mono seg grey">MPEG audio frames</text>
+    <rect x="788" y="0" width="70" height="34" rx="6" fill="#1d4ed8"/>
+    <text x="823" y="21" class="mono seg on">Lyrics3</text>
+    <rect x="860" y="0" width="68" height="34" rx="6" fill="#3b82f6"/>
+    <text x="894" y="21" class="mono seg on">ID3v1</text>
+  </g>
+
+  <!-- M4A / MP4 -->
+  <g transform="translate(0 154)">
+    <text x="32" y="15" class="sans" font-size="16" font-weight="700" fill="#a78bfa">M4A · MP4</text>
+    <text x="32" y="32" class="mono grey">.m4a .m4b .mp4 .mov</text>
+    <rect x="170" y="0" width="50" height="34" rx="6" fill="#8b5cf6" fill-opacity="0.35"/>
+    <text x="195" y="21" class="mono seg on">ftyp</text>
+    <rect x="222" y="0" width="300" height="34" rx="6" fill="none" stroke="#8b5cf6"/>
+    <text x="232" y="-5" class="mono" fill="#c4b5fd" font-size="10.5px">moov</text>
+    <rect x="226" y="4" width="106" height="26" rx="4" fill="#8b5cf6" fill-opacity="0.35"/>
+    <text x="279" y="21" class="mono seg on">trak · stco</text>
+    <rect x="336" y="4" width="182" height="26" rx="4" fill="#8b5cf6"/>
+    <text x="427" y="21" class="mono seg on">udta › meta › ilst</text>
+    <rect x="524" y="0" width="40" height="34" rx="6" fill="none" stroke="#8b5cf6" stroke-dasharray="4 3"/>
+    <text x="544" y="21" class="mono seg" fill="#c4b5fd">free</text>
+    <rect x="566" y="0" width="362" height="34" rx="6" fill="url(#audio)"/>
+    <text x="747" y="21" class="mono seg grey">mdat · audio samples</text>
+  </g>
+
+  <!-- FLAC -->
+  <g transform="translate(0 212)">
+    <text x="32" y="15" class="sans" font-size="16" font-weight="700" fill="#34d399">FLAC</text>
+    <text x="32" y="32" class="mono grey">.flac</text>
+    <rect x="170" y="0" width="46" height="34" rx="6" fill="#10b981" fill-opacity="0.35"/>
+    <text x="193" y="21" class="mono seg on">fLaC</text>
+    <rect x="218" y="0" width="110" height="34" rx="6" fill="#10b981" fill-opacity="0.35"/>
+    <text x="273" y="21" class="mono seg on">STREAMINFO</text>
+    <rect x="330" y="0" width="150" height="34" rx="6" fill="#10b981"/>
+    <text x="405" y="21" class="mono seg on">VORBIS_COMMENT</text>
+    <rect x="482" y="0" width="96" height="34" rx="6" fill="#10b981"/>
+    <text x="530" y="21" class="mono seg on">PICTURE</text>
+    <rect x="580" y="0" width="80" height="34" rx="6" fill="none" stroke="#10b981" stroke-dasharray="4 3"/>
+    <text x="620" y="21" class="mono seg" fill="#6ee7b7">PADDING</text>
+    <rect x="662" y="0" width="266" height="34" rx="6" fill="url(#audio)"/>
+    <text x="795" y="21" class="mono seg grey">audio frames</text>
+  </g>
+
+  <!-- Ogg -->
+  <g transform="translate(0 270)">
+    <text x="32" y="15" class="sans" font-size="16" font-weight="700" fill="#fbbf24">Ogg</text>
+    <text x="32" y="32" class="mono grey">.ogg .opus .oga</text>
+    <rect x="170" y="0" width="140" height="34" rx="6" fill="#f59e0b" fill-opacity="0.35"/>
+    <text x="240" y="21" class="mono seg on">page 0 · id header</text>
+    <rect x="312" y="0" width="210" height="34" rx="6" fill="#f59e0b"/>
+    <text x="417" y="21" class="mono seg on">comment header + cover</text>
+    <rect x="524" y="0" width="120" height="34" rx="6" fill="#f59e0b" fill-opacity="0.35"/>
+    <text x="584" y="21" class="mono seg on">setup header</text>
+    <rect x="646" y="0" width="282" height="34" rx="6" fill="url(#audio)"/>
+    <text x="787" y="21" class="mono seg grey">audio pages</text>
+  </g>
+
+  <!-- AIFF -->
+  <g transform="translate(0 328)">
+    <text x="32" y="15" class="sans" font-size="16" font-weight="700" fill="#f472b6">AIFF</text>
+    <text x="32" y="32" class="mono grey">.aif .aiff .aifc</text>
+    <rect x="170" y="0" width="96" height="34" rx="6" fill="#ec4899" fill-opacity="0.35"/>
+    <text x="218" y="21" class="mono seg on">FORM AIFF</text>
+    <rect x="268" y="0" width="70" height="34" rx="6" fill="#ec4899" fill-opacity="0.35"/>
+    <text x="303" y="21" class="mono seg on">COMM</text>
+    <rect x="340" y="0" width="326" height="34" rx="6" fill="url(#audio)"/>
+    <text x="503" y="21" class="mono seg grey">SSND · sound data</text>
+    <rect x="668" y="0" width="128" height="34" rx="6" fill="#be185d"/>
+    <text x="732" y="21" class="mono seg on">NAME AUTH (c)</text>
+    <rect x="798" y="0" width="130" height="34" rx="6" fill="#ec4899"/>
+    <text x="863" y="21" class="mono seg on">ID3 chunk</text>
+  </g>
+
+  <!-- WAV -->
+  <g transform="translate(0 386)">
+    <text x="32" y="15" class="sans" font-size="16" font-weight="700" fill="#22d3ee">WAV</text>
+    <text x="32" y="32" class="mono grey">.wav</text>
+    <rect x="170" y="0" width="96" height="34" rx="6" fill="#06b6d4" fill-opacity="0.35"/>
+    <text x="218" y="21" class="mono seg on">RIFF WAVE</text>
+    <rect x="268" y="0" width="60" height="34" rx="6" fill="#06b6d4" fill-opacity="0.35"/>
+    <text x="298" y="21" class="mono seg on">fmt</text>
+    <rect x="330" y="0" width="336" height="34" rx="6" fill="url(#audio)"/>
+    <text x="498" y="21" class="mono seg grey">data · sound data</text>
+    <rect x="668" y="0" width="128" height="34" rx="6" fill="#0e7490"/>
+    <text x="732" y="21" class="mono seg on">LIST · INFO</text>
+    <rect x="798" y="0" width="130" height="34" rx="6" fill="#06b6d4"/>
+    <text x="863" y="21" class="mono seg on">id3 chunk</text>
+  </g>
+
+  <!-- legend -->
+  <g class="sans" font-size="13" fill="#94a3b8" transform="translate(170 446)">
+    <rect x="0" y="-11" width="14" height="14" rx="3" fill="#3b82f6"/>
+    <text x="22" y="0">tags, read and written</text>
+    <rect x="190" y="-11" width="14" height="14" rx="3" fill="#3b82f6" fill-opacity="0.35"/>
+    <text x="212" y="0">headers the reader uses (length, codec)</text>
+    <rect x="490" y="-11" width="14" height="14" rx="3" fill="none" stroke="#94a3b8" stroke-dasharray="3 2"/>
+    <text x="512" y="0">free space for in-place writes</text>
+  </g>
+</svg>

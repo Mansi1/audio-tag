@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 52 960 348" width="960" height="348" role="img" aria-labelledby="t d">
+  <title id="t">How audio-tag works</title>
+  <desc id="d">Reading: bytes, a Blob or a file path go to detectFormat, which picks the reader for ID3, MP4, FLAC, Ogg, AIFF or RIFF; every reader returns the same metadata object plus the format's own structures. Writing: a metadata update goes to the format's planner, which returns a plan of new bytes and unchanged ranges of the old file; the plan is written in place, as a new Blob of slices, or through a temporary file and an atomic rename.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10Z" fill="#64748b"/>
+    </marker>
+    <pattern id="audio" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="8" height="8" fill="#1e293b"/>
+      <rect width="3" height="8" fill="#334155"/>
+    </pattern>
+  </defs>
+  <style>
+    .sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
+    .box { fill: #111c33; stroke: #334155; }
+    .h { font-size: 14px; font-weight: 700; fill: #f8fafc; }
+    .s { font-size: 12px; fill: #94a3b8; }
+    .c { font-size: 12px; fill: #e2e8f0; }
+    .lane { font-size: 12px; font-weight: 700; letter-spacing: 2px; }
+    .flow { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+  </style>
+  <rect y="52" width="960" height="348" rx="20" fill="#0f172a"/>
+
+  <!-- READ -->
+  <text x="32" y="82" class="sans lane" fill="#60a5fa">READ</text>
+  <g class="sans">
+    <rect x="32" y="92" width="176" height="124" rx="10" class="box"/>
+    <text x="46" y="116" class="h">Your file</text>
+    <text x="46" y="144" class="mono c">Uint8Array</text><text x="136" y="144" class="mono s">audio-tag</text>
+    <text x="46" y="170" class="mono c">Blob / File</text><text x="136" y="170" class="mono s">…/browser</text>
+    <text x="46" y="196" class="mono c">file path</text><text x="136" y="196" class="mono s">…/node</text>
+
+    <path d="M208 154H240" class="flow"/>
+    <rect x="244" y="92" width="176" height="124" rx="10" class="box"/>
+    <text x="258" y="116" class="mono h">detectFormat()</text>
+    <text x="258" y="138" class="s">looks at the first bytes:</text>
+    <text x="258" y="160" class="mono c">ID3  ftyp  fLaC</text>
+    <text x="258" y="178" class="mono c">OggS FORM  RIFF</text>
+    <text x="258" y="202" class="s">and skips leading ID3 tags</text>
+
+    <path d="M420 154H452" class="flow"/>
+    <rect x="456" y="92" width="196" height="124" rx="10" class="box"/>
+    <text x="470" y="116" class="h">Format readers</text>
+    <g class="mono" font-size="12" font-weight="600" text-anchor="middle">
+      <rect x="470" y="128" width="52" height="22" rx="11" fill="#3b82f6"/><text x="496" y="143" fill="#fff">ID3</text>
+      <rect x="528" y="128" width="52" height="22" rx="11" fill="#8b5cf6"/><text x="554" y="143" fill="#fff">MP4</text>
+      <rect x="586" y="128" width="52" height="22" rx="11" fill="#10b981"/><text x="612" y="143" fill="#fff">FLAC</text>
+      <rect x="470" y="156" width="52" height="22" rx="11" fill="#f59e0b"/><text x="496" y="171" fill="#fff">Ogg</text>
+      <rect x="528" y="156" width="52" height="22" rx="11" fill="#ec4899"/><text x="554" y="171" fill="#fff">AIFF</text>
+      <rect x="586" y="156" width="52" height="22" rx="11" fill="#06b6d4"/><text x="612" y="171" fill="#fff">RIFF</text>
+    </g>
+    <text x="470" y="202" class="s">read only the tag regions</text>
+
+    <path d="M652 154H684" class="flow"/>
+    <rect x="688" y="92" width="240" height="124" rx="10" class="box" stroke="#3b82f6"/>
+    <text x="702" y="116" class="mono h">metadata</text>
+    <text x="702" y="138" class="mono c">{ title, artist, album,</text>
+    <text x="702" y="154" class="mono c">  track, pictures, … }</text>
+    <text x="702" y="174" class="s">the same shape for every format,</text>
+    <text x="702" y="189" class="s">plus each format's own view:</text>
+    <text x="702" y="204" class="s">frames, atoms, comments, chunks</text>
+  </g>
+
+  <!-- WRITE -->
+  <text x="32" y="254" class="sans lane" fill="#a78bfa">WRITE</text>
+  <g class="sans">
+    <rect x="32" y="264" width="176" height="112" rx="10" class="box"/>
+    <text x="46" y="288" class="h">Your change</text>
+    <text x="46" y="312" class="mono c">{ metadata: {</text>
+    <text x="46" y="328" class="mono c">  title: 'New' } }</text>
+    <text x="46" y="352" class="s">undefined keeps a field,</text>
+    <text x="46" y="366" class="s">null removes it</text>
+
+    <path d="M208 320H240" class="flow"/>
+    <rect x="244" y="264" width="176" height="112" rx="10" class="box"/>
+    <text x="258" y="288" class="h">Planner</text>
+    <text x="258" y="310" class="s">builds only the tag bytes</text>
+    <text x="258" y="326" class="s">that change; unknown</text>
+    <text x="258" y="342" class="s">frames, atoms and chunks</text>
+    <text x="258" y="358" class="s">keep their exact bytes</text>
+
+    <path d="M420 320H452" class="flow"/>
+    <rect x="456" y="264" width="196" height="112" rx="10" class="box"/>
+    <text x="470" y="288" class="h">A plan of segments</text>
+    <rect x="470" y="300" width="44" height="26" rx="5" fill="#8b5cf6"/>
+    <rect x="516" y="300" width="122" height="26" rx="5" fill="url(#audio)"/>
+    <text x="492" y="344" class="s" text-anchor="middle">new</text>
+    <text x="577" y="344" class="s" text-anchor="middle">old file range</text>
+    <text x="470" y="366" class="s">audio is referenced, not copied</text>
+
+    <path d="M652 320H684" class="flow"/>
+    <rect x="688" y="264" width="240" height="112" rx="10" class="box" stroke="#8b5cf6"/>
+    <text x="702" y="288" class="h">Carried out by</text>
+    <text x="702" y="310" class="mono c">write()</text><text x="790" y="310" class="s">new bytes, in place</text>
+    <text x="702" y="330" class="mono c">…ToBlob()</text><text x="790" y="330" class="s">a Blob of slices</text>
+    <text x="702" y="350" class="mono c">…ToFile()</text><text x="790" y="350" class="s">in place, or temp</text>
+    <text x="790" y="364" class="s">file + fsync + rename</text>
+  </g>
+</svg>
