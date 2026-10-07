@@ -59,7 +59,7 @@ const out = await writeToBlob(file, {
 export function DocsPage({ title, description }: { title: string; description: string }) {
   return (
     <html lang="en">
-      <Head title={title} description={description} />
+      <Head title={title} description={description} path="docs" />
       <body>
         <Header active="docs" />
         <div class="page docs">

@@ -2,8 +2,8 @@
 // absolute, since it is served at any depth; config.ts makes its asset URLs absolute too. VERIFIED: make
 // e2e serves it under /audio-tag/ as GitHub Pages does, with no failed request.
 import { Head } from "../head.tsx";
+import { SITE } from "../site.ts";
 
-const SITE = "https://mansi1.github.io/audio-tag/";
 // Counts down; the meta refresh redirects even without JavaScript. No `&`, `<` or `>` (serialized as XML).
 const COUNTDOWN = "let left = 5; const timer = setInterval(function () { left -= 1; document.getElementById('countdown').textContent = left ? 'Taking you back to audio-tag in ' + left + (left === 1 ? ' second.' : ' seconds.') : 'Taking you back to audio-tag.'; if (left === 0) clearInterval(timer) }, 1000)";
 

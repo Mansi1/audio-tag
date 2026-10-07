@@ -153,6 +153,9 @@ try {
         return r.ok && r.headers.get('content-type')
       })
       check(String(icon).startsWith('image/svg+xml'), `${label} ${name}: the icon loads (${icon})`)
+      // link previews (WhatsApp, Slack) need an absolute image URL; the image itself ships in the package
+      const og = await page.getAttribute('meta[property="og:image"]', 'content')
+      check(og === 'https://mansi1.github.io/audio-tag/assets/og.jpg' && existsSync(join(installed, 'website/dist/assets/og.jpg')), `${label} ${name}: link preview image ${og}`)
       await page.screenshot({ path: join(out, `${label}-${name}.png`), fullPage: false })
     }
     await visit('http://localhost:5291/website/dist/docs', 'docs')

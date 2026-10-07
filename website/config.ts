@@ -5,6 +5,7 @@ import type { Plugin } from "vite";
 import { UI_COMPONENTS, UI_SCRIPTS } from "./lib/ui.ts";
 import { prettyLinks } from "./lib/pretty-links.ts";
 import { isPageRoute, pageExists } from "./lib/dev-routes.ts";
+import { SITE } from "./lib/site.ts";
 
 const UI = "node_modules/defuss-shadcn/dist/components";
 
@@ -61,7 +62,6 @@ const githubPagesDev = { name: "github-pages-dev", transformIndexHtml: (html: st
 // 404 page links to the published site and points its assets at /audio-tag/ only in the build, so here they
 // point to the dev server. VERIFIED: each one is logged through Vite's logger ("[vite] page not found ...").
 const PAGES = resolve(process.cwd(), "pages");
-const SITE = "https://mansi1.github.io/audio-tag/";
 const notFoundDev: Plugin = {
   name: "not-found-dev",
   configureServer(server) {

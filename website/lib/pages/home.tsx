@@ -26,7 +26,7 @@ const CodeComment = ({ children }: Props) => <span class="code-comment">{childre
 export function HomePage({ title, description }: { title: string; description: string }) {
   return (
     <html lang="en">
-      <Head title={title} description={description} />
+      <Head title={title} description={description} path="" />
       <body>
         <Header active="home" />
         <main class="page">
