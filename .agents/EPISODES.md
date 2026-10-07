@@ -60,26 +60,7 @@ Wrap: EVERY lead → test | .agents/VERIFY.py rule | one MEMORY line with BC, th
 2026-10-07T22:03:17Z s=e3d1b970 DONE fp=5bd28b5ee1bc cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+270)
 2026-10-07T22:22:32Z s=e3d1b970 DONE fp=f839fecc376f cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+270)
 2026-10-07T22:29:36Z s=e3d1b970 DONE fp=30bf42dd0b2e cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+271)
-2026-10-07T22:29:36Z s=e3d1b970 FINDING website/docs.html:354 learn=none: Hand-written count next to a generated table; making the generator own the sentence is a larger change than this task.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING website/docs.html:166 + README.md:102 learn=none: Prose claim; no mechanical check links docs sentences to behaviour.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING website/docs.html low-level example + README.md:207 learn=none: Docs examples are not compiled; a doc-example typecheck would catch it but does not exist yet.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING website/docs.html Writing table: padding learn=none: Prose claim.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING website/index.html:109 #pick accept learn=none: No rule ties accept list to formats.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING scripts/e2e.mjs:144 import(join(...)) learn=none: Single occurrence; CI runs on Linux.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING ARCH.md mermaid (T07) learn=none: The static prose check only covers unbalanced quotes and unknown diagram types.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING scripts/serve.mjs:66 server.listen(port) learn=none: A LAN-reachability test needs a second interface address, which CI runners do not reliably have.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING spec/mp4/QTFF-Metadata.html learn=none: One-off download artefact.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING spec/aiff/AIFF-C.9.26.91.md, spec/riff/riffmci.md 'TBD' learn=none: Third-party wording; no general rule.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING README.md license note learn=none: Prose claim.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING tsup.config.ts types learn=none: Editor-only diagnostic; the config is not part of any typecheck project.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING website/lib/build-info.ts learn=none: The site build fails loudly if the import breaks again.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING scripts/e2e.mjs byte-map hex learn=none: Test-side race, fixed in the test.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING website/components/playground.tsx empty state learn=none: Markup follows the skill; no automated check of class names against the skill.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING test/riff.test.ts or test/aiff.test.ts: 'reads a large file without the sound data' learn=none: Cause not observed; if it recurs, keep var/log/vae/tests.unit.log of the failing run.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING Makefile test: website tsc (gate run) learn=none: Not reproduced; the failing log is kept in the session scratchpad (unit-fail-tsc.log).
-2026-10-07T22:29:36Z s=e3d1b970 FINDING website (defuss-ssg dev server during builds) learn=none: The earlier one-off failures (SSR error at 22:57, config.js in the package, the tsc error) fit this cause; falsifier: one of them recurring with no dev server r
-2026-10-07T22:29:36Z s=e3d1b970 FINDING .github/readme/how-it-works.svg 'the audio is referenced, not copied' learn=none: No automated text-fits-box check; the phone layout screenshot showed it.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING website/components/playground.tsx legend learn=none: Visual only; seen in a screenshot.
-2026-10-07T22:29:36Z s=e3d1b970 FINDING website/config.ts notFoundDev log learn=none: Dev-only log format chosen by the user over the ISO rule; e2e covers the built site, not the dev server.
 2026-10-07T22:33:07Z s=e3d1b970 FAIL prose
 2026-10-07T22:41:54Z s=e3d1b970 DONE fp=bda692e7ce52 cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+274)
+2026-10-07T22:45:08Z s=e3d1b970 DONE fp=ef37860cfb2c cov=93.9% paths=.claude/settings.json,.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml(+276)
+2026-10-07T23:17:39Z s=e3d1b970 DONE fp=852348d7af51 cov=93.9% paths=CHANGELOG.md,scripts/e2e.mjs,website/README.md,website/config.ts(+6)
