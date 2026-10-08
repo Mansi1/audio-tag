@@ -45,6 +45,6 @@ at `http://localhost:5173/`. `make e2e` builds and drives it in Chromium.
 | `assets/` | Theme (the README palette), layout CSS, `site.js`, the icon and the link preview `og.jpg` |
 | `lib/site.ts` | The published address, for the link preview tags and the 404 page |
 | `lib/diagram.tsx` | The README diagrams (`../.github/readme/*.svg`) as SVG elements that follow the theme |
-| `config.ts` | The defuss-ssg plugins and the alias to the library build |
+| `config.ts` | The defuss-ssg plugins, the vendored library build (`assets/vendor/audio-tag/`) and the alias for rendering |
 
 See [`ARCH.md`](ARCH.md) for why it is built this way.

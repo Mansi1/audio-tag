@@ -8,15 +8,21 @@ not part of the library: nothing in `src/` depends on it.
 
 - Static pages with islands. Pages are rendered once at build time by defuss-ssg; only the playground and
   the two filterable docs tables are hydrated in the browser. The docs and the overview therefore work
-  without JavaScript, and the browser downloads the library (93 KB gzipped, in the playground) only on the
-  page that uses it.
+  without JavaScript, and the browser downloads the library (68 KB gzipped, the vendored `browser.min.js`)
+  only on the page that uses it.
 - Pages as TSX components. defuss-ssg 0.7.5 builds pages only from `.md`, `.mdx` and `.html` files and skips
   `.tsx` ones (kyr0/defuss#63), so each `pages/*.mdx` holds only the front matter and renders one page
   component from `lib/pages/`. The pages get type checking and shared parts; the alternative, prose in MDX,
   lost both.
-- One build of the library. `config.ts` aliases `audio-tag/browser` to the repository's `../dist/browser.js`,
-  so the playground runs the same build the package ships, and the footer and docs read that build's
-  `dist/build-info.json` through `lib/build-info.ts`.
+- One build of the library, loaded as a vendor file. The `vendor-ui` plugin copies the repository's
+  `../dist/browser.min.js`, the self-contained bundle the package ships, unchanged into
+  `assets/vendor/audio-tag/`. The component build keeps `audio-tag/browser` external and points it there, so
+  the playground runs exactly that file, and the browser caches the library apart from the playground code
+  (the playground bundle went from 325 KB to 35 KB). The alternative, bundling the library into the
+  playground, bundled the same code a second time and invalidated the cached library with every playground
+  change. For rendering at build time and in `dev`, `config.ts` aliases `audio-tag/browser` to
+  `../dist/browser.js`. The footer and docs read the build's `dist/build-info.json` through
+  `lib/build-info.ts`.
 - No third-party requests. The defuss-shadcn components listed in `lib/ui.ts` are copied from
   `node_modules` into `assets/vendor/` at build time instead of loading the library from a CDN, so the
   offline copy works and no other server sees a visit. Only those components ship (the whole library is
@@ -27,17 +33,20 @@ not part of the library: nothing in `src/` depends on it.
 ```mermaid
 flowchart LR
   lib["library build: ../dist/ + build-info.json"] --> alias["config.ts alias audio-tag/browser"]
+  lib --> vendored["assets/vendor/audio-tag/browser.min.js"]
   lib --> info["lib/build-info.ts"]
   data["data/support.json (npm run docs:matrix)"] --> pages
   info --> pages["lib/pages/*.tsx via pages/*.mdx"]
   alias --> islands["components/*.tsx (hydrated)"]
   islands --> pages
   pages --> ssg["defuss-ssg build + config.ts plugins"]
+  vendored --> ssg
   ssg --> dist["dist/: GitHub Pages and the npm package"]
 ```
 
 - `config.ts` plugins, each a workaround for defuss-ssg 0.7.5 behaviour reported upstream:
-  `vendor-ui` (pre) copies the UI from `node_modules`; `html-fix` (page-html) adds the doctype (#57), makes
+  `vendor-ui` (pre) copies the UI from `node_modules` and the library bundle from `../dist/` (it stops when
+  that is missing); `html-fix` (page-html) adds the doctype (#57), makes
   the hydration URLs page-relative so one build works under `/audio-tag/` and `/website/dist/` (#58), drops
   the per-load cache-bust (#59) and makes `404.html` URLs absolute; `drop-config` (post) removes
   `dist/config.js` (#60).

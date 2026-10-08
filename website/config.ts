@@ -8,16 +8,24 @@ import { isPageRoute, pageExists } from "./lib/dev-routes.ts";
 import { SITE } from "./lib/site.ts";
 
 const UI = "node_modules/defuss-shadcn/dist/components";
+// The library build the playground loads at run time: one self-contained ESM file (scripts/minify.mjs).
+const LIBRARY = "../dist/browser.min.js";
+// Where the component build points `audio-tag/browser`, relative to components/playground.js, so it
+// resolves under /audio-tag/ (GitHub Pages) and /website/dist/ (the npm package) alike.
+const LIBRARY_URL = "../assets/vendor/audio-tag/browser.min.js";
 
 // VERIFIED: copies the UI from node_modules into assets/vendor/ before the build copies assets, so the site
 // works offline (no CDN): one ui.css (core first, then each component) and one script per module, since
-// the component scripts are separate modules that must not be concatenated.
+// the component scripts are separate modules that must not be concatenated. The library build goes there
+// too, without its 828 KB source map: browsers fetch the map only with the developer tools open.
 const vendor: SsgPlugin = {
   name: "vendor-ui",
   phase: "pre",
   mode: "both",
   fn: () => {
-    mkdirSync("assets/vendor", { recursive: true });
+    if (!existsSync(LIBRARY)) throw new Error(`${LIBRARY} is missing: build the library first (npm run build in the repository root)`);
+    mkdirSync("assets/vendor/audio-tag", { recursive: true });
+    copyFileSync(LIBRARY, "assets/vendor/audio-tag/browser.min.js");
     const css = [`${UI}/core.min.css`, ...UI_COMPONENTS.map((c) => `${UI}/${c}/${c}.min.css`)];
     writeFileSync("assets/vendor/ui.css", css.map((f) => readFileSync(f, "utf8")).join("\n"));
     copyFileSync(`${UI}/core.min.js`, "assets/vendor/core.min.js");
@@ -102,8 +110,11 @@ export default {
   plugins: [vendor, htmlFix, githubPages, dropConfig],
   viteConfig: {
     // the playground runs the current library build, as users get it from the package
-    // (the build runs in website/; this config is compiled elsewhere, so not import.meta.url)
+    // (the build runs in website/; this config is compiled elsewhere, so not import.meta.url). The alias serves
+    // rendering at build time and the dev server; the built component loads the vendored file instead of
+    // bundling the library, so the browser caches it apart from the playground code.
     resolve: { alias: { "audio-tag/browser": resolve(process.cwd(), "../dist/browser.js") } },
+    build: { rollupOptions: { external: ["audio-tag/browser"], output: { paths: { "audio-tag/browser": LIBRARY_URL } } } },
     plugins: [githubPagesDev, notFoundDev],
   },
 };

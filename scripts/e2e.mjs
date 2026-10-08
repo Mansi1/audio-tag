@@ -143,6 +143,12 @@ try {
     // privacy: the site loads everything from where it is served, nothing from third parties
     const external = new Set()
     page.on('request', (r) => { const u = new URL(r.url()); if (/^https?:$/.test(u.protocol) && u.hostname !== 'localhost') external.add(u.origin) })
+    // the playground loads the library as a vendor file, the package's own dist/browser.min.js; the body is
+    // read on arrival, since Playwright drops it once the page navigates away
+    const library = []
+    page.on('response', (r) => {
+      if (r.url().endsWith('/assets/vendor/audio-tag/browser.min.js')) library.push(r.body().then((body) => ({ status: r.status(), body }), () => ({ status: r.status() })))
+    })
     const visit = async (url, name) => {
       const res = await page.goto(url, { waitUntil: 'networkidle' })
       check(res.ok() || name === '404', `${label} ${name}: HTTP ${res.status()}`)
@@ -295,6 +301,10 @@ try {
     check(true, `${label} playground: discard dialog discards; mic recording loads as ${await page.textContent('#file-name')}`)
     check(errors.length === 0, `${label}: no console errors or failed requests${errors.length ? ': ' + errors.join(' | ') : ''}`)
     check(external.size === 0, `${label}: no request leaves the site${external.size ? ': ' + [...external].join(', ') : ''}`)
+    const shipped = readFileSync(join(installed, 'dist/browser.min.js'))
+    const served = await Promise.all(library)
+    check(served.length > 0 && served.every((r) => r.status === 200 && r.body && shipped.equals(r.body)),
+      `${label} playground: loads the library from assets/vendor/audio-tag/, identical to dist/browser.min.js (${served.map((r) => r.status).join(', ') || 'not requested'})`)
     await context.close()
   }
 } finally {
