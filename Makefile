@@ -63,9 +63,10 @@ test: unit build ## unit tests in node and jsdom (vitest), on real bytes, no moc
 coverage: unit ## line coverage of src/ over both vitest projects, printed as TOTAL <n>%
 	@node -e "const t=require('./coverage/coverage-summary.json').total.lines.pct; console.log('TOTAL ' + t + '%')"
 
-lint: build ## type-check core, platform adapters and tests; check the built core uses no platform APIs; lint the website
+lint: build ## type-check core, platform adapters and tests; check the built core uses no platform APIs and the size budgets; lint the website
 	npm run typecheck
 	npm run lint:platform
+	npm run size
 	cd website && bun run lint
 
 e2e: build ## pack the npm tarball, install it in a clean consumer, run it on input/ and drive the website in Chromium; results in output/

@@ -398,9 +398,9 @@ into `website/dist/`, which the npm package ships.
 
 Releases are published to npm by GitHub Actions
 ([`.github/workflows/publish.yml`](.github/workflows/publish.yml)): set the new `version` in
-`package.json`, commit, then push a matching tag (`git tag v0.1.0 && git push origin v0.1.0`). The
-workflow runs the same checks as `prepublishOnly` and publishes with npm provenance; it needs an
-`NPM_TOKEN` repository secret.
+`package.json`, commit, then push a matching tag (`git tag v0.1.0 && git push origin v0.1.0`). The verify
+workflow runs `make verify` on the tag and, when it passes, publishes the build it tested with npm
+provenance, without building again; it needs an `NPM_TOKEN` repository secret.
 
 ## License
 

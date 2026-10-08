@@ -51,16 +51,18 @@ flowchart LR
 | Task | Command | What it does |
 |---|---|---|
 | Install | `make setup` | `npm ci`, then the Chromium build that Playwright drives |
-| Lint | `make lint` | type checks for the core, the platform adapters and the tests; the platform check |
+| Lint | `make lint` | type checks for the core, the platform adapters and the tests; the platform check; the size budgets |
 | Test | `make test` | vitest in Node and jsdom |
 | Coverage | `make coverage` | line coverage of `src/`, printed as `TOTAL <n>%` |
 | End to end | `make e2e` | builds and packs the tarball, installs it in a clean consumer under `tmp/e2e/`, runs every high-level read and write function on the files in `input/`, and drives the website in Chromium; results and screenshots go to `output/e2e/` |
 | Everything | `make verify` | lint, test, coverage and e2e, as CI runs them |
 | Sizes | `make metrics` | builds, then checks each import against its size budget (`scripts/check-size.mjs`) |
 
-- VERIFIED: `.github/workflows/publish.yml` publishes to npm when a `v*` tag is pushed.
-  `.github/workflows/pages.yml` builds the website (`website/dist/`, see [`website/ARCH.md`](website/ARCH.md))
-  and deploys it to GitHub Pages on every push to `main`.
+- One build per commit in CI. `.github/workflows/verify.yml` runs `make verify` and uploads the `dist/` and
+  `website/dist/` it tested as the artifact `build`. On a `v*` tag it then calls `publish.yml`, which publishes
+  that tree with `npm publish --ignore-scripts` (`prepublishOnly` would build again); after a passing run on
+  `main`, `pages.yml` deploys its `website/dist/` (see [`website/ARCH.md`](website/ARCH.md)). The alternative,
+  a build in each workflow, published and deployed trees no test had seen, also after a failed verify.
 - The library is not a service, so `make start`, `stop`, `status` and `log` do nothing.
 
 ## Security
