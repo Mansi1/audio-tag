@@ -402,7 +402,9 @@ a release candidate is `X.Y.Z-rc.N`. To release:
 
 1. Rename `## Unreleased` in `CHANGELOG.md` to `## X.Y.Z` (or `## X.Y.Z-rc.N`). `make lint` fails while the
    version in `package.json` is not semver or has no notes in `CHANGELOG.md`.
-2. `npm version X.Y.Z --no-git-tag-version`, commit, then `git tag vX.Y.Z && git push origin main vX.Y.Z`.
+2. `npm version X.Y.Z --no-git-tag-version`, commit on a branch and open a pull request. `main` accepts changes
+   only through a pull request whose `verify` check passed; force pushes and deleting `main` are blocked.
+3. After the merge, tag the merge commit: `git switch main && git pull && git tag vX.Y.Z && git push origin vX.Y.Z`.
 
 The verify workflow runs `make verify` on the tag. When it passes, it publishes the tarball `make e2e` tested,
 as is, to npm with provenance, then creates a GitHub release with that tarball and the changelog section as
