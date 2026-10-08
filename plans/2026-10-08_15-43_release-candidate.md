@@ -23,9 +23,10 @@ Tick `- [x]` when a milestone's proof passes, then run `make verify` on its scop
   without `--tag`, so a prerelease version would become `latest`.
 - VERIFIED: `CHANGELOG.md` has only an `## Unreleased` section.
 - VERIFIED: yarn is not installed on this machine.
-- UNKNOWN: whether npm accepts the called workflow `publish.yml` as the trusted publisher. Runs 37808158437 and
-  its re-run never reached npm auth: `npm publish release/x.tgz` read the path as the GitHub shorthand user/repo
-  and tried to clone it; fixed with `./release/`. On an auth error, switch the publisher back to `verify.yml`.
+- VERIFIED: npm accepts the called workflow `publish.yml` as the trusted publisher when the owner is spelled
+  `Mansi1`, as on GitHub (re-run of 37846071490 published `0.1.0-rc.1` with provenance on 2026-10-08). With `mansi1` in lower case,
+  npm answered the upload with 404. Runs 37808158437 and its re-run never reached npm auth: `npm publish
+  release/x.tgz` read the path as the GitHub shorthand user/repo and tried to clone it; fixed with `./release/`.
 - VERIFIED: trusted publishing needs npm 11.5.1 or newer (npm docs). Node 22 on the runner ships npm 10, and
   npm 12.2.0 is a new major, so the job installs `npm@11` (11.21.0 on 2026-10-08).
 
@@ -103,11 +104,11 @@ flowchart LR
 ### M4: release candidate (human actions marked 👤)
 
 - [x] 👤 Create the npm trusted publisher (done 2026-10-08).
-- [ ] `make verify` passes locally, then commit M1–M3.
-- [ ] `git tag v0.1.0-rc.1 && git push origin main v0.1.0-rc.1`. Report the run URL and do not wait (AGENTS.md).
-- [ ] Afterwards, check `npm view audio-tag dist-tags` (expect `next: 0.1.0-rc.1`, `latest: 0.0.1`) and `gh release view v0.1.0-rc.1` (prerelease,
+- [x] `make verify` passes locally, then commit M1–M3.
+- [x] `git tag v0.1.0-rc.1 && git push origin main v0.1.0-rc.1`. Report the run URL and do not wait (AGENTS.md).
+- [x] Afterwards, check `npm view audio-tag dist-tags` (expect `next: 0.1.0-rc.1`, `latest: 0.0.1`) and `gh release view v0.1.0-rc.1` (prerelease,
   `.tgz` attached). Then run `npx -y audio-tag@next --open` in an empty folder.
-- [ ] `.agents/MEMORY.md`: replace the stale UNKNOWN line about pages.yml/publish.yml with the observed result.
+- [x] `.agents/MEMORY.md`: replace the stale UNKNOWN line about pages.yml/publish.yml with the observed result.
 
 ## Risk
 

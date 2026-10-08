@@ -4,13 +4,6 @@
 Agents append `<UTC ISO> s=<session> LESSON <VAE-DIALECT>` only for a falsified HYPOTHESIS, a dead end, or a root cause.
 Wrap: EVERY lead → test | .agents/VERIFY.py rule | one MEMORY line with BC, then delete; OR delete BC evidence. -->
 
-2026-10-07T17:46:46Z s=e3d1b970 FAIL prose,layout,gitignore,lint=?,tests.unit=?,tests.e2e=?,coverage=?
-2026-10-07T17:52:16Z s=e3d1b970 FAIL docs.pages,prose,package
-2026-10-07T18:03:10Z s=e3d1b970 DONE fp=c5edbb61454b cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/verify.yml,AGENTS.md,ARCH.md(+8)
-2026-10-07T18:03:10Z s=e3d1b970 FINDING README.md frame table (T02) learn=verifier: The prose gate check flags any reintroduced em dash in README.md.
-2026-10-07T18:03:10Z s=e3d1b970 FINDING scripts/e2e.mjs (e2e coverage) learn=test: make e2e now fails if any of these controls breaks.
-2026-10-07T18:08:31Z s=e3d1b970 FAIL env.example
-2026-10-07T18:13:31Z s=e3d1b970 DONE fp=c22d44399e0c cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/verify.yml,AGENTS.md,ARCH.md(+9)
 2026-10-07T18:13:31Z s=e3d1b970 FINDING scripts/serve.mjs:14 port learn=test: make e2e starts the installed copy with --port and the repository copy with PORT, so both paths stay covered.
 2026-10-07T18:13:31Z s=e3d1b970 FINDING .env.example learn=verifier: The env.example gate check flags a missing key.
 2026-10-07T18:21:12Z s=e3d1b970 FAIL prose
@@ -104,3 +97,10 @@ Wrap: EVERY lead → test | .agents/VERIFY.py rule | one MEMORY line with BC, th
 2026-10-08T16:31:19Z s=7143a713 DONE fp=6128b029d128 cov=94.0% paths=.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md,CHANGELOG.md(+10)
 2026-10-08T16:31:19Z s=7143a713 FINDING .github/workflows/publish.yml:60 Publish to npm learn=none: the human declined the proposed VERIFY.py rule; the inline comment at the call names the trap and the run
 2026-10-08T16:31:19Z s=7143a713 FINDING README.md:411 P04 learn=none: whether npm accepts the called workflow is shown only by the next tag run
+2026-10-08T21:30:59Z s=7143a713 DONE fp=8011ac24dff6 cov=94.0% paths=.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md,CHANGELOG.md(+10)
+2026-10-08T21:30:59Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:25 B09 learn=memory: MEMORY line replaces the stale UNKNOWN about the CI publish path
+2026-10-08T21:31:10Z s=7143a713 DONE fp=db24a6bd54b2 cov=94.0% paths=.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md,CHANGELOG.md(+10)
+2026-10-08T21:35:23Z s=7143a713 FAIL tests.e2e.1
+2026-10-08T21:38:08Z s=7143a713 DONE fp=72f8b2a729ac cov=94.0% paths=.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md,CHANGELOG.md(+10)
+2026-10-08T21:38:08Z s=7143a713 FINDING scripts/e2e.mjs:247 save learn=none: intermittent under host load, cause not isolated; falsifier=a download timeout on an idle host
+2026-10-08T21:38:08Z s=7143a713 FINDING CHANGELOG.md:3 learn=test: make lint runs scripts/release-notes.mjs

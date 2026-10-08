@@ -1,6 +1,6 @@
 {
   "name": "audio-tag",
-  "version": "0.1.0-rc.1",
+  "version": "0.1.0",
   "description": "Spec-exact reader and writer for audio file tags: ID3v1, ID3v2.2-2.4 and Lyrics3, MP4/M4A, FLAC, Ogg (Vorbis, Opus), AIFF and WAV. Zero dependencies, works in browsers and Node.",
   "license": "MIT",
   "author": {

@@ -15,5 +15,5 @@ Budget 4 KiB (`vae.py doctor --repo .`); entries are injected at session start. 
 - VERIFIED[website dev 404 log] uses Vite's logger, not the ISO log format BC the user asked for it (2026-10-08)
 - HYPOTHESIS[test/id3v2-frames 'never throws or hangs on mutated input' 10 s limit] fails under host CPU load BC 15.3 s and 20.0 s at load avg 9-10 on 8 cores (2026-10-08), each passed on the next run; falsifier=a failure at low load
 - VERIFIED[test/*: vitest toEqual] on a 2 MB Uint8Array takes 4.3 s vs Buffer.equals 1 ms BC probe 2026-10-08; compare large byte arrays natively
-- UNKNOWN[.github/workflows: pages.yml workflow_run deploy, publish.yml called from verify.yml on v* tags] never ran BC no act/actionlint locally; check the first push to main and the first tag push
+- VERIFIED[npm trusted publisher audio-tag] owner `Mansi1` (exact case), workflow `publish.yml` (called by verify.yml) works BC run 37846071490 re-run published 0.1.0-rc.1 with provenance after owner case was fixed (2026-10-08); pages.yml deploy ran too
 - VERIFIED[npm name audio-tag] owned by npm user mansi1 BC placeholder publish 2026-10-08 created stub 0.0.0-stage (staged publishing, "stub": true) while 0.0.1 was processing; npm 10.8.2 `npm login` needs a TTY (`script -q /dev/null npm login`)
