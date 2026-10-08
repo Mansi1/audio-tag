@@ -6,8 +6,10 @@ const le32 = (n: number) => [n & 0xff, (n >>> 8) & 0xff, (n >>> 16) & 0xff, (n >
 const le16 = (n: number) => [n & 0xff, (n >> 8) & 0xff]
 
 export function chunk(id: string, data: Uint8Array | number[]): Uint8Array {
-  const d = Array.from(data)
-  return Uint8Array.from([...enc.encode(id), ...le32(d.length), ...d, ...(d.length & 1 ? [0] : [])])
+  const out = new Uint8Array(8 + data.length + (data.length & 1))
+  out.set([...enc.encode(id), ...le32(data.length)])
+  out.set(data, 8)
+  return out
 }
 
 export function riff(chunks: Uint8Array[]): Uint8Array {
@@ -28,7 +30,9 @@ export function fmt(tag: number, channels: number, rate: number, byteRate: numbe
 }
 
 export function data(bytes: number): Uint8Array {
-  return chunk('data', Array.from({ length: bytes }, (_, i) => (i * 7) & 0xff))
+  const sound = new Uint8Array(bytes)
+  for (let i = 0; i < bytes; i++) sound[i] = (i * 7) & 0xff
+  return chunk('data', sound)
 }
 
 /** LIST('INFO' <id>("value"Z)...): ZSTRs, written as ISO-8859-1 bytes unless given as bytes. */

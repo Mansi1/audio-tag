@@ -7,8 +7,10 @@ const be16 = (n: number) => [(n >> 8) & 0xff, n & 0xff]
 
 /** A chunk: ID, 32-bit big-endian size, data, and a zero pad byte for odd sizes ("File Structure"). */
 export function chunk(id: string, data: Uint8Array | number[]): Uint8Array {
-  const d = Array.from(data)
-  return Uint8Array.from([...enc.encode(id), ...be32(d.length), ...d, ...(d.length & 1 ? [0] : [])])
+  const out = new Uint8Array(8 + data.length + (data.length & 1))
+  out.set([...enc.encode(id), ...be32(data.length)])
+  out.set(data, 8)
+  return out
 }
 
 /** A FORM AIFF (or AIFC) around the given chunks. */

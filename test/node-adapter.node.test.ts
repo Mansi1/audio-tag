@@ -73,6 +73,6 @@ describe('Node adapter with MP4 (task 29)', () => {
     const after = new Uint8Array(await fsRead(p))
     // the ID3 functions leave the file alone
     await expect(writeID3ToFile(p, { metadata: { title: 'x' } })).rejects.toThrow(/detectFormat/)
-    expect(new Uint8Array(await fsRead(p))).toEqual(after)
+    expect((await fsRead(p)).equals(after)).toBe(true) // toEqual walks a 2 MB array element by element for seconds
   })
 })

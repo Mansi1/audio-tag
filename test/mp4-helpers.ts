@@ -96,10 +96,13 @@ export function sampleItems(): Uint8Array[] {
 export function chunkOffsets(file: Uint8Array): number[] {
   const out: number[] = []
   const dv = new DataView(file.buffer, file.byteOffset, file.byteLength)
-  const text = (o: number) => String.fromCharCode(...file.subarray(o, o + 4))
+  // 'stco' or 'co64', compared byte by byte: building a string at every offset of a 20 MB file takes seconds
+  const isOffsetBox = (o: number) =>
+    (file[o] === 0x73 && file[o + 1] === 0x74 && file[o + 2] === 0x63 && file[o + 3] === 0x6f) ||
+    (file[o] === 0x63 && file[o + 1] === 0x6f && file[o + 2] === 0x36 && file[o + 3] === 0x34)
   for (let i = 0; i + 8 < file.length; i++) {
-    const t = text(i + 4)
-    if (t !== 'stco' && t !== 'co64') continue
+    if (!isOffsetBox(i + 4)) continue
+    const t = String.fromCharCode(...file.subarray(i + 4, i + 8))
     const size = dv.getUint32(i)
     if (size < 16 || i + size > file.length) continue
     const n = dv.getUint32(i + 12)
