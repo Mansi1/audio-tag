@@ -16,6 +16,16 @@ export function bitwiseCrc(data: Uint8Array): number {
   return crc
 }
 
+// The same CRC a byte at a time, for the large fixtures: the bitwise loop over 20 MB pages, three times per
+// test, took 10 s on a CI runner. Each table entry is bitwiseCrc of that one byte, so this stays the spec's
+// CRC and independent of src/; ogg.test.ts checks it against bitwiseCrc.
+const CRC_TABLE = Uint32Array.from({ length: 256 }, (_, byte) => bitwiseCrc(Uint8Array.of(byte)))
+export function pageCrc(data: Uint8Array): number {
+  let crc = 0
+  for (let i = 0; i < data.length; i++) crc = ((crc << 8) ^ CRC_TABLE[((crc >>> 24) ^ data[i]!) & 0xff]!) >>> 0
+  return crc
+}
+
 export function page(headerType: number, granule: bigint, serial: number, sequence: number, segments: number[], data: Uint8Array): Uint8Array {
   const out = new Uint8Array(27 + segments.length + data.length)
   const dv = new DataView(out.buffer)
@@ -26,7 +36,7 @@ export function page(headerType: number, granule: bigint, serial: number, sequen
   out[26] = segments.length
   out.set(segments, 27)
   out.set(data, 27 + segments.length)
-  dv.setUint32(22, bitwiseCrc(out), true)
+  dv.setUint32(22, pageCrc(out), true)
   return out
 }
 

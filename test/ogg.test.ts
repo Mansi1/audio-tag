@@ -19,7 +19,7 @@ import {
   writeOggFile,
 } from '../src/index'
 import type { RandomAccess } from '../src/file/partial-id3'
-import { bitwiseCrc, flacBlock, flacFirst, opusHead, opusTags, page, stream, vorbisComment, vorbisFile, vorbisId, vorbisSetup, comment } from './ogg-helpers'
+import { bitwiseCrc, pageCrc, flacBlock, flacFirst, opusHead, opusTags, page, stream, vorbisComment, vorbisFile, vorbisId, vorbisSetup, comment } from './ogg-helpers'
 
 /** Every page: a valid CRC (checked with the independent bitwise CRC) and contiguous sequence numbers per stream. */
 function checkPages(file: Uint8Array): { sequence: number; granule: bigint; data: Uint8Array }[] {
@@ -30,7 +30,7 @@ function checkPages(file: Uint8Array): { sequence: number; granule: bigint; data
     const p = parsePage(file, pos)!
     const copy = file.slice(p.start, p.end)
     copy.fill(0, 22, 26)
-    expect(bitwiseCrc(copy)).toBe(p.crc)
+    expect(pageCrc(copy)).toBe(p.crc)
     expect(p.sequence).toBe(next.get(p.serial) ?? 0)
     next.set(p.serial, p.sequence + 1)
     out.push({ sequence: p.sequence, granule: p.granule, data: file.subarray(p.dataStart, p.end) })
@@ -43,6 +43,7 @@ describe('Ogg pages (task 33)', () => {
   it('computes the RFC 3533 CRC like the bitwise reference, and base64 like RFC 4648', () => {
     const data = Uint8Array.from({ length: 1000 }, (_, i) => (i * 131) & 0xff)
     expect(oggCrc(data)).toBe(bitwiseCrc(data))
+    expect(pageCrc(data)).toBe(bitwiseCrc(data))
     // RFC 4648 §10 test vectors
     for (const [plain, coded] of [['', ''], ['f', 'Zg=='], ['fo', 'Zm8='], ['foo', 'Zm9v'], ['foob', 'Zm9vYg=='], ['fooba', 'Zm9vYmE='], ['foobar', 'Zm9vYmFy']] as const) {
       expect(encodeBase64(new TextEncoder().encode(plain))).toBe(coded)
