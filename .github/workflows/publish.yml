@@ -1,19 +1,20 @@
-# Publishes audio-tag to npm: verify.yml calls this workflow after `make verify` passes on a version tag
-# (v0.1.0, v1.2.3, ...), and it publishes that run's `package` artifact, the tarball `make e2e` packed,
-# installed and tested, as is: nothing is built or packed again.
-# Release: bump "version" in package.json, commit, then `git tag v<version> && git push origin v<version>`.
-# Needs the repository secret NPM_TOKEN: an npm access token that may publish this package.
-name: Publish to npm
+# Publishes audio-tag: verify.yml calls this workflow after `make verify` passes on a version tag (v0.1.0,
+# v0.2.0-rc.1, ...). It publishes that run's `package` artifact, the tarball `make e2e` packed, installed and
+# tested, as is (nothing is built or packed again), first to npm, then as a GitHub release with the tarball
+# attached and the version's CHANGELOG.md section as notes. npm comes first: it never accepts a version twice,
+# while a failed GitHub release can be created again by hand.
+# A version with a prerelease part (0.2.0-rc.1) goes to the npm dist-tag `next` and becomes a GitHub prerelease.
+# Release: README.md, "Releases".
+# npm authenticates this run through trusted publishing (OIDC, id-token: write): the package's trusted publisher
+# on npmjs.com names Mansi1/audio-tag and the workflow verify.yml, so there is no npm token.
+name: Publish
 
 on:
   workflow_call:
-    secrets:
-      NPM_TOKEN:
-        required: true
 
 permissions:
-  contents: read
-  id-token: write # npm provenance: links the published package to this workflow run
+  contents: write # gh release create
+  id-token: write # npm trusted publishing and provenance
 
 jobs:
   publish:
@@ -22,26 +23,44 @@ jobs:
       group: publish
       cancel-in-progress: false
     steps:
+      - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
 
+      # trusted publishing needs npm 11.5.1 or newer; Node 22 ships npm 10
+      - run: npm install -g npm@11
+
       - uses: actions/download-artifact@v4
         with:
           name: package
+          path: release
 
-      - name: Check that the tag matches the tarball's version
+      - id: version
+        name: Check the tag, the version and its release notes
         run: |
-          version=$(tar -xzOf audio-tag-*.tgz package/package.json | node -p "JSON.parse(require('fs').readFileSync(0, 'utf8')).version")
+          version=$(tar -xzOf release/audio-tag-*.tgz package/package.json | node -p "JSON.parse(require('fs').readFileSync(0, 'utf8')).version")
           if [ "$GITHUB_REF_NAME" != "v$version" ]; then
             echo "::error::Tag $GITHUB_REF_NAME does not match the package version $version (expected v$version)"
             exit 1
           fi
+          node scripts/release-notes.mjs > release/notes.md
+          case "$version" in
+            *-*) echo "prerelease=true" >> "$GITHUB_OUTPUT"; echo "dist_tag=next" >> "$GITHUB_OUTPUT" ;;
+            *) echo "prerelease=false" >> "$GITHUB_OUTPUT"; echo "dist_tag=latest" >> "$GITHUB_OUTPUT" ;;
+          esac
 
       # --ignore-scripts: prepublishOnly would build again; `make verify` already ran its checks on this tarball
       # (typecheck, tests, build, platform check and size budgets, then e2e on the installed package).
-      - name: Publish
-        run: npm publish audio-tag-*.tgz --provenance --access public --ignore-scripts
+      # npm adds provenance by itself under trusted publishing.
+      - name: Publish to npm
+        run: npm publish release/audio-tag-*.tgz --access public --ignore-scripts --tag ${{ steps.version.outputs.dist_tag }}
+
+      - name: Create the GitHub release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" release/audio-tag-*.tgz --verify-tag --title "$GITHUB_REF_NAME" \
+            --notes-file release/notes.md $([ "${{ steps.version.outputs.prerelease }}" = true ] && echo --prerelease)

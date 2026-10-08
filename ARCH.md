@@ -72,9 +72,13 @@ flowchart LR
   become warnings; `strict: true` turns them into `TagReadError`s.
 - VERIFIED: writes refuse inputs and options that do not apply to the file's format, such as an ID3 option for
   an MP4 file, instead of ignoring them (`src/api/api.ts`).
-- VERIFIED: `scripts/serve.mjs`, the development server that also ships in the package, serves files from the
+- VERIFIED: `scripts/serve.mjs`, the development server that also ships in the package as its `audio-tag` bin, serves files from the
   package folder only. It refuses paths that resolve outside it with 403, and it listens on `localhost` only, so
   other machines on the network cannot connect.
+- VERIFIED: the offline docs start through the bin (`npx audio-tag`), not a path such as
+  `node node_modules/audio-tag/scripts/serve.mjs`: package managers resolve a bin by name, while Yarn PnP
+  installs have no `node_modules/` folder to point at. `make e2e` starts the server through the installed bin link;
+  a manual check on 2026-10-08 served the docs through `yarn audio-tag` in yarn 1.22.22 and in yarn 4.5.3 with PnP.
 
 ## Privacy
 

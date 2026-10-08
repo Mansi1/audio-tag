@@ -100,7 +100,7 @@ export function DocsPage({ title, description }: { title: string; description: s
                 [<code>audio-tag/node</code>, "Paths on disk", "Node"],
               ]}
             />
-            <Callout label="Offline docs">the package includes this website, with the docs and the playground. Open your installed copy with <code>node node_modules/audio-tag/scripts/serve.mjs --open</code>. It serves on port 5173; add <code>--port 8080</code> to use another one.</Callout>
+            <Callout label="Offline docs">the package includes this website, with the docs and the playground. Open your installed copy with <code>npx audio-tag --open</code> (or <code>yarn audio-tag --open</code>, <code>bunx audio-tag --open</code>). It serves on port 5173; add <code>--port 8080</code> to use another one.</Callout>
 
             <h2 id="usage">Usage</h2>
             <p>The "any file" functions detect the format and call the right reader or writer. Pick your runtime:</p>

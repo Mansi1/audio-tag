@@ -105,7 +105,7 @@ The package also ships the [website](https://mansi1.github.io/audio-tag/), with 
 the playground, so you can read them offline. Open your installed copy with:
 
 ```sh
-node node_modules/audio-tag/scripts/serve.mjs --open
+npx audio-tag --open        # or: yarn audio-tag --open, bunx audio-tag --open
 ```
 
 It serves on port 5173. To use another port, add `--port`, for example `--port 8080`.
@@ -396,11 +396,20 @@ overview with a playground, the docs, and a `404.html` for GitHub Pages. It is b
 [defuss](https://github.com/kyr0/defuss) (defuss-ssg) and [defuss-shadcn](https://github.com/kyr0/defuss-shadcn)
 into `website/dist/`, which the npm package ships.
 
-Releases are published to npm by GitHub Actions
-([`.github/workflows/publish.yml`](.github/workflows/publish.yml)): set the new `version` in
-`package.json`, commit, then push a matching tag (`git tag v0.1.0 && git push origin v0.1.0`). The verify
-workflow runs `make verify` on the tag and, when it passes, publishes the tarball `make e2e` tested, as is,
-with npm provenance; it needs an `NPM_TOKEN` repository secret.
+Releases are published by GitHub Actions
+([`.github/workflows/publish.yml`](.github/workflows/publish.yml)). Versions follow [semver](https://semver.org);
+a release candidate is `X.Y.Z-rc.N`. To release:
+
+1. Rename `## Unreleased` in `CHANGELOG.md` to `## X.Y.Z` (or `## X.Y.Z-rc.N`). `make lint` fails while the
+   version in `package.json` is not semver or has no notes in `CHANGELOG.md`.
+2. `npm version X.Y.Z --no-git-tag-version`, commit, then `git tag vX.Y.Z && git push origin main vX.Y.Z`.
+
+The verify workflow runs `make verify` on the tag. When it passes, it publishes the tarball `make e2e` tested,
+as is, to npm with provenance, then creates a GitHub release with that tarball and the changelog section as
+notes. A version with a `-` part goes to the npm dist-tag `next` and becomes a GitHub prerelease; any other
+version goes to `latest`. npm accepts the upload through
+[trusted publishing](https://docs.npmjs.com/trusted-publishers) (OIDC) for this repository's `verify.yml`, so
+there is no npm token to manage.
 
 ## License
 

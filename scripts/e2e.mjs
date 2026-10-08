@@ -2,7 +2,7 @@
 // 1. Packs the npm tarball and installs it in a clean consumer project under tmp/e2e/.
 // 2. The consumer reads and writes every file in input/ through each entry point (audio-tag, audio-tag/node,
 //    audio-tag/browser, and the CommonJS build) and writes what it saw to output/e2e/results.json.
-// 3. Serves the website the way a user opens the installed copy (node_modules/audio-tag/scripts/serve.mjs) and
+// 3. Serves the website the way a user opens the installed copy (`npx audio-tag`, the package's bin) and
 //    drives every page and control in Chromium: no console errors or failed requests, no sideways scrolling;
 //    the docs tabs, generated tables, filters, section menu and theme toggle; the playground opening, editing
 //    and downloading every input file with its byte map and hex, adding and removing a cover, Reset, the
@@ -117,15 +117,20 @@ const wrong = Object.entries(built.sizes.bundles).filter(([file, { bytes }]) => 
 check(Object.keys(built.sizes.bundles).length === 9 && wrong.length === 0, `dist/build-info.json records the byte size of every bundle${wrong.length ? ': wrong for ' + wrong.map(([f]) => f).join(', ') : ''}`)
 
 // 3. the website, served as a user opens the installed copy
-function serve(cwd, args, env = {}) {
-  const p = spawn('node', ['scripts/serve.mjs', ...args], { cwd, env: { ...process.env, ...env }, stdio: ['ignore', 'pipe', 'inherit'] })
+function serve(cwd, command, args, env = {}) {
+  const p = spawn(command, args, { cwd, env: { ...process.env, ...env }, stdio: ['ignore', 'pipe', 'inherit'] })
   return new Promise((ok, fail) => {
     p.stdout.on('data', (d) => d.includes('Website:') && ok(p))
-    p.on('exit', (code) => fail(new Error(`serve.mjs in ${cwd} exited with ${code}`)))
+    p.on('exit', (code) => fail(new Error(`${command} in ${cwd} exited with ${code}`)))
   })
 }
-// the installed copy as the README tells users to start it, on another port; the repository server through PORT
-const servers = [await serve(installed, ['--port', '5291']), await serve(root, [], { PORT: '5292' })]
+// the installed copy through the package's bin, the link npx, yarn and bunx run for `audio-tag`, on another port
+// (starting at all proves the link, the shebang and the executable bit). The link itself, not `npm exec audio-tag`,
+// so SIGTERM below reaches the server rather than an npm wrapper. The repository server through PORT
+const servers = [
+  await serve(consumer, join(consumer, 'node_modules/.bin/audio-tag'), ['--port', '5291']),
+  await serve(root, 'node', ['scripts/serve.mjs'], { PORT: '5292' }),
+]
 // a fake microphone, so the playground's recorder runs without hardware
 const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'] })
 const { read } = await import(pathToFileURL(join(installed, 'dist/index.js')).href)

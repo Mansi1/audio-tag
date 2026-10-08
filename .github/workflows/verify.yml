@@ -34,13 +34,12 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
-  # A version tag publishes the tarball verify just tested (publish.yml); a failed verify publishes nothing.
+  # A version tag publishes the tarball verify just tested to npm and as a GitHub release (publish.yml); a failed
+  # verify publishes nothing. npm's trusted publisher for audio-tag names this file, verify.yml.
   publish:
     needs: verify
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     permissions:
-      contents: read
+      contents: write
       id-token: write
     uses: ./.github/workflows/publish.yml
-    secrets:
-      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

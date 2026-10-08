@@ -83,3 +83,21 @@ Wrap: EVERY lead → test | .agents/VERIFY.py rule | one MEMORY line with BC, th
 2026-10-08T12:59:58Z s=3a87391b DONE fp=b07488393121 cov=94.0% paths=.github/workflows/pages.yml,.github/workflows/verify.yml,CHANGELOG.md,Makefile(+12)
 2026-10-08T13:04:54Z s=3a87391b DONE fp=a97629de9a5f cov=94.0% paths=.github/workflows/pages.yml,.github/workflows/verify.yml,CHANGELOG.md,Makefile(+12)
 2026-10-08T13:09:07Z s=3a87391b DONE fp=888cd3c2bd63 cov=94.0% paths=.github/workflows/pages.yml,.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md(+13)
+2026-10-08T13:58:24Z s=3a87391b FAIL lint
+2026-10-08T14:02:55Z s=3a87391b DONE fp=18e059aba303 cov=94.0% paths=.github/workflows/pages.yml,.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md(+15)
+2026-10-08T14:02:55Z s=3a87391b FINDING test/ogg-helpers.ts:page|ogg.test.ts:checkPages learn=test: the CRC test asserts pageCrc equals the bitwise reference; test speed itself is not pinned (host-dependent)
+2026-10-08T14:48:50Z s=3a87391b DONE fp=5e222d589788 cov=94.0% paths=.github/workflows/pages.yml,.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md(+15)
+2026-10-08T14:48:50Z s=3a87391b FINDING .github/workflows/verify.yml|pages.yml|publish.yml learn=none: cross-run artifact download already ran (deploy 37794595159); the tag path with provenance from a tarball has not run
+2026-10-08T15:45:21Z s=7143a713 DONE fp=d0ff48ce4494 cov=? paths=plans/2026-10-08_15-43_release-candidate.md
+2026-10-08T15:45:21Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:13 B05 learn=none: plan wording, not a code defect; no mechanical recurrence check
+2026-10-08T15:45:21Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:47 B01 learn=none: plan wording, not a code defect; no mechanical recurrence check
+2026-10-08T15:45:21Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:53 B01 learn=none: plan wording, not a code defect; no mechanical recurrence check
+2026-10-08T15:45:21Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:101 L03 learn=none: plan wording, not a code defect; no mechanical recurrence check
+2026-10-08T15:45:21Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:M2 docs P06 learn=none: plan wording, not a code defect; no mechanical recurrence check
+2026-10-08T15:45:21Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:Risk B02 learn=none: plan wording, not a code defect; no mechanical recurrence check
+2026-10-08T15:45:21Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:Release flow T07 learn=none: plan wording, not a code defect; no mechanical recurrence check
+2026-10-08T16:09:43Z s=7143a713 DONE fp=1e893b8342a9 cov=94.0% paths=.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md,CHANGELOG.md(+10)
+2026-10-08T16:09:43Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:47 B01 learn=memory: probe commands recorded in .agents/CLI_GIST.md; yarn is not installed, so no gate test
+2026-10-08T16:09:43Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:M1 probe learn=memory: recorded in CLI_GIST as 'outside the repo'
+2026-10-08T16:09:43Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:M3 proof B01 learn=none: workflow behavior is only provable by the first tag run
+2026-10-08T16:09:43Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:M1 docs P01 learn=none: plan wording, no recurrence check

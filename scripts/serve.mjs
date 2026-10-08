@@ -1,7 +1,8 @@
+#!/usr/bin/env node
 // Serves the project root, so the built website (website/dist/, with its ES modules) opens over HTTP.
 // Usage: npm run serve   (npm run serve -- --port 8080, or PORT=8080, to change the port)
 //        npm run website (the same, and opens the website in the browser)
-// It is also in the npm package: node node_modules/audio-tag/scripts/serve.mjs --open [--port 8080]
+// It is the package's bin: npx audio-tag --open [--port 8080] (also yarn audio-tag, bunx audio-tag)
 import { execFile } from 'node:child_process'
 import { createReadStream } from 'node:fs'
 import { stat } from 'node:fs/promises'

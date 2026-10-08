@@ -63,8 +63,9 @@ test: unit build ## unit tests in node and jsdom (vitest), on real bytes, no moc
 coverage: unit ## line coverage of src/ over both vitest projects, printed as TOTAL <n>%
 	@node -e "const t=require('./coverage/coverage-summary.json').total.lines.pct; console.log('TOTAL ' + t + '%')"
 
-lint: build ## type-check core, platform adapters and tests; check the built core uses no platform APIs and the size budgets; lint the website
+lint: build ## type-check core, platform adapters and tests; check the built core uses no platform APIs and the size budgets; check the version is semver with CHANGELOG notes; lint the website
 	npm run typecheck
+	node scripts/release-notes.mjs > /dev/null
 	npm run lint:platform
 	npm run size
 	cd website && bun run lint
