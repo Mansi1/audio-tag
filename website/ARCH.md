@@ -66,7 +66,7 @@ flowchart LR
   defuss, defuss-ssg and defuss-shadcn are pinned to exact versions, since `config.ts` depends on
   defuss-ssg's output format.
 - **Deployment and scaling:** `.github/workflows/pages.yml` builds the library, then `npm run site`, and
-  uploads `dist/`; the npm package ships `dist/` without `404.html` and `config.js`.
+  uploads `dist/`; the npm package ships `dist/`, `404.html` included, without `config.js`.
 - **Observability:** none at runtime. `make e2e` drives every page and control in Chromium against the
   installed package and fails on console errors, failed requests and requests to other origins.
 

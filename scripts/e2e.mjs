@@ -109,7 +109,7 @@ for (const r of results.filter((x) => x.file)) {
 check(results.find((x) => 'unknown' in x).unknown === 'format-unknown', 'read() refuses non-audio data with format-unknown')
 const { json: built } = results.find((x) => x.json)
 const installed = join(consumer, 'node_modules/audio-tag')
-check(existsSync(join(installed, 'website/dist/index.html')) && !existsSync(join(installed, 'website/dist/config.js')) && !existsSync(join(installed, 'website/dist/404.html')), 'the package ships the built website, without its build config and the Pages-only 404')
+check(existsSync(join(installed, 'website/dist/index.html')) && existsSync(join(installed, 'website/dist/404.html')) && !existsSync(join(installed, 'website/dist/config.js')), 'the package ships the built website with its 404 page, without its build config')
 const { version } = JSON.parse(readFileSync(join(installed, 'package.json'), 'utf8'))
 check(built.version === version && built.commit !== undefined && !Number.isNaN(Date.parse(built.date)), `dist/build-info.json holds the build (${built.version}, ${built.commit}, ${built.date})`)
 // the recorded byte sizes are those of the files in the installed package

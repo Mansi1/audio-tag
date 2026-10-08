@@ -56,7 +56,6 @@
   "files": [
     "dist",
     "website/dist",
-    "!website/dist/404.html",
     "!website/dist/config.js",
     "scripts/serve.mjs"
   ],
