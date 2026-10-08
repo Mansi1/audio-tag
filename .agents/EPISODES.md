@@ -64,3 +64,6 @@ Wrap: EVERY lead → test | .agents/VERIFY.py rule | one MEMORY line with BC, th
 2026-10-07T22:41:54Z s=e3d1b970 DONE fp=bda692e7ce52 cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+274)
 2026-10-07T22:45:08Z s=e3d1b970 DONE fp=ef37860cfb2c cov=93.9% paths=.claude/settings.json,.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml(+276)
 2026-10-07T23:17:39Z s=e3d1b970 DONE fp=852348d7af51 cov=93.9% paths=CHANGELOG.md,scripts/e2e.mjs,website/README.md,website/config.ts(+6)
+2026-10-07T23:56:46Z s=e3d1b970 FAIL tests.unit
+2026-10-07T23:59:40Z s=e3d1b970 DONE fp=f0cdbaa40e22 cov=93.9% paths=scripts/e2e.mjs,website/README.md,website/assets/site.css,website/assets/site.js(+6)
+2026-10-08T00:00:36Z s=e3d1b970 DONE fp=11209d8d7809 cov=93.9% paths=CHANGELOG.md,scripts/e2e.mjs,website/README.md,website/assets/site.css(+7)

@@ -13,3 +13,4 @@ Budget 4 KiB (`vae.py doctor --repo .`); entries are injected at session start. 
 - UNKNOWN[test/riff|aiff 'reads a large file without the sound data'] failed once in a gate run, 0/6 reruns BC log overwritten; keep var/log/vae/tests.unit.log if it recurs
 - UNKNOWN[Makefile test: website tsc] TS2345 at components/playground.tsx once in a gate run, not reproduced BC same TS 5.9.3 passed by hand
 - VERIFIED[website dev 404 log] uses Vite's logger, not the ISO log format BC the user asked for it (2026-10-08)
+- HYPOTHESIS[test/id3v2-frames 'never throws or hangs on mutated input' 10 s limit] fails under host CPU load BC 15.3 s at load avg 10 on 8 cores (VS Code busy), passed alone right after; falsifier=a failure at low load
