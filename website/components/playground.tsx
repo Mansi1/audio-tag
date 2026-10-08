@@ -2,7 +2,9 @@
 // map, structure, warnings, raw result and hex of the file. It reaches the library only through
 // readFromBlob / writeToBlob, and asks lib/byte-map.ts which byte range is what. VERIFIED: make e2e opens,
 // edits and saves every sample format here, checks the byte map and hex, cover, Reset, discard and recording.
-import type { Props } from "defuss";
+// The lists a file fills (facts, byte map, legend, structure, warnings) are JSX components passed to defuss
+// render(), so they read like the markup below instead of hand-built DOM calls.
+import { render, type Props } from "defuss";
 import { PICTURE_TYPES, readFromBlob, writeToBlob, type ReadResult } from "audio-tag/browser";
 import { byteMap, type Region } from "../lib/byte-map.js";
 
@@ -24,44 +26,49 @@ function objectUrl(blob: Blob) {
   return url;
 }
 
-const minutes = (ms: number) => (ms < 10000 ? `${(ms / 1000).toFixed(1)} s` : `${Math.floor(ms / 60000)}:${String(Math.floor(ms / 1000) % 60).padStart(2, "0")}`);
-const size = (n: number) => (n < 1024 ? `${n} B` : n < 1048576 ? `${(n / 1024).toFixed(1)} KB` : `${(n / 1048576).toFixed(1)} MB`);
-const hex = (n: number) => "0x" + n.toString(16).padStart(8, "0");
-const el = (tag: string, props: Record<string, any> = {}, ...children: (Node | string)[]) => {
-  const e = Object.assign(document.createElement(tag), props);
-  e.append(...children);
-  return e;
-};
+const minutes = (milliseconds: number) =>
+  milliseconds < 10000
+    ? `${(milliseconds / 1000).toFixed(1)} s`
+    : `${Math.floor(milliseconds / 60000)}:${String(Math.floor(milliseconds / 1000) % 60).padStart(2, "0")}`;
+const size = (bytes: number) => (bytes < 1024 ? `${bytes} B` : bytes < 1048576 ? `${(bytes / 1024).toFixed(1)} KB` : `${(bytes / 1048576).toFixed(1)} MB`);
+const hex = (offset: number) => "0x" + offset.toString(16).padStart(8, "0");
 
-function facts(file: File, r: ReadResult) {
+function facts(file: File, result: ReadResult) {
   const rows: [string, string][] = [["Size", size(file.size)]];
-  if (r.metadata.length) rows.push(["Length", minutes(r.metadata.length)]);
-  if (r.format === "mpeg") {
-    if (r.id3v2) rows.push(["ID3v2", `2.${r.id3v2.version.major}`]);
-    rows.push(["ID3v1", r.id3v1 ? "yes" : "no"], ["Lyrics3", r.lyrics3 ? "yes" : "no"]);
+  if (result.metadata.length) rows.push(["Length", minutes(result.metadata.length)]);
+  if (result.format === "mpeg") {
+    if (result.id3v2) rows.push(["ID3v2", `2.${result.id3v2.version.major}`]);
+    rows.push(["ID3v1", result.id3v1 ? "yes" : "no"], ["Lyrics3", result.lyrics3 ? "yes" : "no"]);
   }
-  if (r.format === "ogg") rows.push(["Codec", r.ogg.codec]);
-  if (r.format === "flac" && r.streamInfo) rows.push(["Sample rate", `${r.streamInfo.sampleRate} Hz`], ["Channels", String(r.streamInfo.channels)]);
-  if (r.format === "aiff" && r.common) rows.push(["Sample rate", `${Math.round(r.common.sampleRate)} Hz`], ["Channels", String(r.common.channels)]);
-  if (r.format === "riff" && r.audio) rows.push(["Sample rate", `${r.audio.format.sampleRate} Hz`], ["Channels", String(r.audio.format.channels)]);
-  rows.push(["Pictures", String(r.metadata.pictures?.length ?? 0)]);
-  $("facts").replaceChildren(...rows.flatMap(([k, v]) => [el("dt", { textContent: k }), el("dd", { textContent: v })]));
+  if (result.format === "ogg") rows.push(["Codec", result.ogg.codec]);
+  if (result.format === "flac" && result.streamInfo) rows.push(["Sample rate", `${result.streamInfo.sampleRate} Hz`], ["Channels", String(result.streamInfo.channels)]);
+  if (result.format === "aiff" && result.common) rows.push(["Sample rate", `${Math.round(result.common.sampleRate)} Hz`], ["Channels", String(result.common.channels)]);
+  if (result.format === "riff" && result.audio) rows.push(["Sample rate", `${result.audio.format.sampleRate} Hz`], ["Channels", String(result.audio.format.channels)]);
+  rows.push(["Pictures", String(result.metadata.pictures?.length ?? 0)]);
+  render(<>{rows.map(([name, value]) => <Fact name={name} value={value} />)}</>, $("facts"));
 }
 
-function fill(m: ReadResult["metadata"]) {
-  const f = ($("editor") as HTMLFormElement).elements as any;
-  f.title.value = m.title ?? "";
-  f.artist.value = (m.artist ?? []).join(", ");
-  f.albumArtist.value = m.albumArtist ?? "";
-  f.album.value = m.album ?? "";
-  f.genre.value = (m.genre ?? []).join(", ");
-  f.recordingTime.value = m.recordingTime ?? "";
-  f.track.value = m.track?.no ?? "";
-  f.tracks.value = m.track?.of ?? "";
-  f.comment.value = m.comments?.[0]?.text ?? "";
+const Fact = ({ name, value }: Props & { name: string; value: string }) => (
+  <>
+    <dt>{name}</dt>
+    <dd>{value}</dd>
+  </>
+);
+
+function fill(metadata: ReadResult["metadata"]) {
+  const fields = ($("editor") as HTMLFormElement).elements as any;
+  fields.title.value = metadata.title ?? "";
+  fields.artist.value = (metadata.artist ?? []).join(", ");
+  fields.albumArtist.value = metadata.albumArtist ?? "";
+  fields.album.value = metadata.album ?? "";
+  fields.genre.value = (metadata.genre ?? []).join(", ");
+  fields.recordingTime.value = metadata.recordingTime ?? "";
+  fields.track.value = metadata.track?.no ?? "";
+  fields.tracks.value = metadata.track?.of ?? "";
+  fields.comment.value = metadata.comments?.[0]?.text ?? "";
   $<HTMLInputElement>("f-cover").value = "";
   $<HTMLInputElement>("f-nocover").checked = false;
-  $<HTMLInputElement>("f-nocover").disabled = !m.pictures?.length;
+  $<HTMLInputElement>("f-nocover").disabled = !metadata.pictures?.length;
 }
 
 // ---- for nerds ---------------------------------------------------------------------------------------
@@ -69,91 +76,108 @@ function fill(m: ReadResult["metadata"]) {
 function drawByteMap(regions: Region[], total: number, format: string) {
   const map = $("byte-map");
   map.className = `byte-map fmt-${format}`;
-  map.replaceChildren(
-    ...regions.map((r, i) => {
-      const share = (r.end - r.start) / total;
-      const b = el("button", {
-        type: "button",
-        className: `k-${r.kind}`,
-        title: `${r.label} · ${r.kind} · offset ${r.start} · ${size(r.end - r.start)}`,
-        textContent: share > 0.08 ? r.label : "",
-      });
-      b.style.flex = `${Math.max(share, 0.02)} 1 0`;
-      b.dataset.region = String(i);
-      b.setAttribute("aria-label", `${r.label}, ${r.kind}, bytes ${r.start} to ${r.end - 1}`);
-      b.setAttribute("aria-pressed", "false");
-      b.addEventListener("click", () => select(i));
-      return b;
-    }),
-  );
+  render(<>{regions.map((region, index) => <RegionButton region={region} index={index} total={total} />)}</>, map);
   $("legend").className = `legend fmt-${format}`; // the format color for the legend swatches
-  $("legend").replaceChildren(
-    ...KINDS.filter(([k]) => regions.some((r) => r.kind === k)).map(([k, text]) => el("span", {}, el("i", { className: `k-${k}` }), text)),
-  );
-  $("structure").replaceChildren(
-    ...regions.map((r) => 
-      el("tr", { className: "table-row" },
-        el("td", { className: "table-cell" }, el("code", { textContent: r.label })),
-        el("td", { className: "table-cell", textContent: r.kind }),
-        el("td", { className: "table-cell mono", textContent: `${r.start} (${hex(r.start)})` }),
-        el("td", { className: "table-cell mono", textContent: size(r.end - r.start) }),
-      ),
-    ),
+  const kinds = KINDS.filter(([kind]) => regions.some((region) => region.kind === kind));
+  render(<>{kinds.map(([kind, text]) => <LegendEntry kind={kind} text={text} />)}</>, $("legend"));
+  render(<>{regions.map((region) => <StructureRow region={region} />)}</>, $("structure"));
+}
+
+function RegionButton({ region, index, total }: Props & { region: Region; index: number; total: number }) {
+  const share = (region.end - region.start) / total;
+  return (
+    <button
+      type="button"
+      class={`k-${region.kind}`}
+      title={`${region.label} · ${region.kind} · offset ${region.start} · ${size(region.end - region.start)}`}
+      style={`flex: ${Math.max(share, 0.02)} 1 0`}
+      data-region={String(index)}
+      aria-label={`${region.label}, ${region.kind}, bytes ${region.start} to ${region.end - 1}`}
+      aria-pressed="false"
+      onClick={() => select(index)}
+    >
+      {share > 0.08 ? region.label : ""}
+    </button>
   );
 }
 
-async function select(i: number) {
+const LegendEntry = ({ kind, text }: Props & { kind: Region["kind"]; text: string }) => (
+  <span>
+    <i class={`k-${kind}`}></i>
+    {text}
+  </span>
+);
+
+const StructureRow = ({ region }: Props & { region: Region }) => (
+  <tr class="table-row">
+    <td class="table-cell"><code>{region.label}</code></td>
+    <td class="table-cell">{region.kind}</td>
+    <td class="table-cell mono">{`${region.start} (${hex(region.start)})`}</td>
+    <td class="table-cell mono">{size(region.end - region.start)}</td>
+  </tr>
+);
+
+async function select(index: number) {
   if (!current) return;
-  const r = current.regions[i];
-  for (const b of $("byte-map").querySelectorAll("button")) b.setAttribute("aria-pressed", String(b.dataset.region === String(i)));
-  const bytes = new Uint8Array(await current.file.slice(r.start, Math.min(r.end, r.start + 256)).arrayBuffer());
+  const region = current.regions[index];
+  for (const button of $("byte-map").querySelectorAll("button")) button.setAttribute("aria-pressed", String(button.dataset.region === String(index)));
+  const bytes = new Uint8Array(await current.file.slice(region.start, Math.min(region.end, region.start + 256)).arrayBuffer());
   const lines: string[] = [];
-  for (let p = 0; p < bytes.length; p += 16) {
-    const row = bytes.subarray(p, p + 16);
-    const hexes = [...row].map((x) => x.toString(16).padStart(2, "0")).join(" ").padEnd(47, " ");
-    const ascii = [...row].map((x) => (x >= 32 && x < 127 ? String.fromCharCode(x) : ".")).join("");
-    lines.push(`${(r.start + p).toString(16).padStart(8, "0")}  ${hexes}  ${ascii}`);
+  for (let offset = 0; offset < bytes.length; offset += 16) {
+    const row = bytes.subarray(offset, offset + 16);
+    const hexes = [...row].map((byte) => byte.toString(16).padStart(2, "0")).join(" ").padEnd(47, " ");
+    const ascii = [...row].map((byte) => (byte >= 32 && byte < 127 ? String.fromCharCode(byte) : ".")).join("");
+    lines.push(`${(region.start + offset).toString(16).padStart(8, "0")}  ${hexes}  ${ascii}`);
   }
-  $("region-title").textContent = `${r.label} · ${r.kind} · bytes ${r.start}–${r.end - 1} (${size(r.end - r.start)})`;
-  $("hex").textContent = lines.join("\n") + (r.end - r.start > 256 ? "\n…" : "");
+  $("region-title").textContent = `${region.label} · ${region.kind} · bytes ${region.start}–${region.end - 1} (${size(region.end - region.start)})`;
+  $("hex").textContent = lines.join("\n") + (region.end - region.start > 256 ? "\n…" : "");
 }
 
-function nerds(r: ReadResult) {
-  const replacer = (_k: string, v: unknown) => (typeof v === "bigint" ? `${v}n` : v instanceof Uint8Array ? `<${v.length} bytes>` : v);
-  $("dump").textContent = JSON.stringify(r, replacer, 2);
-  $("warning-list").replaceChildren(
-    ...(r.warnings.length
-      ? r.warnings.map((w) => el("li", {}, el("span", { className: "badge", textContent: w.code }), " ", w.message))
-      : [el("li", { textContent: "No warnings: the file follows its spec." })]),
+function nerds(result: ReadResult) {
+  const replacer = (_key: string, value: unknown) => (typeof value === "bigint" ? `${value}n` : value instanceof Uint8Array ? `<${value.length} bytes>` : value);
+  $("dump").textContent = JSON.stringify(result, replacer, 2);
+  render(
+    <>
+      {result.warnings.length
+        ? result.warnings.map((warning) => <WarningItem code={warning.code} message={warning.message} />)
+        : <li>No warnings: the file follows its spec.</li>}
+    </>,
+    $("warning-list"),
   );
-  $("warning-count").textContent = String(r.warnings.length);
+  $("warning-count").textContent = String(result.warnings.length);
 }
+
+const WarningItem = ({ code, message }: Props & { code: string; message: string }) => (
+  <li>
+    <span class="badge">{code}</span> {message}
+  </li>
+);
 
 // ---- pictures -------------------------------------------------------------------------------------------
 
 const PICTURE_FORMATS: Record<string, string> = { "image/jpeg": "JPEG", "image/jpg": "JPEG", "image/png": "PNG", "image/gif": "GIF", "image/webp": "WebP", "image/bmp": "BMP" };
 
-// Shows picture i (wrapping around) at its natural aspect ratio, with its pixel size, format, byte size and
-// picture type; the pixel size is known only once the browser has decoded the image.
-function showPicture(i: number) {
+// Shows picture `index` (wrapping around) at its natural aspect ratio, with its pixel size, format, byte size
+// and picture type; the pixel size is known only once the browser has decoded the image.
+function showPicture(index: number) {
   const pictures = current?.result.metadata.pictures ?? [];
   if (!pictures.length) return;
-  shownPicture = (i + pictures.length) % pictures.length;
-  const pic = pictures[shownPicture];
-  const img = $<HTMLImageElement>("cover");
-  const facts = [
-    PICTURE_FORMATS[pic.mimeType.toLowerCase()] ?? pic.mimeType,
-    size(pic.data.length),
-    PICTURE_TYPES[pic.type] ?? `type ${pic.type}`,
-    ...(pic.description ? [`"${pic.description}"`] : []),
+  shownPicture = (index + pictures.length) % pictures.length;
+  const picture = pictures[shownPicture];
+  const image = $<HTMLImageElement>("cover");
+  const details = [
+    PICTURE_FORMATS[picture.mimeType.toLowerCase()] ?? picture.mimeType,
+    size(picture.data.length),
+    PICTURE_TYPES[picture.type] ?? `type ${picture.type}`,
+    ...(picture.description ? [`"${picture.description}"`] : []),
   ];
-  $("cover-info").textContent = facts.join(" · ");
-  img.alt = `${PICTURE_TYPES[pic.type] ?? "Picture"}${pic.description ? `: ${pic.description}` : ""}`;
-  img.onload = () => {
-    $("cover-info").textContent = [`${img.naturalWidth} × ${img.naturalHeight} px`, ...facts].join(" · ");
-    img.classList.toggle("tiny", img.naturalHeight < 48); // enlarged to the 3rem minimum: keep the pixels sharp
+  $("cover-info").textContent = details.join(" · ");
+  image.alt = `${PICTURE_TYPES[picture.type] ?? "Picture"}${picture.description ? `: ${picture.description}` : ""}`;
+  image.onload = () => {
+    $("cover-info").textContent = [`${image.naturalWidth} × ${image.naturalHeight} px`, ...details].join(" · ");
+    image.classList.toggle("tiny", image.naturalHeight < 48); // enlarged to the 3rem minimum: keep the pixels sharp
   };
-  img.src = objectUrl(new Blob([pic.data as BlobPart], { type: pic.mimeType }));
+  image.src = objectUrl(new Blob([picture.data as BlobPart], { type: picture.mimeType }));
   $("cover-count").textContent = `${shownPicture + 1} of ${pictures.length}`;
 }
 
@@ -163,11 +187,11 @@ async function load(file: File) {
   let result: ReadResult;
   try {
     result = await readFromBlob(file);
-  } catch (e: any) {
-    toast({ title: `Can't read ${file.name}`, description: e.message, variant: "destructive" });
+  } catch (error: any) {
+    toast({ title: `Can't read ${file.name}`, description: error.message, variant: "destructive" });
     return;
   }
-  for (const u of urls) URL.revokeObjectURL(u);
+  for (const url of urls) URL.revokeObjectURL(url);
   urls = [];
   const regions = byteMap(result, file.size);
   current = { file, result, regions };
@@ -182,40 +206,40 @@ async function load(file: File) {
   const pictures = result.metadata.pictures ?? [];
   $("cover-box").hidden = !pictures.length;
   $("cover-nav").hidden = pictures.length < 2;
-  if (pictures.length) showPicture(Math.max(0, pictures.findIndex((p) => p.type === 3))); // the front cover first
+  if (pictures.length) showPicture(Math.max(0, pictures.findIndex((picture) => picture.type === 3))); // the front cover first
   facts(file, result);
   fill(result.metadata);
   drawByteMap(regions, file.size, result.format);
   nerds(result);
-  select(Math.max(0, regions.findIndex((r) => r.kind === "tag")));
+  select(Math.max(0, regions.findIndex((region) => region.kind === "tag")));
 }
 
 // The fields of the form that differ from the file: unchanged fields keep their bytes, emptied ones go (null).
 function update(): Record<string, unknown> {
-  const f = ($("editor") as HTMLFormElement).elements as any;
+  const fields = ($("editor") as HTMLFormElement).elements as any;
   const old = current!.result.metadata;
-  const list = (s: string) => s.split(",").map((x) => x.trim()).filter(Boolean);
-  const m: Record<string, unknown> = {};
+  const list = (text: string) => text.split(",").map((item) => item.trim()).filter(Boolean);
+  const changes: Record<string, unknown> = {};
   const set = (key: string, value: unknown, before: unknown) => {
-    if (JSON.stringify(value ?? null) !== JSON.stringify(before ?? null)) m[key] = value ?? null;
+    if (JSON.stringify(value ?? null) !== JSON.stringify(before ?? null)) changes[key] = value ?? null;
   };
-  set("title", f.title.value.trim() || undefined, old.title);
-  set("artist", list(f.artist.value).length ? list(f.artist.value) : undefined, old.artist);
-  set("albumArtist", f.albumArtist.value.trim() || undefined, old.albumArtist);
-  set("album", f.album.value.trim() || undefined, old.album);
-  set("genre", list(f.genre.value).length ? list(f.genre.value) : undefined, old.genre);
-  set("recordingTime", f.recordingTime.value.trim() || undefined, old.recordingTime);
-  const no = f.track.value ? Number(f.track.value) : undefined;
-  const of = f.tracks.value ? Number(f.tracks.value) : undefined;
-  if (no !== old.track?.no || of !== old.track?.of) m.track = no || of ? { no, of } : null;
-  const text = f.comment.value;
-  if (text !== (old.comments?.[0]?.text ?? "")) {
+  set("title", fields.title.value.trim() || undefined, old.title);
+  set("artist", list(fields.artist.value).length ? list(fields.artist.value) : undefined, old.artist);
+  set("albumArtist", fields.albumArtist.value.trim() || undefined, old.albumArtist);
+  set("album", fields.album.value.trim() || undefined, old.album);
+  set("genre", list(fields.genre.value).length ? list(fields.genre.value) : undefined, old.genre);
+  set("recordingTime", fields.recordingTime.value.trim() || undefined, old.recordingTime);
+  const trackNo = fields.track.value ? Number(fields.track.value) : undefined;
+  const trackOf = fields.tracks.value ? Number(fields.tracks.value) : undefined;
+  if (trackNo !== old.track?.no || trackOf !== old.track?.of) changes.track = trackNo || trackOf ? { no: trackNo, of: trackOf } : null;
+  const comment = fields.comment.value;
+  if (comment !== (old.comments?.[0]?.text ?? "")) {
     const rest = old.comments?.slice(1) ?? [];
-    m.comments = text
-      ? [{ language: old.comments?.[0]?.language ?? "eng", description: old.comments?.[0]?.description ?? "", text }, ...rest]
+    changes.comments = comment
+      ? [{ language: old.comments?.[0]?.language ?? "eng", description: old.comments?.[0]?.description ?? "", text: comment }, ...rest]
       : rest.length ? rest : null;
   }
-  return m;
+  return changes;
 }
 
 const unsaved = () => !!current && (Object.keys(update()).length > 0 || ($("f-cover") as HTMLInputElement).files!.length > 0 || $<HTMLInputElement>("f-nocover").checked);
@@ -226,8 +250,8 @@ function confirmDiscard(action: string): Promise<boolean> {
   const dialog = $<HTMLDialogElement>("discard-dialog");
   $("discard-desc").textContent = `You changed tags in ${current!.file.name} that are not saved yet. ${action} discards these changes.`;
   return new Promise((resolve) => {
-    const answer = (e: Event) => {
-      const button = (e.target as HTMLElement).closest<HTMLElement>("[data-answer]");
+    const answer = (event: Event) => {
+      const button = (event.target as HTMLElement).closest<HTMLElement>("[data-answer]");
       if (!button) return;
       dialog.removeEventListener("click", answer);
       resolve(button.dataset.answer === "discard");
@@ -239,16 +263,16 @@ function confirmDiscard(action: string): Promise<boolean> {
   });
 }
 
-async function onPick(e: Event) {
-  const input = e.target as HTMLInputElement;
+async function onPick(event: Event) {
+  const input = event.target as HTMLInputElement;
   const file = input.files?.[0];
   if (!file) return;
   if (await confirmDiscard("Opening another file")) load(file);
   else input.value = "";
 }
 
-async function onSave(e: Event) {
-  e.preventDefault();
+async function onSave(event: Event) {
+  event.preventDefault();
   if (!current) return;
   const save = $<HTMLButtonElement>("save");
   const metadata = update();
@@ -262,12 +286,12 @@ async function onSave(e: Event) {
   }
   save.disabled = true;
   try {
-    const out = await writeToBlob(current.file, { metadata: metadata as any });
-    el("a", { href: objectUrl(out), download: out.name }).click();
-    await load(out); // read it back, so you see what was written
-    toast({ title: `Saved ${out.name}`, description: `Changed ${changed.join(", ")}. ${size(out.size)}.`, variant: "success" });
-  } catch (err: any) {
-    toast({ title: "Not saved", description: err.message, variant: "destructive", duration: 8000 });
+    const saved = await writeToBlob(current.file, { metadata: metadata as any });
+    Object.assign(document.createElement("a"), { href: objectUrl(saved), download: saved.name }).click();
+    await load(saved); // read it back, so you see what was written
+    toast({ title: `Saved ${saved.name}`, description: `Changed ${changed.join(", ")}. ${size(saved.size)}.`, variant: "success" });
+  } catch (error: any) {
+    toast({ title: "Not saved", description: error.message, variant: "destructive", duration: 8000 });
   } finally {
     save.disabled = false;
   }
@@ -282,27 +306,28 @@ function onReset() {
 
 // 16-bit mono PCM in a RIFF WAVE file ("fmt " + "data"), without tags.
 function wavFile(samples: ArrayLike<number>, rate: number, name: string) {
-  const buf = new ArrayBuffer(44 + samples.length * 2);
-  const dv = new DataView(buf);
-  const ascii = (pos: number, s: string) => [...s].forEach((c, i) => dv.setUint8(pos + i, c.charCodeAt(0)));
-  ascii(0, "RIFF"); dv.setUint32(4, 36 + samples.length * 2, true); ascii(8, "WAVE");
-  ascii(12, "fmt "); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
-  dv.setUint32(24, rate, true); dv.setUint32(28, rate * 2, true); dv.setUint16(32, 2, true); dv.setUint16(34, 16, true);
-  ascii(36, "data"); dv.setUint32(40, samples.length * 2, true);
-  for (let i = 0; i < samples.length; i++) dv.setInt16(44 + i * 2, Math.max(-1, Math.min(1, samples[i])) * 0x7fff, true);
-  return new File([buf], name, { type: "audio/wav" });
+  const buffer = new ArrayBuffer(44 + samples.length * 2);
+  const view = new DataView(buffer);
+  const ascii = (position: number, text: string) => [...text].forEach((char, index) => view.setUint8(position + index, char.charCodeAt(0)));
+  ascii(0, "RIFF"); view.setUint32(4, 36 + samples.length * 2, true); ascii(8, "WAVE");
+  ascii(12, "fmt "); view.setUint32(16, 16, true); view.setUint16(20, 1, true); view.setUint16(22, 1, true);
+  view.setUint32(24, rate, true); view.setUint32(28, rate * 2, true); view.setUint16(32, 2, true); view.setUint16(34, 16, true);
+  ascii(36, "data"); view.setUint32(40, samples.length * 2, true);
+  for (let index = 0; index < samples.length; index++) view.setInt16(44 + index * 2, Math.max(-1, Math.min(1, samples[index])) * 0x7fff, true);
+  return new File([buffer], name, { type: "audio/wav" });
 }
 
 // When there is no microphone: a half-second 440 Hz tone.
 const testTone = () => {
-  const rate = 8000, n = rate / 2;
-  return wavFile(Array.from({ length: n }, (_, i) => Math.sin((2 * Math.PI * 440 * i) / rate) * 0.25 * Math.min(1, (n - i) / 400)), rate, "sample.wav");
+  const rate = 8000, count = rate / 2;
+  const sample = (index: number) => Math.sin((2 * Math.PI * 440 * index) / rate) * 0.25 * Math.min(1, (count - index) / 400);
+  return wavFile(Array.from({ length: count }, (_, index) => sample(index)), rate, "sample.wav");
 };
 
 // An AudioWorklet copies the raw samples, which become a WAV file on stop (MediaRecorder would give WebM).
 const MAX_SECONDS = 30;
-const TAP = "registerProcessor('tap', class extends AudioWorkletProcessor { process(inputs) { const c = inputs[0][0]; if (c) this.port.postMessage(c.slice(0)); return true } })";
-let recording: { stream: MediaStream; ctx: AudioContext; chunks: Float32Array[]; timer: ReturnType<typeof setInterval> } | undefined;
+const TAP = "registerProcessor('tap', class extends AudioWorkletProcessor { process(inputs) { const channel = inputs[0][0]; if (channel) this.port.postMessage(channel.slice(0)); return true } })";
+let recording: { stream: MediaStream; context: AudioContext; chunks: Float32Array[]; timer: ReturnType<typeof setInterval> } | undefined;
 
 function setRecordButton(text: string, active: boolean) {
   $("record-label").textContent = text;
@@ -312,43 +337,44 @@ function setRecordButton(text: string, active: boolean) {
 
 async function startRecording() {
   const stream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
-  const ctx = new AudioContext();
+  const context = new AudioContext();
   const module = URL.createObjectURL(new Blob([TAP], { type: "text/javascript" }));
-  await ctx.audioWorklet.addModule(module);
+  await context.audioWorklet.addModule(module);
   URL.revokeObjectURL(module);
-  const tap = new AudioWorkletNode(ctx, "tap");
-  const silent = ctx.createGain();
+  const tap = new AudioWorkletNode(context, "tap");
+  const silent = context.createGain();
   silent.gain.value = 0; // the tap must reach the destination to run, but nothing is played back
   const chunks: Float32Array[] = [];
-  tap.port.onmessage = (e) => chunks.push(e.data);
-  ctx.createMediaStreamSource(stream).connect(tap).connect(silent).connect(ctx.destination);
+  tap.port.onmessage = (event) => chunks.push(event.data);
+  context.createMediaStreamSource(stream).connect(tap).connect(silent).connect(context.destination);
   const started = performance.now();
   const tick = () => {
-    const s = (performance.now() - started) / 1000;
-    if (s >= MAX_SECONDS) return void stopRecording();
-    setRecordButton(`Stop recording · ${Math.floor(s / 60)}:${String(Math.floor(s) % 60).padStart(2, "0")}`, true);
+    const seconds = (performance.now() - started) / 1000;
+    if (seconds >= MAX_SECONDS) return void stopRecording();
+    setRecordButton(`Stop recording · ${Math.floor(seconds / 60)}:${String(Math.floor(seconds) % 60).padStart(2, "0")}`, true);
   };
-  recording = { stream, ctx, chunks, timer: setInterval(tick, 250) };
+  recording = { stream, context, chunks, timer: setInterval(tick, 250) };
   tick();
 }
 
 async function stopRecording() {
-  const { stream, ctx, chunks, timer } = recording!;
+  const { stream, context, chunks, timer } = recording!;
   recording = undefined;
   clearInterval(timer);
-  for (const t of stream.getTracks()) t.stop();
-  await ctx.close();
+  for (const track of stream.getTracks()) track.stop();
+  await context.close();
   setRecordButton("No file at hand? Record with your mic", false);
-  const samples = new Float32Array(chunks.reduce((n, c) => n + c.length, 0));
-  let pos = 0;
-  for (const c of chunks) { samples.set(c, pos); pos += c.length; }
+  const samples = new Float32Array(chunks.reduce((length, chunk) => length + chunk.length, 0));
+  let position = 0;
+  for (const chunk of chunks) { samples.set(chunk, position); position += chunk.length; }
   if (!samples.length) {
     toast({ title: "Nothing was recorded", description: "The microphone sent no sound. Try again.", variant: "warning" });
     return;
   }
-  const d = new Date();
-  const two = (n: number) => String(n).padStart(2, "0");
-  load(wavFile(samples, ctx.sampleRate, `recording-${d.getFullYear()}-${two(d.getMonth() + 1)}-${two(d.getDate())}-${two(d.getHours())}${two(d.getMinutes())}${two(d.getSeconds())}.wav`));
+  const now = new Date();
+  const two = (value: number) => String(value).padStart(2, "0");
+  const stamp = `${now.getFullYear()}-${two(now.getMonth() + 1)}-${two(now.getDate())}-${two(now.getHours())}${two(now.getMinutes())}${two(now.getSeconds())}`;
+  load(wavFile(samples, context.sampleRate, `recording-${stamp}.wav`));
 }
 
 async function onRecord() {
@@ -359,16 +385,16 @@ async function onRecord() {
   try {
     if (!navigator.mediaDevices?.getUserMedia) throw new Error("this browser has no microphone access here (it needs https or localhost)");
     await startRecording();
-  } catch (e: any) {
-    const blocked = e.name === "NotAllowedError";
-    toast({ title: blocked ? "Microphone blocked" : "No microphone", description: `${blocked ? "Allow the microphone in your browser to record" : e.message}. Here is a test tone instead.`, variant: "warning", duration: 8000 });
+  } catch (error: any) {
+    const blocked = error.name === "NotAllowedError";
+    toast({ title: blocked ? "Microphone blocked" : "No microphone", description: `${blocked ? "Allow the microphone in your browser to record" : error.message}. Here is a test tone instead.`, variant: "warning", duration: 8000 });
     load(testTone());
   } finally {
     button.disabled = false;
   }
 }
 
-if (typeof window !== "undefined") addEventListener("beforeunload", (e) => { if (unsaved()) e.preventDefault(); });
+if (typeof window !== "undefined") addEventListener("beforeunload", (event) => { if (unsaved()) event.preventDefault(); });
 
 // ---- markup ---------------------------------------------------------------------------------------------
 
