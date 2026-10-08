@@ -1,6 +1,6 @@
-# Publishes audio-tag to npm from the build that verify tested: verify.yml calls this workflow after `make
-# verify` passes on a version tag (v0.1.0, v1.2.3, ...), and it publishes that run's `build` artifact (dist/ and
-# website/dist/) instead of building again. `make e2e` packed and installed exactly this tree with `npm pack`.
+# Publishes audio-tag to npm: verify.yml calls this workflow after `make verify` passes on a version tag
+# (v0.1.0, v1.2.3, ...), and it publishes that run's `package` artifact, the tarball `make e2e` packed,
+# installed and tested, as is: nothing is built or packed again.
 # Release: bump "version" in package.json, commit, then `git tag v<version> && git push origin v<version>`.
 # Needs the repository secret NPM_TOKEN: an npm access token that may publish this package.
 name: Publish to npm
@@ -22,8 +22,6 @@ jobs:
       group: publish
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -31,22 +29,19 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: build
+          name: package
 
-      - name: Check that the tag matches package.json and the build is complete
+      - name: Check that the tag matches the tarball's version
         run: |
-          version=$(node -p "require('./package.json').version")
+          version=$(tar -xzOf audio-tag-*.tgz package/package.json | node -p "JSON.parse(require('fs').readFileSync(0, 'utf8')).version")
           if [ "$GITHUB_REF_NAME" != "v$version" ]; then
-            echo "::error::Tag $GITHUB_REF_NAME does not match package.json version $version (expected v$version)"
+            echo "::error::Tag $GITHUB_REF_NAME does not match the package version $version (expected v$version)"
             exit 1
           fi
-          for f in dist/index.js dist/browser.min.js dist/build-info.json website/dist/index.html; do
-            [ -f "$f" ] || { echo "::error::$f is missing from the verified build"; exit 1; }
-          done
 
-      # --ignore-scripts: prepublishOnly would build again (it starts by deleting dist/); `make verify` already
-      # ran its checks on this tree: typecheck, tests, build, platform check and size budgets (make lint).
+      # --ignore-scripts: prepublishOnly would build again; `make verify` already ran its checks on this tarball
+      # (typecheck, tests, build, platform check and size budgets, then e2e on the installed package).
       - name: Publish
-        run: npm publish --provenance --access public --ignore-scripts
+        run: npm publish audio-tag-*.tgz --provenance --access public --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -25,18 +25,16 @@ jobs:
       # CONFIG["ci"] commands from .agents/VERIFY.py, one step each:
       - run: make setup
       - run: make verify
-      # The library and website build that make verify tested; pages.yml deploys this website/dist/ instead of
-      # building it again, so only a verified site goes live.
+      # The npm tarball make e2e packed, installed and drove in Chromium (tmp/e2e/, scripts/e2e.mjs): pages.yml
+      # deploys its website/dist/ and publish.yml publishes it as is, so nothing is built or packed again.
       - uses: actions/upload-artifact@v4
         with:
-          name: build
-          path: |
-            dist/
-            website/dist/
+          name: package
+          path: tmp/e2e/audio-tag-*.tgz
           if-no-files-found: error
           retention-days: 7
 
-  # A version tag publishes the build verify just tested (publish.yml); a failed verify publishes nothing.
+  # A version tag publishes the tarball verify just tested (publish.yml); a failed verify publishes nothing.
   publish:
     needs: verify
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')

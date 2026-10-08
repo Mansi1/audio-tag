@@ -58,11 +58,12 @@ flowchart LR
 | Everything | `make verify` | lint, test, coverage and e2e, as CI runs them |
 | Sizes | `make metrics` | builds, then checks each import against its size budget (`scripts/check-size.mjs`) |
 
-- One build per commit in CI. `.github/workflows/verify.yml` runs `make verify` and uploads the `dist/` and
-  `website/dist/` it tested as the artifact `build`. On a `v*` tag it then calls `publish.yml`, which publishes
-  that tree with `npm publish --ignore-scripts` (`prepublishOnly` would build again); after a passing run on
-  `main`, `pages.yml` deploys its `website/dist/` (see [`website/ARCH.md`](website/ARCH.md)). The alternative,
-  a build in each workflow, published and deployed trees no test had seen, also after a failed verify.
+- One tested artifact per commit in CI. `.github/workflows/verify.yml` runs `make verify` and uploads the npm
+  tarball that `make e2e` packed, installed and drove in Chromium as the artifact `package`. On a `v*` tag it
+  then calls `publish.yml`, which publishes that tarball as is (`npm publish <tgz> --ignore-scripts`;
+  `prepublishOnly` would build again); after a passing run on `main`, `pages.yml` deploys the tarball's
+  `website/dist/` (see [`website/ARCH.md`](website/ARCH.md)). The alternative, a build or pack in each
+  workflow, published and deployed files no test had seen, also after a failed verify.
 - The library is not a service, so `make start`, `stop`, `status` and `log` do nothing.
 
 ## Security

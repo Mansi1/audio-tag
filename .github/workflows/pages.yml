@@ -1,7 +1,8 @@
 # Deploys the website to GitHub Pages (https://mansi1.github.io/audio-tag/) after the verify workflow passes on
-# main. It deploys the website/dist/ that verify built and tested (its `build` artifact) instead of building it
-# again: one build per commit, and a commit that fails verify never goes live. The site's URLs are
-# page-relative, so it works as is under /audio-tag/. A manual run deploys the latest verified build of main.
+# main. It deploys website/dist/ from the npm tarball that verify packed and `make e2e` installed and drove in
+# Chromium (the `package` artifact), so the site that goes live is the one the test saw, never built again; a
+# commit that fails verify never goes live. The site's URLs are page-relative, so it works as is under
+# /audio-tag/. A manual run deploys the latest verified tarball of main.
 name: Deploy website
 
 on:
@@ -39,15 +40,19 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: build
+          name: package
           run-id: ${{ steps.run.outputs.id }}
           github-token: ${{ github.token }}
 
-      - run: touch website/dist/.nojekyll
+      - name: Unpack the tested website
+        run: |
+          tar -xzf audio-tag-*.tgz
+          test -f package/website/dist/index.html
+          touch package/website/dist/.nojekyll
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: website/dist
+          path: package/website/dist
 
   deploy:
     needs: build

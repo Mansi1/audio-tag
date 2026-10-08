@@ -74,11 +74,11 @@ flowchart LR
   in defuss-ssg; `scripts/check-node.mjs` stops earlier ones with a message, kyr0/defuss#56) and bun.
   defuss, defuss-ssg and defuss-shadcn are pinned to exact versions, since `config.ts` depends on
   defuss-ssg's output format.
-- **Deployment and scaling:** `.github/workflows/verify.yml` uploads the `dist/` that `make verify` built and
-  tested as the artifact `build`; `.github/workflows/pages.yml` runs when verify passes on `main` and deploys
-  that artifact's `website/dist/` without building again, so one build per commit goes live and a commit that
-  fails verify does not. The alternative, a separate build in the Pages workflow, deployed a site no test had
-  seen, also when verify failed. The npm package ships `dist/`, `404.html` included, without `config.js`.
+- **Deployment and scaling:** `.github/workflows/verify.yml` uploads the npm tarball that `make e2e` installed
+  and drove in Chromium as the artifact `package`; `.github/workflows/pages.yml` runs when verify passes on
+  `main`, unpacks it and deploys its `website/dist/`, so the site that goes live is the one the test saw and a
+  commit that fails verify does not go live. The alternative, a separate build in the Pages workflow, deployed
+  a site no test had seen, also when verify failed. The npm package ships `dist/`, `404.html` included, without `config.js`.
 - **Observability:** none at runtime. `make e2e` drives every page and control in Chromium against the
   installed package and fails on console errors, failed requests and requests to other origins.
 
