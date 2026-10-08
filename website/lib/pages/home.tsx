@@ -1,11 +1,11 @@
 // The start page (server only; pages/index.mdx only renders it). VERIFIED: defuss-ssg builds pages only
 // from .md, .mdx and .html files (kyr0/defuss#63). The playground inside is the one hydrated island.
-import type { Props } from "defuss";
 import { Head } from "../head.tsx";
 import { Header } from "../header.tsx";
 import { Footer } from "../footer.tsx";
 import { Playground } from "../../components/playground.tsx";
 import { Diagram } from "../diagram.tsx";
+import { CodeBlock } from "../code-block.tsx";
 
 const FORMATS: [string, string, string][] = [
   ["mpeg", "MP3 · ID3", "ID3v1 and v1.1, ID3v2.2, 2.3 and 2.4, and Lyrics3 v1 and v2.00. 104 frame types, including the CHAP/CTOC chapters, and 148 genres. Unknown frames keep their bytes."],
@@ -18,10 +18,15 @@ const FORMATS: [string, string, string][] = [
 const MANAGERS: [string, string][] = [["npm", "npm install audio-tag"], ["pnpm", "pnpm add audio-tag"], ["yarn", "yarn add audio-tag"], ["bun", "bun add audio-tag"]];
 const WAVE = [30, 55, 80, 45, 70, 95, 60, 35, 75, 50, 25];
 
-// Syntax colors of the code example in the hero.
-const CodeKeyword = ({ children }: Props) => <span class="code-keyword">{children}</span>;
-const CodeString = ({ children }: Props) => <span class="code-string">{children}</span>;
-const CodeComment = ({ children }: Props) => <span class="code-comment">{children}</span>;
+const HERO_CODE = `import { readFromBlob, writeToBlob } from 'audio-tag/browser'
+
+const { format, metadata } = await readFromBlob(file)
+// 'mpeg' | 'mp4' | 'flac' | 'ogg' | 'aiff' | 'riff'
+
+const out = await writeToBlob(file, {
+  metadata: { title: 'New title', genre: ['Rock'] },
+})
+// a File with the same name; the audio is never copied`;
 
 export function HomePage({ title, description }: { title: string; description: string }) {
   return (
@@ -43,13 +48,7 @@ export function HomePage({ title, description }: { title: string; description: s
                 </div>
                 <div class="facts-row"><span><b>0</b> dependencies</span><span>browser · Node · Deno · Bun</span><span>byte-exact round trips</span><span><b>104</b> ID3v2 frames</span></div>
               </div>
-              <pre class="hero-code" aria-label="Example">
-                <CodeKeyword>import</CodeKeyword> {"{ readFromBlob, writeToBlob } "}<CodeKeyword>from</CodeKeyword> <CodeString>'audio-tag/browser'</CodeString>{"\n\n"}
-                <CodeKeyword>const</CodeKeyword> {"{ format, metadata } = "}<CodeKeyword>await</CodeKeyword> {"readFromBlob(file)\n"}
-                <CodeComment>// 'mpeg' | 'mp4' | 'flac' | 'ogg' | 'aiff' | 'riff'</CodeComment>{"\n\n"}
-                <CodeKeyword>const</CodeKeyword> {"out = "}<CodeKeyword>await</CodeKeyword> {"writeToBlob(file, {\n  metadata: { title: "}<CodeString>'New title'</CodeString>{", genre: ["}<CodeString>'Rock'</CodeString>{"] },\n})\n"}
-                <CodeComment>// a File with the same name; the audio is never copied</CodeComment>
-              </pre>
+              <CodeBlock code={HERO_CODE} class="hero-code" label="Example" />
             </div>
           </section>
 
@@ -90,7 +89,7 @@ export function HomePage({ title, description }: { title: string; description: s
               </div>
               {MANAGERS.map(([pm, cmd], i) => (
                 <div class="tab-content" role="tabpanel" id={`pm-${pm}`} aria-labelledby={`tab-${pm}`} tabindex="0" hidden={i > 0}>
-                  <pre class="hero-code">{cmd}</pre>
+                  <CodeBlock code={cmd} class="hero-code" />
                 </div>
               ))}
             </div>

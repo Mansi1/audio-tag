@@ -39,7 +39,13 @@ img, svg { max-width: 100%; }
 .wave { position: absolute; right: -1rem; top: 0; bottom: 0; display: flex; align-items: center; gap: 10px; opacity: 0.22; pointer-events: none; }
 .wave span { width: 10px; border-radius: 5px; background: linear-gradient(var(--brand-from), #a855f7); }
 .hero-code { background: rgba(15, 23, 42, 0.75); border: 1px solid #334155; border-radius: 1rem; padding: 1.25rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.7; color: #e2e8f0; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; }
-.hero-code .code-keyword { color: #c4b5fd; } .hero-code .code-string { color: #6ee7b7; } .hero-code .code-comment { color: #64748b; }
+/* code examples (lib/code-block.tsx): colors from lib/highlight.ts on the dark block, copy button top right */
+.code-block { position: relative; }
+.code-block pre { padding-right: 4.5rem; }
+.code-keyword { color: #c4b5fd; } .code-string { color: #6ee7b7; } .code-comment { color: #94a3b8; font-style: italic; }
+.copy-btn { position: absolute; top: 0.6rem; right: 0.6rem; font: 500 0.75rem/1 var(--font-sans); color: #cbd5e1; background: rgba(148, 163, 184, 0.14); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 0.45rem; padding: 0.4rem 0.6rem; cursor: pointer; }
+.copy-btn:hover, .copy-btn:focus-visible { color: #fff; background: rgba(148, 163, 184, 0.28); }
+.copy-btn[data-copied] { color: #6ee7b7; border-color: rgba(110, 231, 183, 0.5); }
 
 /* format chips and cards */
 .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }

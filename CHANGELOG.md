@@ -8,4 +8,5 @@
 - Breaking: WAV is now RIFF in the public API: the detected format is `'riff'`, and every WAV export is renamed (`readWAVFile` → `readRIFFFile`, `WAVWriteError` → `RIFFWriteError`, `getWAVMetadata` → `getRIFFMetadata`, and so on).
 - `docs/` became `spec/`: format specifications as Markdown, grouped by format.
 - README with banner and diagrams; project icon.
+- Code examples on the website have syntax colors and a Copy button.
 - Link previews: Open Graph tags and a 1200 × 630 preview image, so shared links show a picture (WhatsApp, Slack).

@@ -134,7 +134,7 @@ const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR
 try {
   for (const [label, viewport, colorScheme] of [['desktop-light', { width: 1280, height: 900 }, 'light'], ['phone-dark', { width: 390, height: 844 }, 'dark']]) {
     const context = await browser.newContext({ viewport, colorScheme, acceptDownloads: true })
-    await context.grantPermissions(['microphone'], { origin: 'http://localhost:5291' })
+    await context.grantPermissions(['microphone', 'clipboard-read', 'clipboard-write'], { origin: 'http://localhost:5291' })
     const page = await context.newPage()
     const errors = []
     page.on('console', (m) => m.type() === 'error' && errors.push(m.text()))
@@ -171,6 +171,12 @@ try {
     // docs: the usage tabs, the generated tables and their filters, the section menu and the dark-mode toggle
     await page.click('#tab-usage-node')
     check(await page.isVisible('#usage-node') && !(await page.isVisible('#usage-browser')), `${label} docs: usage tabs switch panels`)
+    // code examples: syntax colors, and the copy button puts the exact code on the clipboard
+    const code = await page.textContent('#usage-node pre')
+    await page.click('#usage-node [data-copy]')
+    const copied = await page.evaluate(() => navigator.clipboard.readText())
+    check(copied === code && code.startsWith('import') && (await page.textContent('#usage-node [data-copy]')) === 'Copied', `${label} docs: Copy puts the Node example on the clipboard`)
+    check((await page.locator('#usage-node pre .code-keyword').count()) > 3 && (await page.locator('#usage-node pre .code-string').count()) > 3 && (await page.locator('#usage-node pre .code-comment').count()) >= 2, `${label} docs: code examples have syntax colors`)
     const visibleRows = (table) => page.locator(`#${table} tbody tr:visible`).count()
     check((await visibleRows('frame-table')) === 104 && (await visibleRows('genre-table')) === 148 && (await visibleRows('mapping-table')) > 30, `${label} docs: generated tables have 104 frames, 148 genres and the field mapping`)
     await page.fill('input[aria-controls="frame-table"]', 'CHAP')

@@ -1,5 +1,5 @@
-// Every page: dark mode (class="dark" on <html>, remembered) and, on the docs, the menu entry of the
-// section in view. VERIFIED: plain script rather than an island, since every page needs it and it renders nothing.
+// Every page: dark mode (class="dark" on <html>, remembered), the copy buttons of the code examples and,
+// on the docs, the menu entry of the section in view. VERIFIED: plain script rather than an island, since every page needs it and it renders nothing.
 const root = document.documentElement
 
 function setDark(dark) {
@@ -31,3 +31,20 @@ if (targets.length) {
   addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(mark) } }, { passive: true })
   mark()
 }
+
+// Copy buttons (lib/code-block.tsx). The clipboard needs a secure context (https or localhost); where it
+// is refused, the code is selected so Ctrl+C copies it.
+document.addEventListener('click', async (e) => {
+  const button = e.target instanceof Element && e.target.closest('[data-copy]')
+  if (!button) return
+  const code = button.closest('.code-block').querySelector('pre')
+  try {
+    await navigator.clipboard.writeText(code.textContent)
+    button.textContent = 'Copied'
+  } catch {
+    getSelection().selectAllChildren(code)
+    button.textContent = 'Press Ctrl+C'
+  }
+  button.setAttribute('data-copied', '')
+  setTimeout(() => { button.textContent = 'Copy'; button.removeAttribute('data-copied') }, 1500)
+})

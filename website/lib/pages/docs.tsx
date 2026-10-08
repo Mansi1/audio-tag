@@ -7,7 +7,8 @@ import { Head } from "../head.tsx";
 import { Header } from "../header.tsx";
 import { Footer } from "../footer.tsx";
 import { MappingTable } from "../mapping-table.tsx";
-import { BundleSizes, Code, FrameTable, GenreTable, LOW_LEVEL, UsageTabs } from "../docs-parts.tsx";
+import { BundleSizes, FrameTable, GenreTable, LOW_LEVEL, UsageTabs } from "../docs-parts.tsx";
+import { CodeBlock } from "../code-block.tsx";
 
 const FORMATS: [string, string][] = [["mpeg", "MP3 · ID3"], ["mp4", "M4A · MP4"], ["flac", "FLAC"], ["ogg", "Ogg"], ["aiff", "AIFF"], ["riff", "WAV"]];
 
@@ -88,7 +89,7 @@ export function DocsPage({ title, description }: { title: string; description: s
             </ul>
 
             <h2 id="install">Install</h2>
-            <Code code="npm install audio-tag" />
+            <CodeBlock code="npm install audio-tag" />
             <p>There are three entry points. Each one includes everything from <code>audio-tag</code>.</p>
             <DocTable
               columns={["Import", "Works with", "Runs in"]}
@@ -139,7 +140,7 @@ export function DocsPage({ title, description }: { title: string; description: s
 
             <h2 id="writing">Writing</h2>
             <p>A write changes only the fields you pass. <code>undefined</code> leaves a field alone and <code>null</code> removes it:</p>
-            <Code code={WRITE_EXAMPLE} />
+            <CodeBlock code={WRITE_EXAMPLE} />
             <p>Besides <code>metadata</code>, each format takes its own input: <code>id3v2</code>, <code>id3v1</code> and <code>lyrics3</code> for ID3 files (<code>id3v2</code> is also the ID3 chunk of AIFF and WAV files), and <code>mp4</code>, <code>flac</code>, <code>ogg</code>, <code>aiff</code> and <code>riff</code> for theirs. Options that do not apply to the file, such as <code>version</code> for an MP4 file, are refused instead of ignored.</p>
             <DocTable
               columns={["Option", "Formats", "Effect"]}
@@ -266,7 +267,7 @@ export function DocsPage({ title, description }: { title: string; description: s
 
             <h2 id="low-level">Low-level ID3 API</h2>
             <p>Build, validate, convert and serialize ID3v2 tags frame by frame. Every frame type is a member of a discriminated union (<code>frame.type</code>), with fields named as in the spec.</p>
-            <Code code={LOW_LEVEL} />
+            <CodeBlock code={LOW_LEVEL} />
 
             <h2 id="sizes">Bundle sizes</h2>
             <p>Each bundle loads on its own, raw and gzipped as served. Importing only the functions you need lets a bundler drop the other formats; <code>npm run size</code> measures single imports against their budgets.</p>

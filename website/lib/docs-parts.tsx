@@ -1,6 +1,7 @@
 // Pieces of the docs page that are data or code rather than prose (server only). The frame and genre
 // tables are hydrated DataTables for their filter boxes; the rest is static. VERIFIED: the code examples
 // live here as strings, so the page needs no escaping of braces and code.
+import { CodeBlock } from "./code-block.tsx";
 import support from "../data/support.json";
 import { buildInfo as info } from "./build-info.ts";
 import { DataTable } from "../components/data-table.tsx";
@@ -89,7 +90,7 @@ export function UsageTabs() {
       </div>
       {USAGE.map(([id, , code], i) => (
         <div class="tab-content" role="tabpanel" id={`usage-${id}`} aria-labelledby={`tab-usage-${id}`} tabindex="0" hidden={i > 0}>
-          <pre><code>{code}</code></pre>
+          <CodeBlock code={code} />
         </div>
       ))}
     </div>
@@ -106,6 +107,3 @@ const { bytes } = writeID3v2(tag, { padding: 1024 })
 const parsed = readID3v2(bytes)            // { tag, warnings, totalSize }
 const { tag: v23 } = convertID3v2(tag, 3)  // TDRC -> TYER/TDAT/TIME, UTF-8 -> UTF-16`;
 
-export function Code({ code }: { code: string }) {
-  return <pre><code>{code}</code></pre>;
-}
