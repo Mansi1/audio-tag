@@ -229,6 +229,14 @@ try {
     const darkCard = 'rgb(15, 23, 42)'
     check(diagrams.length === 2 && diagrams.every((d) => d.texts > 20 && (colorScheme === 'dark' ? d.card === darkCard : d.card !== darkCard)),
       `${label} index: both diagrams render as SVG with a ${colorScheme} card (${diagrams.map((d) => `${d.texts} texts, ${d.card}`).join('; ')})`)
+    // Saves and waits until the playground has read the saved file back: the download starts before that, and
+    // the next step would otherwise race the reload (an edit looks unsaved and opens the discard dialog, or
+    // the reload resets a checkbox the test just set). Only a slow CI runner loses that race.
+    const save = async () => {
+      const [download] = await Promise.all([page.waitForEvent('download'), page.click('#save')])
+      await page.locator('#save:not([disabled])').waitFor()
+      return download
+    }
     for (const name of inputs) {
       await page.setInputFiles('#pick', join(root, 'input', name))
       await page.locator('#editor').waitFor({ state: 'visible' })
@@ -241,7 +249,7 @@ try {
       const hexShown = await page.waitForFunction(() => /^00000000 /.test(document.getElementById('hex').textContent), null, { timeout: 5000 }).then(() => true, () => false)
       check(regions >= 2 && hexShown && /bytes 0–\d+/.test(await page.textContent('#region-title')), `${label} playground: ${name} byte map has ${regions} regions, offsets and hex`)
       await page.fill('#f-title', `e2e ${name}`)
-      const [download] = await Promise.all([page.waitForEvent('download'), page.click('#save')])
+      const download = await save()
       const saved = join(out, `${label}-download-${name}`)
       await download.saveAs(saved)
       check(download.suggestedFilename() === name, `${label} playground: ${name} downloads as ${download.suggestedFilename()}`)
@@ -262,11 +270,11 @@ try {
     // playground: cover picture, removing it, Reset, the discard dialog and the microphone recorder
     const loaded = inputs.at(-1)
     await page.setInputFiles('#f-cover', { name: 'cover.png', mimeType: 'image/png', buffer: PNG })
-    let [download] = await Promise.all([page.waitForEvent('download'), page.click('#save')])
+    let download = await save()
     await download.saveAs(join(out, `${label}-cover-${loaded}`))
     check(read(new Uint8Array(readFileSync(join(out, `${label}-cover-${loaded}`)))).metadata.pictures?.[0]?.mimeType === 'image/png', `${label} playground: cover picture saved`)
     await page.check('#f-nocover')
-    ;[download] = await Promise.all([page.waitForEvent('download'), page.click('#save')])
+    download = await save()
     await download.saveAs(join(out, `${label}-nocover-${loaded}`))
     check(!read(new Uint8Array(readFileSync(join(out, `${label}-nocover-${loaded}`)))).metadata.pictures?.length, `${label} playground: cover picture removed`)
     const title = await page.inputValue('#f-title')
