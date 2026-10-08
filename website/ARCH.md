@@ -73,9 +73,7 @@ flowchart LR
 - **Configuration and policy:** no runtime configuration. The build needs Node 22 or newer (`uWebSockets.js`
   in defuss-ssg; `scripts/check-node.mjs` stops earlier ones with a message, kyr0/defuss#56) and bun.
   defuss, defuss-ssg and defuss-shadcn are pinned to exact versions, since `config.ts` depends on
-  defuss-ssg's output format. `scripts/ensure-library.mjs` runs before every build and dev server and
-  rebuilds the library when `../dist/` is missing, older than `src/` or a build file, or records another
-  commit than `HEAD`; it skips the rebuild otherwise, so `make verify`, which builds the library first, builds it once.
+  defuss-ssg's output format.
 - **Deployment and scaling:** `.github/workflows/verify.yml` uploads the `dist/` that `make verify` built and
   tested as the artifact `build`; `.github/workflows/pages.yml` runs when verify passes on `main` and deploys
   that artifact's `website/dist/` without building again, so one build per commit goes live and a commit that
