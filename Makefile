@@ -22,7 +22,7 @@ LOG   = var/log/$(NAME)
 PID   = tmp/$(NAME).pid
 ALIVE = [ -f $(PID) ] && kill -0 "$$(cat $(PID))" 2>/dev/null
 
-.PHONY: help setup start stop restart status log metrics bench test coverage lint e2e verify
+.PHONY: help setup start stop restart status log metrics bench test coverage lint e2e verify build unit
 .DEFAULT_GOAL := help
 
 help: ## list the verbs with their usage (default goal)
@@ -42,29 +42,33 @@ SITE = PATH="$(NODE22_BIN):$$PATH" npm run site
 # A library: no service to run.
 start stop restart status log: ; @echo "∅ $@: no service"
 
-metrics: ## build, then print the minified + gzipped size of each entry and import (budgets in scripts/check-size.mjs)
+# Shared steps: Make runs a prerequisite once per invocation, so `make verify` builds and runs vitest once, and a
+# verb run alone still does both itself. Phony on purpose: dist/build-info.json records the commit, so a dist/
+# reused from an older commit would show the wrong build.
+build:
 	npm run build
+
+# Both vitest projects (node, jsdom) with line coverage of src/: `test` needs the results, `coverage` the summary.
+unit:
+	npx vitest run --coverage --coverage.include='src/**' --coverage.reporter=json-summary --coverage.reporter=text-summary
+
+metrics: build ## build, then print the minified + gzipped size of each entry and import (budgets in scripts/check-size.mjs)
 	npm run size
 
 bench:    ; @echo "UNKNOWN[bench] BC undefined: measure hot paths before perf claims"; exit 2  ## measure hot paths before perf claims
 
-test: ## unit tests in node and jsdom (vitest), on real bytes, no mocks; the website's type check and byte-map tests on the built library
-	npx vitest run
-	npm run build
+test: unit build ## unit tests in node and jsdom (vitest), on real bytes, no mocks; the website's type check and byte-map tests on the built library
 	cd website && bunx tsc --noEmit -p . && bun test lib
 
-coverage: ## line coverage of src/ in the node project, printed as TOTAL <n>%
-	npx vitest run --project node --coverage --coverage.include='src/**' --coverage.reporter=json-summary --coverage.reporter=text-summary
+coverage: unit ## line coverage of src/ over both vitest projects, printed as TOTAL <n>%
 	@node -e "const t=require('./coverage/coverage-summary.json').total.lines.pct; console.log('TOTAL ' + t + '%')"
 
-lint: ## type-check core, platform adapters and tests; check the built core uses no platform APIs; lint the website
+lint: build ## type-check core, platform adapters and tests; check the built core uses no platform APIs; lint the website
 	npm run typecheck
-	npm run build
 	npm run lint:platform
 	cd website && bun run lint
 
-e2e: ## pack the npm tarball, install it in a clean consumer, run it on input/ and drive the website in Chromium; results in output/
-	npm run build
+e2e: build ## pack the npm tarball, install it in a clean consumer, run it on input/ and drive the website in Chromium; results in output/
 	$(SITE)
 	node scripts/e2e.mjs
 
