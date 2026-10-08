@@ -70,3 +70,4 @@ Wrap: EVERY lead → test | .agents/VERIFY.py rule | one MEMORY line with BC, th
 2026-10-08T00:06:33Z s=e3d1b970 FAIL tests.unit
 2026-10-08T00:11:28Z s=e3d1b970 DONE fp=032ec3412db6 cov=93.9% paths=scripts/e2e.mjs,website/README.md,website/assets/site.css,website/lib/install-tabs.tsx(+2)
 2026-10-08T00:11:52Z s=e3d1b970 DONE fp=917152dc3f50 cov=93.9% paths=CHANGELOG.md,scripts/e2e.mjs,website/README.md,website/assets/site.css(+3)
+2026-10-08T00:20:09Z s=e3d1b970 DONE fp=d4c0d6112e70 cov=93.9% paths=Makefile
