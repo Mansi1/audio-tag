@@ -4,9 +4,6 @@
 Agents append `<UTC ISO> s=<session> LESSON <VAE-DIALECT>` only for a falsified HYPOTHESIS, a dead end, or a root cause.
 Wrap: EVERY lead → test | .agents/VERIFY.py rule | one MEMORY line with BC, then delete; OR delete BC evidence. -->
 
-2026-10-07T18:13:31Z s=e3d1b970 FINDING scripts/serve.mjs:14 port learn=test: make e2e starts the installed copy with --port and the repository copy with PORT, so both paths stay covered.
-2026-10-07T18:13:31Z s=e3d1b970 FINDING .env.example learn=verifier: The env.example gate check flags a missing key.
-2026-10-07T18:21:12Z s=e3d1b970 FAIL prose
 2026-10-07T18:26:24Z s=e3d1b970 DONE fp=d3e29e71dabf cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/verify.yml,AGENTS.md,ARCH.md(+170)
 2026-10-07T18:26:24Z s=e3d1b970 FINDING spec/ (all converted pages) learn=verifier: The prose gate check flags any broken relative link in a changed page.
 2026-10-07T18:26:24Z s=e3d1b970 FINDING .gitattributes learn=test: test/id3v1.node.test.ts reads generation.log and the 274 MP3s, so changed bytes fail it.
@@ -104,3 +101,6 @@ Wrap: EVERY lead → test | .agents/VERIFY.py rule | one MEMORY line with BC, th
 2026-10-08T21:38:08Z s=7143a713 DONE fp=72f8b2a729ac cov=94.0% paths=.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md,CHANGELOG.md(+10)
 2026-10-08T21:38:08Z s=7143a713 FINDING scripts/e2e.mjs:247 save learn=none: intermittent under host load, cause not isolated; falsifier=a download timeout on an idle host
 2026-10-08T21:38:08Z s=7143a713 FINDING CHANGELOG.md:3 learn=test: make lint runs scripts/release-notes.mjs
+2026-10-08T21:40:20Z s=7143a713 DONE fp=66c341dbae70 cov=94.0% paths=.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md,CHANGELOG.md(+9)
+2026-10-08T21:57:18Z s=7143a713 DONE fp=7f6d247feb5a cov=94.0% paths=.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md,CHANGELOG.md(+9)
+2026-10-08T21:57:18Z s=7143a713 FINDING README.md:405 R02 learn=none: GitHub enforces the rule itself; the doc follows it
