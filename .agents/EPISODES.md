@@ -75,3 +75,7 @@ Wrap: EVERY lead → test | .agents/VERIFY.py rule | one MEMORY line with BC, th
 2026-10-08T00:53:21Z s=3a87391b FAIL tests.unit,tests.e2e.1
 2026-10-08T00:57:16Z s=3a87391b DONE fp=2b5ded4d039e cov=93.9% paths=scripts/e2e.mjs,website/ARCH.md,website/components/playground.tsx
 2026-10-08T01:00:07Z s=3a87391b DONE fp=e26aea028702 cov=93.9% paths=CHANGELOG.md,package.json,scripts/e2e.mjs,website/ARCH.md(+1)
+2026-10-08T01:15:25Z s=3a87391b FAIL tests.e2e.1,hygiene.probes
+2026-10-08T01:19:55Z s=3a87391b DONE fp=2d7a49cff664 cov=93.9% paths=CHANGELOG.md,package.json,scripts/e2e.mjs,test/aiff-helpers.ts(+5)
+2026-10-08T01:19:55Z s=3a87391b FINDING scripts/e2e.mjs:save learn=test: every e2e save now goes through save(), which waits for #save to be enabled again
+2026-10-08T01:19:55Z s=3a87391b FINDING test/riff-helpers.ts:chunk|data, test/aiff-helpers.ts:chunk, test/mp4-helpers.ts:chunkOffsets, test/node-adapter.node.test.ts:76 learn=none: a speed fix, not a defect; no budget test, timings vary per host
