@@ -45,4 +45,11 @@ RULES = [{
                r"jest\.(?:mock|fn|spyOn)\(|vi\.(?:mock|fn|spyOn)\(|sinon\.|gomock\.|mock\.Mock\b|Mockito\.|@Mock\s|mockk\(|"
                r"@Mock(?:ito)?Bean\b|new\s+Mock<|Mock\.Of<|Substitute\.For<|A\.Fake<|mockall:{2}|#\[automock\]",
     "claim": "tests exercise real subsystems, not mock frameworks",
+}, {
+    "id": "ci.npm-publish-local-path",
+    "kind": "not_regex",
+    "path": ".github/workflows/publish.yml",
+    # npm reads a bare `dir/file.tgz` as the GitHub shorthand user/repo and clones it (run 37808158437).
+    "pattern": r"npm publish\s+(?![./])\S*/",
+    "claim": "publish.yml hands npm the tarball as a ./ path, never a bare dir/file that npm reads as a GitHub repo",
 }]

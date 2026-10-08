@@ -408,7 +408,7 @@ The verify workflow runs `make verify` on the tag. When it passes, it publishes 
 as is, to npm with provenance, then creates a GitHub release with that tarball and the changelog section as
 notes. A version with a `-` part goes to the npm dist-tag `next` and becomes a GitHub prerelease; any other
 version goes to `latest`. npm accepts the upload through
-[trusted publishing](https://docs.npmjs.com/trusted-publishers) (OIDC) for this repository's `verify.yml`, so
+[trusted publishing](https://docs.npmjs.com/trusted-publishers) (OIDC) for this repository's `publish.yml`, so
 there is no npm token to manage.
 
 ## License

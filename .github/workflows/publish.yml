@@ -6,7 +6,8 @@
 # A version with a prerelease part (0.2.0-rc.1) goes to the npm dist-tag `next` and becomes a GitHub prerelease.
 # Release: README.md, "Releases".
 # npm authenticates this run through trusted publishing (OIDC, id-token: write): the package's trusted publisher
-# on npmjs.com names Mansi1/audio-tag and the workflow verify.yml, so there is no npm token.
+# on npmjs.com names Mansi1/audio-tag and the workflow publish.yml (this file, though verify.yml calls it), so there
+# is no npm token.
 name: Publish
 
 on:
@@ -54,9 +55,10 @@ jobs:
 
       # --ignore-scripts: prepublishOnly would build again; `make verify` already ran its checks on this tarball
       # (typecheck, tests, build, platform check and size budgets, then e2e on the installed package).
-      # npm adds provenance by itself under trusted publishing.
+      # npm adds provenance by itself under trusted publishing. The ./ matters: npm reads `release/x.tgz` as the
+      # GitHub repository shorthand user/repo and tries to clone it (failed run 37808158437).
       - name: Publish to npm
-        run: npm publish release/audio-tag-*.tgz --access public --ignore-scripts --tag ${{ steps.version.outputs.dist_tag }}
+        run: npm publish ./release/audio-tag-*.tgz --access public --ignore-scripts --tag ${{ steps.version.outputs.dist_tag }}
 
       - name: Create the GitHub release
         env:

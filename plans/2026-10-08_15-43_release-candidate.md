@@ -13,7 +13,8 @@ Tick `- [x]` when a milestone's proof passes, then run `make verify` on its scop
 - VERIFIED: npm user `mansi1` owns `audio-tag`. A placeholder `0.0.1` (README only) was published by hand on
   2026-10-08 and is `latest`.
 - VERIFIED: the human created an npm trusted publisher (OIDC) for GitHub Actions: `Mansi1/audio-tag`, workflow
-  `verify.yml`, no environment, direct publishing allowed. The repository has no Actions secrets, and none is
+  `publish.yml` (first `verify.yml`, switched by the human after the first tag run), no environment, direct
+  publishing allowed. The repository has no Actions secrets, and none is
   needed.
 - VERIFIED: the repository has no GitHub releases and no tags (`gh release list` prints nothing).
 - VERIFIED: `pages.yml` deployed after verify on main (runs 37794595159, 37795862871). The MEMORY line that calls
@@ -22,8 +23,9 @@ Tick `- [x]` when a milestone's proof passes, then run `make verify` on its scop
   without `--tag`, so a prerelease version would become `latest`.
 - VERIFIED: `CHANGELOG.md` has only an `## Unreleased` section.
 - VERIFIED: yarn is not installed on this machine.
-- UNKNOWN: whether npm matches the trusted publisher against the calling workflow (`verify.yml`) or the called
-  one (`publish.yml`). The first tag run shows it; on an auth error, recreate the publisher with `publish.yml`.
+- UNKNOWN: whether npm accepts the called workflow `publish.yml` as the trusted publisher. Runs 37808158437 and
+  its re-run never reached npm auth: `npm publish release/x.tgz` read the path as the GitHub shorthand user/repo
+  and tried to clone it; fixed with `./release/`. On an auth error, switch the publisher back to `verify.yml`.
 - VERIFIED: trusted publishing needs npm 11.5.1 or newer (npm docs). Node 22 on the runner ships npm 10, and
   npm 12.2.0 is a new major, so the job installs `npm@11` (11.21.0 on 2026-10-08).
 

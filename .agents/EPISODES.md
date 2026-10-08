@@ -101,3 +101,6 @@ Wrap: EVERY lead → test | .agents/VERIFY.py rule | one MEMORY line with BC, th
 2026-10-08T16:09:43Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:M1 probe learn=memory: recorded in CLI_GIST as 'outside the repo'
 2026-10-08T16:09:43Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:M3 proof B01 learn=none: workflow behavior is only provable by the first tag run
 2026-10-08T16:09:43Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:M1 docs P01 learn=none: plan wording, no recurrence check
+2026-10-08T16:31:19Z s=7143a713 DONE fp=6128b029d128 cov=94.0% paths=.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md,CHANGELOG.md(+10)
+2026-10-08T16:31:19Z s=7143a713 FINDING .github/workflows/publish.yml:60 Publish to npm learn=none: the human declined the proposed VERIFY.py rule; the inline comment at the call names the trap and the run
+2026-10-08T16:31:19Z s=7143a713 FINDING README.md:411 P04 learn=none: whether npm accepts the called workflow is shown only by the next tag run
