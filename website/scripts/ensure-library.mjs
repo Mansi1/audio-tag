@@ -1,7 +1,7 @@
 // Builds the library (npm run build in the repository root) before the website uses it, unless dist/ is
 // current: the playground loads dist/browser.min.js as a vendor file, and the footer and docs show
-// dist/build-info.json. A rebuild every time would build twice in `make verify` and the Pages workflow,
-// which build the library first, so this rebuilds only when dist/ is missing, older than a source or build
+// dist/build-info.json. A rebuild every time would build twice in `make verify`, which builds the library
+// first, so this rebuilds only when dist/ is missing, older than a source or build
 // file, or from another commit than HEAD (the footer would show the wrong build).
 // VERIFIED: each condition rebuilds and a current dist/ is skipped (make e2e logs "library build is current").
 import { execFileSync } from 'node:child_process'

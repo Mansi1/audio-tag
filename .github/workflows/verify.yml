@@ -25,3 +25,13 @@ jobs:
       # CONFIG["ci"] commands from .agents/VERIFY.py, one step each:
       - run: make setup
       - run: make verify
+      # The library and website build that make verify tested; pages.yml deploys this website/dist/ instead of
+      # building it again, so only a verified site goes live.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: |
+            dist/
+            website/dist/
+          if-no-files-found: error
+          retention-days: 7

@@ -75,10 +75,12 @@ flowchart LR
   defuss, defuss-ssg and defuss-shadcn are pinned to exact versions, since `config.ts` depends on
   defuss-ssg's output format. `scripts/ensure-library.mjs` runs before every build and dev server and
   rebuilds the library when `../dist/` is missing, older than `src/` or a build file, or records another
-  commit than `HEAD`; it skips the rebuild otherwise, so `make verify` and the Pages workflow, which build the
-  library first, build it once.
-- **Deployment and scaling:** `.github/workflows/pages.yml` builds the library, then `npm run site`, and
-  uploads `dist/`; the npm package ships `dist/`, `404.html` included, without `config.js`.
+  commit than `HEAD`; it skips the rebuild otherwise, so `make verify`, which builds the library first, builds it once.
+- **Deployment and scaling:** `.github/workflows/verify.yml` uploads the `dist/` that `make verify` built and
+  tested as the artifact `build`; `.github/workflows/pages.yml` runs when verify passes on `main` and deploys
+  that artifact's `website/dist/` without building again, so one build per commit goes live and a commit that
+  fails verify does not. The alternative, a separate build in the Pages workflow, deployed a site no test had
+  seen, also when verify failed. The npm package ships `dist/`, `404.html` included, without `config.js`.
 - **Observability:** none at runtime. `make e2e` drives every page and control in Chromium against the
   installed package and fails on console errors, failed requests and requests to other origins.
 
