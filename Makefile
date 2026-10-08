@@ -57,8 +57,9 @@ coverage: ## line coverage of src/ in the node project, printed as TOTAL <n>%
 	npx vitest run --project node --coverage --coverage.include='src/**' --coverage.reporter=json-summary --coverage.reporter=text-summary
 	@node -e "const t=require('./coverage/coverage-summary.json').total.lines.pct; console.log('TOTAL ' + t + '%')"
 
-lint: ## type-check core, platform adapters and tests; check the core uses no platform APIs; lint the website
+lint: ## type-check core, platform adapters and tests; check the built core uses no platform APIs; lint the website
 	npm run typecheck
+	npm run build
 	npm run lint:platform
 	cd website && bun run lint
 
