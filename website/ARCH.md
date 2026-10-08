@@ -73,7 +73,10 @@ flowchart LR
 - **Configuration and policy:** no runtime configuration. The build needs Node 22 or newer (`uWebSockets.js`
   in defuss-ssg; `scripts/check-node.mjs` stops earlier ones with a message, kyr0/defuss#56) and bun.
   defuss, defuss-ssg and defuss-shadcn are pinned to exact versions, since `config.ts` depends on
-  defuss-ssg's output format.
+  defuss-ssg's output format. `scripts/ensure-library.mjs` runs before every build and dev server and
+  rebuilds the library when `../dist/` is missing, older than `src/` or a build file, or records another
+  commit than `HEAD`; it skips the rebuild otherwise, so `make verify` and the Pages workflow, which build the
+  library first, build it once.
 - **Deployment and scaling:** `.github/workflows/pages.yml` builds the library, then `npm run site`, and
   uploads `dist/`; the npm package ships `dist/`, `404.html` included, without `config.js`.
 - **Observability:** none at runtime. `make e2e` drives every page and control in Chromium against the

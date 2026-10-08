@@ -7,13 +7,13 @@ The overview with the playground, the docs and the 404 page of
 
 ## Build
 
-It needs bun and Node 22 or newer, and the library built first, since the site reads `../dist/`:
+It needs bun and Node 22 or newer. The site reads the library build in `../dist/`; `bun run build` and
+`bun run dev` build it first when it is missing, older than a source or build file, or from another commit:
 
 ```sh
-npm run build            # in the repository root: the library, with dist/build-info.json
 cd website
 bun install
-bun run build            # → website/dist/
+bun run build            # → website/dist/ (and ../dist/ when needed)
 ```
 
 From the root, `npm run site` runs the website build, and `npm run serve` builds both and serves the site
@@ -23,8 +23,8 @@ at `http://localhost:5173/`. `make e2e` builds and drives it in Chromium.
 
 | Command | What it does |
 |---|---|
-| `bun run build` | Renders the pages into `dist/` (checks for Node 22 first) |
-| `bun run dev` | The defuss-ssg dev server with live reload; stop it before a build, since both use `.ssg-temp/` ([kyr0/defuss#64](https://github.com/kyr0/defuss/issues/64)) |
+| `bun run build` | Renders the pages into `dist/` (checks for Node 22 first, then `scripts/ensure-library.mjs` builds `../dist/` when stale) |
+| `bun run dev` | The defuss-ssg dev server with live reload, after the same library check; stop it before a build, since both use `.ssg-temp/` ([kyr0/defuss#64](https://github.com/kyr0/defuss/issues/64)) |
 | `bun run test` | `bun test lib`: the byte map on the sample files in `../input/` |
 | `bun run lint` | `oxlint --deny-warnings` on the components, `lib/` and `config.ts` |
 | `node scripts/og-image.mjs` | Renders the link preview `assets/og.jpg` (1200 × 630) from the README banner; run it after changing the banner |
