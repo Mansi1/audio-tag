@@ -171,6 +171,7 @@ try {
     // docs: the usage tabs, the generated tables and their filters, the section menu and the dark-mode toggle
     await page.click('#tab-usage-node')
     check(await page.isVisible('#usage-node') && !(await page.isVisible('#usage-browser')), `${label} docs: usage tabs switch panels`)
+    check((await page.locator('.install-tabs').count()) === 1, `${label} docs: shows the install tabs`)
     // code examples: syntax colors, and the copy button puts the exact code on the clipboard
     const code = await page.textContent('#usage-node pre')
     await page.click('#usage-node [data-copy]')
@@ -199,6 +200,9 @@ try {
     await visit('http://localhost:5291/website/dist/', 'index')
     await showsBuild('index')
     check(await page.evaluate(() => getComputedStyle(document.querySelector('.play-grid')).display === 'grid'), `${label} index: playground layout CSS applies`)
+    // the install tabs, the same component as on the docs
+    await page.click('.install-tabs #tab-bun')
+    check(await page.isVisible('#pm-bun') && !(await page.isVisible('#pm-npm')) && (await page.textContent('#pm-bun pre')) === 'bun add audio-tag', `${label} index: install tabs switch to bun add audio-tag`)
     // page links have no .html (GitHub Pages and serve.mjs resolve them), and they lead to the page
     const htmlLinks = await page.evaluate(() => [...document.querySelectorAll('a[href]')].map((a) => a.getAttribute('href')).filter((h) => /\.html(#|$)/.test(h) && !/^[a-z]+:/i.test(h)))
     check(htmlLinks.length === 0, `${label} index: page links without .html${htmlLinks.length ? ': ' + htmlLinks.join(', ') : ''}`)

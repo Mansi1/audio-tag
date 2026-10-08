@@ -9,6 +9,7 @@ import { Footer } from "../footer.tsx";
 import { MappingTable } from "../mapping-table.tsx";
 import { BundleSizes, FrameTable, GenreTable, LOW_LEVEL, UsageTabs } from "../docs-parts.tsx";
 import { CodeBlock } from "../code-block.tsx";
+import { InstallTabs } from "../install-tabs.tsx";
 
 const FORMATS: [string, string][] = [["mpeg", "MP3 · ID3"], ["mp4", "M4A · MP4"], ["flac", "FLAC"], ["ogg", "Ogg"], ["aiff", "AIFF"], ["riff", "WAV"]];
 
@@ -89,7 +90,7 @@ export function DocsPage({ title, description }: { title: string; description: s
             </ul>
 
             <h2 id="install">Install</h2>
-            <CodeBlock code="npm install audio-tag" />
+            <InstallTabs />
             <p>There are three entry points. Each one includes everything from <code>audio-tag</code>.</p>
             <DocTable
               columns={["Import", "Works with", "Runs in"]}

@@ -6,6 +6,7 @@ import { Footer } from "../footer.tsx";
 import { Playground } from "../../components/playground.tsx";
 import { Diagram } from "../diagram.tsx";
 import { CodeBlock } from "../code-block.tsx";
+import { InstallTabs } from "../install-tabs.tsx";
 
 const FORMATS: [string, string, string][] = [
   ["mpeg", "MP3 · ID3", "ID3v1 and v1.1, ID3v2.2, 2.3 and 2.4, and Lyrics3 v1 and v2.00. 104 frame types, including the CHAP/CTOC chapters, and 148 genres. Unknown frames keep their bytes."],
@@ -15,7 +16,6 @@ const FORMATS: [string, string, string][] = [
   ["aiff", "AIFF · AIFF-C", "An ID3 chunk for rich metadata, plus the spec's NAME, AUTH, (c), ANNO and COMT chunks, kept in step."],
   ["riff", "WAV", "An id3 chunk for rich metadata and the RIFF LIST/INFO list (INAM, IART and others) as a fallback, kept in step."],
 ];
-const MANAGERS: [string, string][] = [["npm", "npm install audio-tag"], ["pnpm", "pnpm add audio-tag"], ["yarn", "yarn add audio-tag"], ["bun", "bun add audio-tag"]];
 const WAVE = [30, 55, 80, 45, 70, 95, 60, 35, 75, 50, 25];
 
 const HERO_CODE = `import { readFromBlob, writeToBlob } from 'audio-tag/browser'
@@ -81,18 +81,7 @@ export function HomePage({ title, description }: { title: string; description: s
           <section class="section" id="install" aria-labelledby="install-title">
             <h2 id="install-title">Install</h2>
             <p class="lead">One package, three entry points: bytes (<code>audio-tag</code>), Blob and File (<code>audio-tag/browser</code>), files on disk (<code>audio-tag/node</code>). It also ships this website, to read offline.</p>
-            <div class="tabs" style="max-width:40rem">
-              <div class="tab-list" role="tablist" aria-label="Package manager">
-                {MANAGERS.map(([pm], i) => (
-                  <button class="tab-trigger" role="tab" aria-selected={String(i === 0)} aria-controls={`pm-${pm}`} id={`tab-${pm}`} tabindex={i === 0 ? undefined : "-1"}>{pm}</button>
-                ))}
-              </div>
-              {MANAGERS.map(([pm, cmd], i) => (
-                <div class="tab-content" role="tabpanel" id={`pm-${pm}`} aria-labelledby={`tab-${pm}`} tabindex="0" hidden={i > 0}>
-                  <CodeBlock code={cmd} class="hero-code" />
-                </div>
-              ))}
-            </div>
+            <InstallTabs />
             <div class="actions" style="display:flex;gap:.75rem;margin-top:1.5rem;flex-wrap:wrap">
               <a class="btn brand-btn" href="docs.html">Read the docs</a>
               <a class="btn" data-variant="outline" href="https://github.com/Mansi1/audio-tag">View on GitHub</a>

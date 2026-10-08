@@ -37,6 +37,7 @@ at `http://localhost:5173/`. `make e2e` builds and drives it in Chromium.
 | `lib/pages/*.tsx` | The pages: home, docs, not-found (rendered at build time only) |
 | `lib/*.tsx` | Head, header, footer and the docs tables, rendered at build time only |
 | `components/*.tsx` | The interactive parts, hydrated in the browser: the playground and the filterable tables |
+| `lib/install-tabs.tsx` | The install command per package manager, shared by the start page and the docs |
 | `lib/code-block.tsx`, `lib/highlight.ts` | Code examples with syntax colors (at build time) and a copy button (`assets/site.js`) |
 | `lib/byte-map.ts` | Which byte range of a file is what; the playground's byte map draws it |
 | `lib/ui.ts` | The defuss-shadcn components the site loads |
