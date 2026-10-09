@@ -89,3 +89,5 @@ Wrap: EVERY lead → test | .agents/VERIFY.py rule | one MEMORY line with BC, th
 2026-10-09T23:43:41Z s=f5032668 FINDING website/.gitignore learn=none: ignore rule is the guard
 2026-10-09T23:43:41Z s=f5032668 FINDING scripts/e2e.mjs:frame ID list check learn=memory: cause (stale one-frame position under load) not established; falsifier = the waiting check failing with a box outside the viewport
 2026-10-09T23:43:41Z s=f5032668 FINDING CHANGELOG.md:Unreleased learn=test: make lint runs scripts/release-notes.mjs
+2026-10-09T23:55:54Z s=dfc79eed DONE fp=e132119deb8e cov=94.0% paths=website/tsconfig.json
+2026-10-09T23:55:54Z s=dfc79eed FINDING website/tsconfig.json:13 paths audio-tag/browser learn=memory: depends on the bun version CI installs; a test cannot pin it, MEMORY line records it
