@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import type { SsgPlugin } from "defuss-ssg";
 import type { Plugin } from "vite";
@@ -29,6 +29,9 @@ const vendor: SsgPlugin = {
     writeFileSync("assets/vendor/ui.css", css.map((f) => readFileSync(f, "utf8")).join("\n"));
     copyFileSync(`${UI}/core.min.js`, "assets/vendor/core.min.js");
     for (const c of UI_SCRIPTS) copyFileSync(`${UI}/${c}/${c}.min.js`, `assets/vendor/${c}.min.js`);
+    // Each component keeps its CSS next to it (components/**/*.css); the page links them as one file, in path order.
+    const own = readdirSync("components", { recursive: true, encoding: "utf8" }).filter((f) => f.endsWith(".css")).sort();
+    writeFileSync("assets/components.css", own.map((f) => `/* components/${f} */\n${readFileSync(`components/${f}`, "utf8")}`).join("\n"));
   },
 };
 

@@ -2,3 +2,5 @@ node_modules/
 dist/
 .ssg-temp/
 assets/vendor/
+assets/components.css
+.defuss-ssg-config-*/
