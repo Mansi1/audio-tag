@@ -399,7 +399,9 @@ describe('robustness', () => {
     ).bytes
     let seed = 1
     const rand = () => ((seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff)
-    const start = Date.now()
+    // CPU time, not wall time: the loop is the same every run (fixed seed), and wall time also counts waiting for a
+    // CPU, which failed this under host load (15-20 s) although the loop takes about 2 s of CPU. A hang still burns CPU.
+    const start = process.cpuUsage()
     for (let i = 0; i < 3000; i++) {
       const m = base.slice()
       const n = 1 + Math.floor(rand() * 4)
@@ -413,7 +415,8 @@ describe('robustness', () => {
         }
       }
     }
-    expect(Date.now() - start).toBeLessThan(10000)
+    const used = process.cpuUsage(start)
+    expect((used.user + used.system) / 1000).toBeLessThan(10000)
   })
 })
 
