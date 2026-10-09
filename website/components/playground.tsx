@@ -1,12 +1,18 @@
 // The playground (hydrated): open, drop or record a file, edit its tags, save a copy; for nerds, the byte
 // map, structure, warnings, raw result and hex of the file. It reaches the library only through
 // readFromBlob / writeToBlob, and asks lib/byte-map.ts which byte range is what. VERIFIED: make e2e opens,
-// edits and saves every sample format here, checks the byte map and hex, cover, Reset, discard and recording.
+// edits and saves every sample format here, checks the byte map and hex, adding, describing and removing
+// several pictures and comments, Reset, discard and recording.
 // The lists a file fills (facts, byte map, legend, structure, warnings) are JSX components passed to defuss
 // render(), so they read like the markup below instead of hand-built DOM calls.
 import { render, type Props } from "defuss";
-import { PICTURE_TYPES, readFromBlob, writeToBlob, type ReadResult } from "audio-tag/browser";
+import { GENRES, PICTURE_TYPES, readFromBlob, writeToBlob, type ReadResult } from "audio-tag/browser";
 import { byteMap, type Region } from "../lib/byte-map.js";
+import { ChevronIcon } from "./icon/ChevronIcon.js";
+import { Combobox } from "./input/Combobox.js";
+import { addRow, drawRows, type Column, type Row } from "./input/RowList.js";
+import { fillOtherTags, OtherTags, otherTagsChanged, otherTagsWrite } from "./OtherTags.js";
+import { LANGUAGE_COLUMN } from "../lib/languages.js";
 
 const FORMATS: Record<ReadResult["format"], string> = { mpeg: "MP3 · ID3", mp4: "MP4 · M4A", flac: "FLAC", ogg: "Ogg", aiff: "AIFF", riff: "WAV" };
 const ACCEPT = "audio/*,.mp3,.m4a,.m4b,.mp4,.mov,.flac,.ogg,.opus,.oga,.aif,.aiff,.aifc,.wav";
@@ -16,6 +22,11 @@ const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getEleme
 let current: { file: File; result: ReadResult; regions: Region[] } | undefined;
 let urls: string[] = [];
 let shownPicture = 0; // index into current.result.metadata.pictures
+type Picture = NonNullable<ReadResult["metadata"]["pictures"]>[number];
+// The pictures and comments of the form, kept in JS rather than read back from the DOM: picture bytes have no
+// form field, and a row that keeps the file's bytes (the same Uint8Array) counts as unchanged without a byte compare.
+let pictureDraft: Picture[] = [];
+let commentDraft: Row[] = [];
 
 const toast = (options: { title: string; description?: string; variant?: string; duration?: number }) =>
   (globalThis as any).df$?.shadcn?.toast?.show(options);
@@ -65,10 +76,93 @@ function fill(metadata: ReadResult["metadata"]) {
   fields.recordingTime.value = metadata.recordingTime ?? "";
   fields.track.value = metadata.track?.no ?? "";
   fields.tracks.value = metadata.track?.of ?? "";
-  fields.comment.value = metadata.comments?.[0]?.text ?? "";
+  commentDraft = (metadata.comments ?? []).map((comment) => ({ ...comment }));
+  pictureDraft = (metadata.pictures ?? []).map((picture) => ({ ...picture }));
   $<HTMLInputElement>("f-cover").value = "";
-  $<HTMLInputElement>("f-nocover").checked = false;
-  $<HTMLInputElement>("f-nocover").disabled = !metadata.pictures?.length;
+  drawRows($("comment-list"), commentDraft, COMMENT_COLUMNS, "comment");
+  drawPictures();
+  const format = current?.result.format;
+  // VERIFIED (probe of write then read on every sample): only the ID3 formats keep comment descriptions and
+  // languages; M4A keeps neither picture types nor picture descriptions.
+  $("comments-desc").textContent = format === "mpeg" || format === "aiff" || format === "riff"
+    ? "Each comment has a description and a three-letter language."
+    : "This format keeps only the comment text; descriptions and languages are dropped on save.";
+  $("pictures-desc").textContent = format === "mp4"
+    ? "JPEG or PNG. M4A keeps only the image; picture types and descriptions are dropped on save."
+    : "JPEG or PNG, each with a picture type and a description.";
+  if (current) fillOtherTags(current.result);
+}
+
+// ---- pictures and comments of the form -------------------------------------------------------------------
+
+function drawPictures() {
+  render(<>{pictureDraft.map((picture, index) => <PictureRow picture={picture} index={index} />)}</>, $("picture-list"));
+  // the rows are the list's children (each type combobox holds <li> options of its own); values are set as
+  // properties, since the rows are rebuilt after edits and attributes would only set the defaults
+  [...$("picture-list").children].forEach((row, index) => {
+    const [type, description] = row.querySelectorAll<HTMLInputElement>(".edit-row-fields > .combo > input, .edit-row-fields > input");
+    type.value = PICTURE_TYPES[pictureDraft[index].type] ?? "";
+    description.value = pictureDraft[index].description;
+  });
+  // as in the preview: the pixel size is known only once the browser has decoded the image
+  [...$("picture-list").children].forEach((row) => {
+    const image = row.querySelector("img")!;
+    const info = row.querySelector<HTMLElement>(".picture-info")!;
+    const known = info.textContent;
+    const show = () => (info.textContent = `${pixels(image)} · ${known}`);
+    image.onload = show;
+    if (image.complete && image.naturalWidth) show();
+  });
+}
+
+function PictureRow({ picture, index }: Props & { picture: Picture; index: number }) {
+  return (
+    <li class="edit-row">
+      <img class="thumb" src={objectUrl(new Blob([picture.data as BlobPart], { type: picture.mimeType }))} alt="" />
+      <div class="edit-row-fields">
+        <Combobox id={`picture-type-${index}`} label={`Type of picture ${index + 1}`} options={PICTURE_TYPE_OPTIONS} pattern={PICTURE_TYPE_PATTERN} strict
+          title="One of the picture types in the list" onValue={(name) => { const type = pictureType(name); if (type >= 0) picture.type = type; }} />
+        <input class="input" type="text" placeholder="Description" aria-label={`Description of picture ${index + 1}`} onInput={(event: Event) => (picture.description = (event.target as HTMLInputElement).value)} />
+        <span class="picture-info">{`${pictureFormat(picture)} · ${size(picture.data.length)}`}</span>
+      </div>
+      <button class="btn" data-variant="ghost" data-size="icon-sm" type="button" aria-label={`Remove picture ${index + 1}`} onClick={() => { pictureDraft.splice(index, 1); drawPictures(); }}>✕</button>
+    </li>
+  );
+}
+
+// The picture type is a number in the file (0 to 20, ID3v2.4 frames §4.14), shown and typed by its name: the list
+// keeps the spec order, the pattern allows only these names, and a typed name maps back regardless of case.
+const PICTURE_TYPE_OPTIONS: [string, string][] = PICTURE_TYPES.map((name) => [name, ""]);
+const PICTURE_TYPE_PATTERN = PICTURE_TYPES.map((name) => name.replace(/[\^$\\.*+?()[\]{}|/]/g, "\\$&")).join("|");
+const pictureType = (name: string) => PICTURE_TYPES.findIndex((type) => type.toLowerCase() === name.trim().toLowerCase());
+
+const IMAGE_TYPES = ["image/jpeg", "image/png"];
+
+// Picked or dropped pictures; they become the front cover when there is none yet, else "Other". The drop zone
+// keeps its files for the next pick (ui.css file-drop on a multiple input), so it is reset once they are taken.
+async function onAddPictures(event: Event) {
+  const input = event.target as HTMLInputElement;
+  const files = [...(input.files ?? [])];
+  const api = (input.closest(".file-drop") as any)?.api;
+  if (api) api.setState("default");
+  else input.value = "";
+  const rejected = files.filter((file) => !IMAGE_TYPES.includes(file.type));
+  if (rejected.length) toast({ title: "Not added", description: `${rejected.map((file) => file.name).join(", ")}: only JPEG and PNG pictures.`, variant: "warning" });
+  for (const file of files.filter((file) => IMAGE_TYPES.includes(file.type))) {
+    const type = pictureDraft.some((picture) => picture.type === 3) ? 0 : 3;
+    pictureDraft.push({ type, mimeType: file.type, description: "", data: new Uint8Array(await file.arrayBuffer()) });
+  }
+  drawPictures();
+}
+
+const COMMENT_COLUMNS: Column[] = [{ key: "description", label: "Description" }, LANGUAGE_COLUMN, { key: "text", label: "Text", type: "textarea", placeholder: "Comment" }];
+
+// Suggestions for the genre field: the ID3v1 genres with the Winamp extensions, A to Z. Any other genre can be typed.
+const GENRE_OPTIONS: [string, string][] = GENRES.map((genre): [string, string] => [genre.name, ""]).sort(([a], [b]) => a.localeCompare(b));
+
+function onAddComment() {
+  addRow($("comment-list"), commentDraft, COMMENT_COLUMNS, "comment", { language: "eng" });
+  $("comment-list").querySelector<HTMLTextAreaElement>("li:last-child textarea")!.focus(); // the text, not the description
 }
 
 // ---- for nerds ---------------------------------------------------------------------------------------
@@ -156,6 +250,8 @@ const WarningItem = ({ code, message }: Props & { code: string; message: string 
 // ---- pictures -------------------------------------------------------------------------------------------
 
 const PICTURE_FORMATS: Record<string, string> = { "image/jpeg": "JPEG", "image/jpg": "JPEG", "image/png": "PNG", "image/gif": "GIF", "image/webp": "WebP", "image/bmp": "BMP" };
+const pictureFormat = (picture: Picture) => PICTURE_FORMATS[picture.mimeType.toLowerCase()] ?? picture.mimeType;
+const pixels = (image: HTMLImageElement) => `${image.naturalWidth} × ${image.naturalHeight} px`;
 
 // Shows picture `index` (wrapping around) at its natural aspect ratio, with its pixel size, format, byte size
 // and picture type; the pixel size is known only once the browser has decoded the image.
@@ -166,7 +262,7 @@ function showPicture(index: number) {
   const picture = pictures[shownPicture];
   const image = $<HTMLImageElement>("cover");
   const details = [
-    PICTURE_FORMATS[picture.mimeType.toLowerCase()] ?? picture.mimeType,
+    pictureFormat(picture),
     size(picture.data.length),
     PICTURE_TYPES[picture.type] ?? `type ${picture.type}`,
     ...(picture.description ? [`"${picture.description}"`] : []),
@@ -174,7 +270,7 @@ function showPicture(index: number) {
   $("cover-info").textContent = details.join(" · ");
   image.alt = `${PICTURE_TYPES[picture.type] ?? "Picture"}${picture.description ? `: ${picture.description}` : ""}`;
   image.onload = () => {
-    $("cover-info").textContent = [`${image.naturalWidth} × ${image.naturalHeight} px`, ...details].join(" · ");
+    $("cover-info").textContent = [pixels(image), ...details].join(" · ");
     image.classList.toggle("tiny", image.naturalHeight < 48); // enlarged to the 3rem minimum: keep the pixels sharp
   };
   image.src = objectUrl(new Blob([picture.data as BlobPart], { type: picture.mimeType }));
@@ -232,17 +328,17 @@ function update(): Record<string, unknown> {
   const trackNo = fields.track.value ? Number(fields.track.value) : undefined;
   const trackOf = fields.tracks.value ? Number(fields.tracks.value) : undefined;
   if (trackNo !== old.track?.no || trackOf !== old.track?.of) changes.track = trackNo || trackOf ? { no: trackNo, of: trackOf } : null;
-  const comment = fields.comment.value;
-  if (comment !== (old.comments?.[0]?.text ?? "")) {
-    const rest = old.comments?.slice(1) ?? [];
-    changes.comments = comment
-      ? [{ language: old.comments?.[0]?.language ?? "eng", description: old.comments?.[0]?.description ?? "", text: comment }, ...rest]
-      : rest.length ? rest : null;
-  }
+  // comments without text are left out
+  const comments = commentDraft.filter((comment) => comment.text.trim()).map(({ language, description, text }) => ({ language: language || "eng", description, text }));
+  set("comments", comments.length ? comments : undefined, old.comments);
+  const before = old.pictures ?? [];
+  const samePicture = (picture: Picture, index: number) =>
+    picture.data === before[index]?.data && picture.type === before[index].type && picture.description === before[index].description;
+  if (pictureDraft.length !== before.length || !pictureDraft.every(samePicture)) changes.pictures = pictureDraft.length ? pictureDraft.map((picture) => ({ ...picture })) : null;
   return changes;
 }
 
-const unsaved = () => !!current && (Object.keys(update()).length > 0 || ($("f-cover") as HTMLInputElement).files!.length > 0 || $<HTMLInputElement>("f-nocover").checked);
+const unsaved = () => !!current && (Object.keys(update()).length > 0 || otherTagsChanged());
 
 // Asks before unsaved changes are thrown away; resolves to true when it is fine to go on.
 function confirmDiscard(action: string): Promise<boolean> {
@@ -276,17 +372,15 @@ async function onSave(event: Event) {
   if (!current) return;
   const save = $<HTMLButtonElement>("save");
   const metadata = update();
-  const image = ($("f-cover") as HTMLInputElement).files![0];
-  if (image) metadata.pictures = [{ type: 3, mimeType: image.type, description: "", data: new Uint8Array(await image.arrayBuffer()) }];
-  else if ($<HTMLInputElement>("f-nocover").checked) metadata.pictures = null;
-  const changed = Object.keys(metadata);
+  const changed = [...Object.keys(metadata), ...(otherTagsChanged() ? ["other tags"] : [])];
   if (!changed.length) {
     toast({ title: "Nothing changed", description: "Edit a field first.", variant: "info" });
     return;
   }
   save.disabled = true;
   try {
-    const saved = await writeToBlob(current.file, { metadata: metadata as any });
+    // the stored tags as edited in Other tags first, then the main form's fields on top (api.ts WriteInput)
+    const saved = await writeToBlob(current.file, { ...otherTagsWrite(current.result), metadata: metadata as any });
     Object.assign(document.createElement("a"), { href: objectUrl(saved), download: saved.name }).click();
     await load(saved); // read it back, so you see what was written
     toast({ title: `Saved ${saved.name}`, description: `Changed ${changed.join(", ")}. ${size(saved.size)}.`, variant: "success" });
@@ -398,10 +492,6 @@ if (typeof window !== "undefined") addEventListener("beforeunload", (event) => {
 
 // ---- markup ---------------------------------------------------------------------------------------------
 
-const Chevron = () => (
-  <svg class="accordion-chevron" aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6" /></svg>
-);
-
 function Field({ id, name, label, hint, wide, ...rest }: Props & { id: string; name: string; label: string; hint?: string; wide?: boolean; type?: string; placeholder?: string; pattern?: string; min?: string }) {
   return (
     <div class={wide ? "wide" : ""}>
@@ -479,24 +569,38 @@ export function Playground() {
               <Field id="f-artist" name="artist" label="Artist" hint="Separate several with commas." />
               <Field id="f-albumArtist" name="albumArtist" label="Album artist" />
               <Field id="f-album" name="album" label="Album" />
-              <Field id="f-genre" name="genre" label="Genre" hint="Separate several with commas." />
+              <div>
+                <label class="label" for="f-genre">Genre</label>
+                <Combobox id="genres" inputId="f-genre" name="genre" label="Genre" options={GENRE_OPTIONS} separator="," describedBy="f-genre-desc" />
+                <p class="field-description" id="f-genre-desc">Pick from the list or type any genre. Separate several with commas.</p>
+              </div>
               <Field id="f-year" name="recordingTime" label="Recording date" placeholder="2024 or 2024-05-01" pattern="\d{4}(-\d{2}(-\d{2})?)?" />
               <div class="pair">
                 <Field id="f-track" name="track" label="Track" type="number" min="1" />
                 <Field id="f-tracks" name="tracks" label="of" type="number" min="1" />
               </div>
-              <div class="wide">
-                <label class="label" for="f-comment">Comment</label>
-                <textarea class="textarea" id="f-comment" name="comment" data-rows="2" data-max-rows="6"></textarea>
-              </div>
-              <div class="wide">
-                <label class="label" for="f-cover">New cover <span class="label-hint">(optional)</span></label>
-                <input class="file-input" type="file" id="f-cover" accept="image/jpeg,image/png" />
-              </div>
-              <div class="wide check-row">
-                <input class="checkbox" type="checkbox" id="f-nocover" />
-                <label class="label" for="f-nocover">Remove the cover</label>
-              </div>
+              <fieldset class="wide edit-group" aria-describedby="comments-desc">
+                <legend class="label">Comments</legend>
+                <p class="field-description" id="comments-desc"></p>
+                <ul class="edit-list" id="comment-list"></ul>
+                <button class="btn" data-variant="outline" data-size="sm" type="button" id="add-comment" onClick={onAddComment}>Add comment</button>
+              </fieldset>
+              <fieldset class="wide edit-group" aria-describedby="pictures-desc">
+                <legend class="label">Pictures</legend>
+                <p class="field-description" id="pictures-desc"></p>
+                <ul class="edit-list" id="picture-list"></ul>
+                <div class="file-drop" data-size="sm">
+                  <label class="file-drop-zone">
+                    <input class="file-drop-input" type="file" id="f-cover" accept={IMAGE_TYPES.join(",")} multiple onChange={onAddPictures} />
+                    <span class="file-drop-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.1-3.1a2 2 0 0 0-2.8 0L6 21" /></svg>
+                    </span>
+                    <span class="file-drop-title">Drop pictures here or <span class="file-drop-browse">browse</span></span>
+                    <span class="file-drop-hint">JPEG or PNG, several at once</span>
+                  </label>
+                </div>
+              </fieldset>
+              <OtherTags />
             </div>
             <div class="card-footer">
               <button class="btn" data-variant="outline" type="button" id="reset" onClick={onReset}>Reset</button>
@@ -513,7 +617,7 @@ export function Playground() {
           <div class="card-content">
             <div class="accordion" id="nerds">
               <details class="accordion-item" id="nerds-map">
-                <summary class="accordion-trigger"><span>Byte map</span><Chevron /></summary>
+                <summary class="accordion-trigger"><span>Byte map</span><ChevronIcon /></summary>
                 <div class="accordion-content stack gap-4">
                   <div class="byte-map" id="byte-map" role="group" aria-label="Regions of the file, from the first byte to the last"></div>
                   <div class="legend" id="legend"></div>
@@ -522,7 +626,7 @@ export function Playground() {
                 </div>
               </details>
               <details class="accordion-item" id="nerds-structure">
-                <summary class="accordion-trigger"><span>Structure</span><Chevron /></summary>
+                <summary class="accordion-trigger"><span>Structure</span><ChevronIcon /></summary>
                 <div class="accordion-content table-scroll">
                   <table class="table">
                     <thead><tr class="table-row"><th class="table-head">Region</th><th class="table-head">Kind</th><th class="table-head">Offset</th><th class="table-head">Size</th></tr></thead>
@@ -531,11 +635,11 @@ export function Playground() {
                 </div>
               </details>
               <details class="accordion-item" id="nerds-warnings">
-                <summary class="accordion-trigger"><span>Warnings (<span id="warning-count">0</span>)</span><Chevron /></summary>
+                <summary class="accordion-trigger"><span>Warnings (<span id="warning-count">0</span>)</span><ChevronIcon /></summary>
                 <div class="accordion-content"><ul id="warning-list"></ul></div>
               </details>
               <details class="accordion-item" id="nerds-raw">
-                <summary class="accordion-trigger"><span>Raw result of <code>readFromBlob(file)</code></span><Chevron /></summary>
+                <summary class="accordion-trigger"><span>Raw result of <code>readFromBlob(file)</code></span><ChevronIcon /></summary>
                 <div class="accordion-content"><pre class="dump"><code id="dump"></code></pre></div>
               </details>
             </div>

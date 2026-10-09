@@ -1,0 +1,2 @@
+/* HexInput (HexInput.tsx): bytes read best in a monospace font, each pair lined up. */
+.hex-input { font-family: var(--font-mono); letter-spacing: 0.02em; }

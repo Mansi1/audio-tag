@@ -1,0 +1,2 @@
+/* BytesInput (BytesInput.tsx): the TEXT / BYTE chooser, then the field for the bytes. */
+.bytes-input { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: 0.5rem; }
