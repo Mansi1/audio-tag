@@ -126,11 +126,13 @@ function serve(cwd, command, args, env = {}) {
 }
 // the installed copy through the package's bin, the link npx, yarn and bunx run for `audio-tag`, on another port
 // (starting at all proves the link, the shebang and the executable bit). The link itself, not `npm exec audio-tag`,
-// so SIGTERM below reaches the server rather than an npm wrapper. The repository server through PORT
-const servers = [
-  await serve(consumer, join(consumer, 'node_modules/.bin/audio-tag'), ['--port', '5291']),
-  await serve(root, 'node', ['scripts/serve.mjs'], { PORT: '5292' }),
-]
+// so SIGTERM below reaches the server rather than an npm wrapper. The repository server through PORT.
+// Stopped on any exit, also a crash that skips the finally below or a second server that fails to start: they
+// outlived such a run once and blocked its ports for the next (EADDRINUSE).
+const servers = []
+process.on('exit', () => { for (const s of servers) s.kill('SIGTERM') })
+servers.push(await serve(consumer, join(consumer, 'node_modules/.bin/audio-tag'), ['--port', '5291']))
+servers.push(await serve(root, 'node', ['scripts/serve.mjs'], { PORT: '5292' }))
 // a fake microphone, so the playground's recorder runs without hardware
 const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'] })
 const { read } = await import(pathToFileURL(join(installed, 'dist/index.js')).href)
