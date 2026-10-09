@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Playground: several pictures and several comments per file, each in its own box with a description; pictures show their pixel size, format and size, and are added by dropping or browsing several at once.
+- Playground: genre, comment language and picture type open like a select, filter as you type and mark the current value; genre and language still take any text.
+- Playground: "Other tags" shows the tags as the file stores them (ID3v2 frames, Vorbis fields, iTunes items) with their IDs, editable, binary ID3 frames as hex bytes and frames no spec defines as text or bytes.
+- `make setup` turns on a pre-push hook that runs `make verify`.
+
 ## 0.1.0
 
 - New website built with defuss, defuss-ssg and defuss-shadcn: a playground that reads, edits and writes tags in the browser, with byte map, structure and hex views; docs; a 404 page.
