@@ -1,0 +1,4 @@
+/* RowList (RowList.tsx): a row's cells on one grid line (tracks from the columns); a textarea cell gets its own line. */
+.row-fields { display: grid; gap: 0.5rem; min-width: 0; }
+.row-cell { min-width: 0; }
+.row-fields > .row-cell.wide { grid-column: 1 / -1; }

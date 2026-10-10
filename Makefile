@@ -29,10 +29,11 @@ help: ## list the verbs with their usage (default goal)
 	@awk -F':.*## ' '/^[a-zA-Z0-9_ -]+:.*## /{printf "  %-12s %s\n", $$1, $$2}' $(firstword $(MAKEFILE_LIST))
 
 # The toolchain is npm (package-lock.json) with vitest; the verbs wrap the npm scripts in package.json.
-setup: ## install exactly the locked dependencies (library: npm, website: bun) and the Playwright browser e2e drives
+setup: ## install exactly the locked dependencies (library: npm, website: bun) and the Playwright browser e2e drives; turn on the pre-push hook (make verify)
 	npm ci
 	cd website && bun install --frozen-lockfile
 	npx playwright install --with-deps chromium
+	git config core.hooksPath .githooks # pre-push runs make verify, as CI does
 
 # The website build (defuss-ssg) needs Node 22 or newer: the current node when it is new enough, else the
 # newest nvm install from 22 up; website/scripts/check-node.mjs stops with a clear message otherwise.

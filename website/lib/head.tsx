@@ -42,6 +42,7 @@ export function Head({ title, description, path }: HeadProps) {
       <link rel="stylesheet" href="assets/vendor/ui.css" />
       <link rel="stylesheet" href="assets/theme.css" />
       <link rel="stylesheet" href="assets/site.css" />
+      <link rel="stylesheet" href="assets/components.css" />
       <script type="module" src="assets/vendor/core.min.js"></script>
       {UI_SCRIPTS.map((c) => <script type="module" src={`assets/vendor/${c}.min.js`}></script>)}
       <script type="module" src="assets/site.js"></script>

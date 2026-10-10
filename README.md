@@ -390,6 +390,10 @@ npm run serve       # build the library and the website, then serve it at http:/
 npm run website     # the same, and open the website in the browser
 ```
 
+`make setup` installs the dependencies and turns on a pre-push hook
+([`.githooks/pre-push`](.githooks/pre-push)) that runs `make verify` (lint, tests, coverage, e2e), as CI does,
+and stops the push when a check fails. It takes a few minutes; `git push --no-verify` skips it once.
+
 The website ([mansi1.github.io/audio-tag](https://mansi1.github.io/audio-tag/), deployed from `main` by
 [`.github/workflows/pages.yml`](.github/workflows/pages.yml)) lives in [`website/`](website/README.md): an
 overview with a playground, the docs, and a `404.html` for GitHub Pages. It is built with

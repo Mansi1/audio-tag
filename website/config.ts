@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import type { SsgPlugin } from "defuss-ssg";
 import type { Plugin } from "vite";
@@ -10,9 +10,8 @@ import { SITE } from "./lib/site.ts";
 const UI = "node_modules/defuss-shadcn/dist/components";
 // The library build the playground loads at run time: one self-contained ESM file (scripts/minify.mjs).
 const LIBRARY = "../dist/browser.min.js";
-// Where the component build points `audio-tag/browser`, relative to components/playground.js, so it
-// resolves under /audio-tag/ (GitHub Pages) and /website/dist/ (the npm package) alike.
-const LIBRARY_URL = "../assets/vendor/audio-tag/browser.min.js";
+// Where the built components load `audio-tag/browser` from, below dist/ (see libraryUrl).
+const LIBRARY_URL = "assets/vendor/audio-tag/browser.min.js";
 
 // VERIFIED: copies the UI from node_modules into assets/vendor/ before the build copies assets, so the site
 // works offline (no CDN): one ui.css (core first, then each component) and one script per module, since
@@ -30,6 +29,9 @@ const vendor: SsgPlugin = {
     writeFileSync("assets/vendor/ui.css", css.map((f) => readFileSync(f, "utf8")).join("\n"));
     copyFileSync(`${UI}/core.min.js`, "assets/vendor/core.min.js");
     for (const c of UI_SCRIPTS) copyFileSync(`${UI}/${c}/${c}.min.js`, `assets/vendor/${c}.min.js`);
+    // Each component keeps its CSS next to it (components/**/*.css); the page links them as one file, in path order.
+    const own = readdirSync("components", { recursive: true, encoding: "utf8" }).filter((f) => f.endsWith(".css")).sort();
+    writeFileSync("assets/components.css", own.map((f) => `/* components/${f} */\n${readFileSync(`components/${f}`, "utf8")}`).join("\n"));
   },
 };
 
@@ -106,6 +108,18 @@ const dropConfig: SsgPlugin = {
   },
 };
 
+// Points each built component and shared chunk at the vendored library relative to its own folder, so it resolves
+// under /audio-tag/ (GitHub Pages) and /website/dist/ (the npm package) alike. A fixed "../" path (rollup
+// output.paths) suited components/*.js only: a shared module that imports the library lands in components/chunks/,
+// one folder deeper, and its import 404ed (VERIFIED: chunks/OtherTags-*.js asked for components/assets/…).
+const libraryUrl: Plugin = {
+  name: "library-url",
+  renderChunk(code, chunk) {
+    const up = "../".repeat(chunk.fileName.split("/").length); // playground.js → ../, chunks/x.js → ../../
+    return code.replace(/(["'])audio-tag\/browser\1/g, `$1${up}${LIBRARY_URL}$1`);
+  },
+};
+
 export default {
   plugins: [vendor, htmlFix, githubPages, dropConfig],
   viteConfig: {
@@ -114,7 +128,7 @@ export default {
     // rendering at build time and the dev server; the built component loads the vendored file instead of
     // bundling the library, so the browser caches it apart from the playground code.
     resolve: { alias: { "audio-tag/browser": resolve(process.cwd(), "../dist/browser.js") } },
-    build: { rollupOptions: { external: ["audio-tag/browser"], output: { paths: { "audio-tag/browser": LIBRARY_URL } } } },
-    plugins: [githubPagesDev, notFoundDev],
+    build: { rollupOptions: { external: ["audio-tag/browser"] } },
+    plugins: [githubPagesDev, notFoundDev, libraryUrl],
   },
 };

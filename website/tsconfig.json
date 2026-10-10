@@ -11,6 +11,6 @@
     "noEmit": true,
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
-    "paths": { "audio-tag/browser": ["../dist/browser.d.ts"] }
+    "paths": { "audio-tag/browser": ["../dist/browser.d.ts", "../dist/browser.js"] }
   }
 }

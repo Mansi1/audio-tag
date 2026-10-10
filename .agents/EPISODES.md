@@ -4,96 +4,13 @@
 Agents append `<UTC ISO> s=<session> LESSON <VAE-DIALECT>` only for a falsified HYPOTHESIS, a dead end, or a root cause.
 Wrap: EVERY lead → test | .agents/VERIFY.py rule | one MEMORY line with BC, then delete; OR delete BC evidence. -->
 
-2026-10-07T18:26:24Z s=e3d1b970 DONE fp=d3e29e71dabf cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/verify.yml,AGENTS.md,ARCH.md(+170)
-2026-10-07T18:26:24Z s=e3d1b970 FINDING spec/ (all converted pages) learn=verifier: The prose gate check flags any broken relative link in a changed page.
-2026-10-07T18:26:24Z s=e3d1b970 FINDING .gitattributes learn=test: test/id3v1.node.test.ts reads generation.log and the 274 MP3s, so changed bytes fail it.
-2026-10-07T18:35:04Z s=e3d1b970 DONE fp=5b3692f0f136 cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/verify.yml,AGENTS.md,ARCH.md(+170)
-2026-10-07T18:40:46Z s=e3d1b970 FAIL tests.e2e.1
-2026-10-07T18:43:15Z s=e3d1b970 DONE fp=3af99cf31681 cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/verify.yml,AGENTS.md,ARCH.md(+183)
-2026-10-07T18:43:15Z s=e3d1b970 FINDING scripts/e2e.mjs:43 PER_FORMAT learn=test: make e2e builds every per-format function name from this map and calls it, so a stale entry fails the run.
-2026-10-07T18:52:08Z s=e3d1b970 FAIL env.example,tests.unit
-2026-10-07T18:56:13Z s=e3d1b970 DONE fp=3980cb82260d cov=94.0% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+230)
-2026-10-07T18:56:13Z s=e3d1b970 FINDING test/build-info.test.ts learn=test: Every test runs in both vitest projects, so a node-only path API fails the jsdom run.
-2026-10-07T18:56:13Z s=e3d1b970 FINDING website/site.js showBuildInfo, key 'line' learn=test: make e2e waits for the footer line to be visible when the build has a commit and hidden otherwise.
-2026-10-07T18:56:13Z s=e3d1b970 FINDING README.md, spec/README.md, 11 src comments (tasks/ references) learn=verifier: The prose gate check flags broken relative links in changed pages.
-2026-10-07T18:56:13Z s=e3d1b970 FINDING .env.example SOURCE_DATE_EPOCH learn=verifier: The env.example gate check flags a missing key.
-2026-10-07T19:00:32Z s=e3d1b970 DONE fp=80473170f17f cov=94.0% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+230)
-2026-10-07T19:06:09Z s=e3d1b970 DONE fp=7170d35800f2 cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+227)
-2026-10-07T19:12:36Z s=e3d1b970 DONE fp=12558507e543 cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+228)
-2026-10-07T19:14:35Z s=e3d1b970 DONE fp=ff57d684774d cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+228)
-2026-10-07T19:19:33Z s=e3d1b970 DONE fp=a59349465cb3 cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+228)
-2026-10-07T19:35:00Z s=e3d1b970 FAIL tests.e2e.1
-2026-10-07T19:55:25Z s=e3d1b970 FAIL prose,tests.e2e.1
-2026-10-07T19:58:35Z s=e3d1b970 FAIL tests.e2e.1
-2026-10-07T20:11:35Z s=e3d1b970 FAIL docs.pages,prose,package,tests.e2e.1
-2026-10-07T20:21:38Z s=e3d1b970 FAIL docs.pages,tests.e2e.1
-2026-10-07T20:39:22Z s=e3d1b970 FAIL tests.unit
-2026-10-07T20:42:16Z s=e3d1b970 DONE fp=7c49cee185f9 cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+259)
-2026-10-07T20:42:16Z s=e3d1b970 FINDING website/lib/head.tsx THEME (defuss-ssg client nav) learn=test: make e2e clicks a docs menu link and requires the hash and the menu mark to follow.
-2026-10-07T20:42:16Z s=e3d1b970 FINDING website/.npmignore learn=test: make e2e checks the installed package has website/dist/index.html.
-2026-10-07T20:42:16Z s=e3d1b970 FINDING website/lib/pages/not-found.tsx COUNTDOWN learn=test: make e2e fails on page errors and visits 404.html, where the countdown runs.
-2026-10-07T20:42:16Z s=e3d1b970 FINDING package.json files: website/dist/config.js learn=test: Root cause not reproduced; make e2e now asserts config.js is not in the installed package.
-2026-10-07T20:42:16Z s=e3d1b970 FINDING website/assets/site.js scroll spy learn=test: make e2e checks the menu mark after a jump (desktop).
-2026-10-07T20:42:16Z s=e3d1b970 FINDING website/lib/byte-map.ts formType learn=test: make test runs tsc on the website.
-2026-10-07T20:42:16Z s=e3d1b970 FINDING website/components/playground.tsx Reset learn=test: make e2e checks Reset restores the loaded tags.
-2026-10-07T21:01:04Z s=e3d1b970 DONE fp=d170d053b26e cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+259)
-2026-10-07T21:10:12Z s=e3d1b970 DONE fp=6a0a1aaae09d cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+259)
-2026-10-07T21:18:01Z s=e3d1b970 FAIL tests.unit
-2026-10-07T21:21:52Z s=e3d1b970 FAIL tests.e2e.1,coverage
-2026-10-07T21:26:03Z s=e3d1b970 DONE fp=6655cb256101 cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+264)
-2026-10-07T21:26:03Z s=e3d1b970 FINDING website/lib/diagram.tsx (raw SVG) learn=test: Where defuss truncates is not traced yet (no upstream issue); make e2e checks both diagrams render with their texts.
-2026-10-07T21:26:03Z s=e3d1b970 FINDING website/package.json build (stale dist/) learn=test: make e2e asserts the package has no build config; a clean dist/ per build removes stale files.
-2026-10-07T21:39:05Z s=e3d1b970 DONE fp=4ce61107528d cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+266)
-2026-10-07T21:39:05Z s=e3d1b970 FINDING website/assets/site.css (truncated) learn=test: make e2e now checks that the layout CSS applies (docs grid, footer flex, playground grid) in both viewports.
-2026-10-07T21:51:09Z s=e3d1b970 DONE fp=dbd2d2e46935 cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+268)
-2026-10-07T21:57:14Z s=e3d1b970 DONE fp=c4b4fa1702cc cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+268)
-2026-10-07T22:03:17Z s=e3d1b970 DONE fp=5bd28b5ee1bc cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+270)
-2026-10-07T22:22:32Z s=e3d1b970 DONE fp=f839fecc376f cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+270)
-2026-10-07T22:29:36Z s=e3d1b970 DONE fp=30bf42dd0b2e cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+271)
-2026-10-07T22:33:07Z s=e3d1b970 FAIL prose
-2026-10-07T22:41:54Z s=e3d1b970 DONE fp=bda692e7ce52 cov=93.9% paths=.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml,AGENTS.md(+274)
-2026-10-07T22:45:08Z s=e3d1b970 DONE fp=ef37860cfb2c cov=93.9% paths=.claude/settings.json,.claude/skills/update-docs/SKILL.md,.github/workflows/pages.yml,.github/workflows/verify.yml(+276)
-2026-10-07T23:17:39Z s=e3d1b970 DONE fp=852348d7af51 cov=93.9% paths=CHANGELOG.md,scripts/e2e.mjs,website/README.md,website/config.ts(+6)
-2026-10-07T23:56:46Z s=e3d1b970 FAIL tests.unit
-2026-10-07T23:59:40Z s=e3d1b970 DONE fp=f0cdbaa40e22 cov=93.9% paths=scripts/e2e.mjs,website/README.md,website/assets/site.css,website/assets/site.js(+6)
-2026-10-08T00:00:36Z s=e3d1b970 DONE fp=11209d8d7809 cov=93.9% paths=CHANGELOG.md,scripts/e2e.mjs,website/README.md,website/assets/site.css(+7)
-2026-10-08T00:06:33Z s=e3d1b970 FAIL tests.unit
-2026-10-08T00:11:28Z s=e3d1b970 DONE fp=032ec3412db6 cov=93.9% paths=scripts/e2e.mjs,website/README.md,website/assets/site.css,website/lib/install-tabs.tsx(+2)
-2026-10-08T00:11:52Z s=e3d1b970 DONE fp=917152dc3f50 cov=93.9% paths=CHANGELOG.md,scripts/e2e.mjs,website/README.md,website/assets/site.css(+3)
-2026-10-08T00:20:09Z s=e3d1b970 DONE fp=d4c0d6112e70 cov=93.9% paths=Makefile
-2026-10-08T00:35:08Z s=3a87391b FAIL tests.e2e.1
-2026-10-08T00:53:21Z s=3a87391b FAIL tests.unit,tests.e2e.1
-2026-10-08T00:57:16Z s=3a87391b DONE fp=2b5ded4d039e cov=93.9% paths=scripts/e2e.mjs,website/ARCH.md,website/components/playground.tsx
-2026-10-08T01:00:07Z s=3a87391b DONE fp=e26aea028702 cov=93.9% paths=CHANGELOG.md,package.json,scripts/e2e.mjs,website/ARCH.md(+1)
-2026-10-08T01:15:25Z s=3a87391b FAIL tests.e2e.1,hygiene.probes
-2026-10-08T01:19:55Z s=3a87391b DONE fp=2d7a49cff664 cov=93.9% paths=CHANGELOG.md,package.json,scripts/e2e.mjs,test/aiff-helpers.ts(+5)
-2026-10-08T10:21:51Z s=3a87391b DONE fp=856d19accc8d cov=94.0% paths=CHANGELOG.md,Makefile,package.json,scripts/e2e.mjs(+6)
-2026-10-08T12:00:40Z s=3a87391b DONE fp=7c9a4f714c3b cov=94.0% paths=CHANGELOG.md,Makefile,package.json,scripts/e2e.mjs(+8)
-2026-10-08T12:54:59Z s=3a87391b DONE fp=229a7077dc4b cov=94.0% paths=CHANGELOG.md,Makefile,package.json,scripts/e2e.mjs(+10)
-2026-10-08T12:59:58Z s=3a87391b DONE fp=b07488393121 cov=94.0% paths=.github/workflows/pages.yml,.github/workflows/verify.yml,CHANGELOG.md,Makefile(+12)
-2026-10-08T13:04:54Z s=3a87391b DONE fp=a97629de9a5f cov=94.0% paths=.github/workflows/pages.yml,.github/workflows/verify.yml,CHANGELOG.md,Makefile(+12)
-2026-10-08T13:09:07Z s=3a87391b DONE fp=888cd3c2bd63 cov=94.0% paths=.github/workflows/pages.yml,.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md(+13)
-2026-10-08T13:58:24Z s=3a87391b FAIL lint
-2026-10-08T14:02:55Z s=3a87391b DONE fp=18e059aba303 cov=94.0% paths=.github/workflows/pages.yml,.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md(+15)
 2026-10-08T14:02:55Z s=3a87391b FINDING test/ogg-helpers.ts:page|ogg.test.ts:checkPages learn=test: the CRC test asserts pageCrc equals the bitwise reference; test speed itself is not pinned (host-dependent)
 2026-10-08T14:48:50Z s=3a87391b DONE fp=5e222d589788 cov=94.0% paths=.github/workflows/pages.yml,.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md(+15)
-2026-10-08T14:48:50Z s=3a87391b FINDING .github/workflows/verify.yml|pages.yml|publish.yml learn=none: cross-run artifact download already ran (deploy 37794595159); the tag path with provenance from a tarball has not run
 2026-10-08T15:45:21Z s=7143a713 DONE fp=d0ff48ce4494 cov=? paths=plans/2026-10-08_15-43_release-candidate.md
-2026-10-08T15:45:21Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:13 B05 learn=none: plan wording, not a code defect; no mechanical recurrence check
-2026-10-08T15:45:21Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:47 B01 learn=none: plan wording, not a code defect; no mechanical recurrence check
-2026-10-08T15:45:21Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:53 B01 learn=none: plan wording, not a code defect; no mechanical recurrence check
-2026-10-08T15:45:21Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:101 L03 learn=none: plan wording, not a code defect; no mechanical recurrence check
-2026-10-08T15:45:21Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:M2 docs P06 learn=none: plan wording, not a code defect; no mechanical recurrence check
-2026-10-08T15:45:21Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:Risk B02 learn=none: plan wording, not a code defect; no mechanical recurrence check
-2026-10-08T15:45:21Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:Release flow T07 learn=none: plan wording, not a code defect; no mechanical recurrence check
 2026-10-08T16:09:43Z s=7143a713 DONE fp=1e893b8342a9 cov=94.0% paths=.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md,CHANGELOG.md(+10)
 2026-10-08T16:09:43Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:47 B01 learn=memory: probe commands recorded in .agents/CLI_GIST.md; yarn is not installed, so no gate test
 2026-10-08T16:09:43Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:M1 probe learn=memory: recorded in CLI_GIST as 'outside the repo'
-2026-10-08T16:09:43Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:M3 proof B01 learn=none: workflow behavior is only provable by the first tag run
-2026-10-08T16:09:43Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:M1 docs P01 learn=none: plan wording, no recurrence check
 2026-10-08T16:31:19Z s=7143a713 DONE fp=6128b029d128 cov=94.0% paths=.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md,CHANGELOG.md(+10)
-2026-10-08T16:31:19Z s=7143a713 FINDING .github/workflows/publish.yml:60 Publish to npm learn=none: the human declined the proposed VERIFY.py rule; the inline comment at the call names the trap and the run
-2026-10-08T16:31:19Z s=7143a713 FINDING README.md:411 P04 learn=none: whether npm accepts the called workflow is shown only by the next tag run
 2026-10-08T21:30:59Z s=7143a713 DONE fp=8011ac24dff6 cov=94.0% paths=.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md,CHANGELOG.md(+10)
 2026-10-08T21:30:59Z s=7143a713 FINDING plans/2026-10-08_15-43_release-candidate.md:25 B09 learn=memory: MEMORY line replaces the stale UNKNOWN about the CI publish path
 2026-10-08T21:31:10Z s=7143a713 DONE fp=db24a6bd54b2 cov=94.0% paths=.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md,CHANGELOG.md(+10)
@@ -103,4 +20,74 @@ Wrap: EVERY lead → test | .agents/VERIFY.py rule | one MEMORY line with BC, th
 2026-10-08T21:38:08Z s=7143a713 FINDING CHANGELOG.md:3 learn=test: make lint runs scripts/release-notes.mjs
 2026-10-08T21:40:20Z s=7143a713 DONE fp=66c341dbae70 cov=94.0% paths=.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md,CHANGELOG.md(+9)
 2026-10-08T21:57:18Z s=7143a713 DONE fp=7f6d247feb5a cov=94.0% paths=.github/workflows/publish.yml,.github/workflows/verify.yml,ARCH.md,CHANGELOG.md(+9)
-2026-10-08T21:57:18Z s=7143a713 FINDING README.md:405 R02 learn=none: GitHub enforces the rule itself; the doc follows it
+2026-10-09T16:55:54Z s=f5032668 DONE fp=9c9118d0b061 cov=94.0% paths=scripts/e2e.mjs,website/assets/site.css,website/components/playground.tsx
+2026-10-09T17:08:10Z s=f5032668 DONE fp=2f62398d9b3e cov=94.0% paths=scripts/e2e.mjs,website/assets/site.css,website/components/playground.tsx
+2026-10-09T17:19:28Z s=f5032668 DONE fp=76eb3ffc299b cov=94.0% paths=scripts/e2e.mjs,website/assets/site.css,website/components/playground.tsx
+2026-10-09T17:19:28Z s=f5032668 FINDING website/components/playground.tsx:onAddPictures learn=test: make e2e now picks twice and counts the saved pictures
+2026-10-09T17:27:19Z s=f5032668 DONE fp=2ff41df75cf6 cov=94.0% paths=scripts/e2e.mjs,website/assets/site.css,website/components/playground.tsx
+2026-10-09T17:27:19Z s=f5032668 FINDING website/components/playground.tsx:drawPictures learn=test: make e2e checks the picture box info line
+2026-10-09T17:44:34Z s=f5032668 DONE fp=434071b9bc78 cov=94.0% paths=scripts/e2e.mjs,website/assets/site.css,website/components/playground.tsx
+2026-10-09T17:44:34Z s=f5032668 FINDING website/components/playground.tsx:CommentRow option onMouseDown learn=test: make e2e picks a language with the mouse; MEMORY line for the defuss event gotcha
+2026-10-09T17:44:34Z s=f5032668 FINDING website/components/playground.tsx:languageKey|openLanguages learn=test: make e2e covers click-open, filter, Enter, mouse pick and free text
+2026-10-09T17:57:39Z s=f5032668 DONE fp=4b5346690973 cov=94.0% paths=scripts/e2e.mjs,website/README.md,website/assets/site.css,website/components/playground.tsx(+1)
+2026-10-09T18:08:39Z s=f5032668 DONE fp=8ecfa3fe1b72 cov=94.0% paths=scripts/e2e.mjs,website/README.md,website/assets/site.css,website/components/icon/ChevronIcon.tsx(+7)
+2026-10-09T18:08:39Z s=f5032668 FINDING website/config.ts:vendor|website/lib/head.tsx learn=test: make e2e checks that the component CSS applies
+2026-10-09T18:17:59Z s=f5032668 DONE fp=e166d394175d cov=94.0% paths=scripts/e2e.mjs,website/README.md,website/assets/site.css,website/components/icon/ChevronIcon.tsx(+7)
+2026-10-09T18:17:59Z s=f5032668 FINDING website/components/input/Combobox.tsx:open learn=test: make e2e checks the genre completion and the saved genres
+2026-10-09T18:17:59Z s=f5032668 FINDING scripts/e2e.mjs:arrow cursor check learn=memory: recurring trap for viewport-based checks on this site
+2026-10-09T18:28:47Z s=f5032668 DONE fp=4a14e7c3b118 cov=94.0% paths=scripts/e2e.mjs,website/README.md,website/assets/site.css,website/components/icon/CheckIcon.tsx(+8)
+2026-10-09T18:28:47Z s=f5032668 FINDING website/components/input/Combobox.tsx:open learn=test: make e2e checks the checked options
+2026-10-09T18:28:47Z s=f5032668 FINDING scripts/e2e.mjs:servers learn=none: the leak is fixed and probed; what removed tooltip.min.js from website/dist during that one run is not established (no dev server or second build was found runn
+2026-10-09T18:33:09Z s=f5032668 DONE fp=1aa92bd4e715 cov=94.0% paths=Makefile,README.md,scripts/e2e.mjs,website/README.md(+10)
+2026-10-09T19:05:19Z s=f5032668 DONE fp=3ccd8193c272 cov=94.0% paths=Makefile,README.md,scripts/e2e.mjs,website/README.md(+15)
+2026-10-09T19:05:19Z s=f5032668 FINDING website/components/OtherTags.tsx:UNSUPPORTED learn=test: make e2e checks the hidden M4A fields
+2026-10-09T19:05:19Z s=f5032668 FINDING website/components/OtherTags.tsx:otherTagChanges|canonical learn=test: make e2e saves and reads back every kind of field
+2026-10-09T19:23:24Z s=f5032668 DONE fp=6500b0efc735 cov=94.0% paths=Makefile,README.md,scripts/e2e.mjs,website/README.md(+17)
+2026-10-09T19:23:24Z s=f5032668 FINDING website/lib/raw-tags.ts learn=test: lib/raw-tags.test.ts
+2026-10-09T19:23:24Z s=f5032668 FINDING website/config.ts:libraryUrl learn=test: make e2e fails on failed requests and checks the served library
+2026-10-09T19:23:24Z s=f5032668 FINDING website/components/OtherTags.tsx|scripts/e2e.mjs learn=test: make e2e
+2026-10-09T19:42:43Z s=f5032668 FAIL coverage
+2026-10-09T19:45:06Z s=f5032668 FAIL tests.unit,coverage
+2026-10-09T19:48:36Z s=f5032668 FAIL tests.unit,tests.e2e.1,coverage
+2026-10-09T19:52:20Z s=f5032668 FAIL tests.unit,tests.e2e.1
+2026-10-09T19:54:36Z s=f5032668 DONE fp=aa14e123408e cov=94.0% paths=Makefile,README.md,scripts/e2e.mjs,website/README.md(+17)
+2026-10-09T19:54:36Z s=f5032668 FINDING website/components/input/Combobox.tsx:show|position learn=test: make e2e checks the frame ID list opens whole and on top
+2026-10-09T20:13:06Z s=f5032668 FAIL tests.unit,tests.e2e.1
+2026-10-09T20:18:38Z s=f5032668 DONE fp=a8ac59bd0365 cov=94.0% paths=Makefile,README.md,scripts/e2e.mjs,test/id3v2-frames.test.ts(+18)
+2026-10-09T20:18:38Z s=f5032668 FINDING website/components/input/Combobox.css:.combo-list learn=test: make e2e wheels past the genre list end and checks the page did not move
+2026-10-09T20:18:38Z s=f5032668 FINDING test/id3v2-frames.test.ts:never throws or hangs on mutated input learn=test: the test measures CPU time now; MEMORY hypothesis removed
+2026-10-09T20:27:05Z s=f5032668 DONE fp=ebc3f78e5b27 cov=94.0% paths=Makefile,README.md,scripts/e2e.mjs,test/id3v2-frames.test.ts(+18)
+2026-10-09T20:27:05Z s=f5032668 FINDING scripts/e2e.mjs:wheel check learn=none: stale box under load inferred from listAtEnd false, not reproduced; falsifier = a failure with open true and listAtEnd false after hover()
+2026-10-09T20:38:03Z s=f5032668 DONE fp=646927da4aa4 cov=94.0% paths=Makefile,README.md,scripts/e2e.mjs,test/id3v2-frames.test.ts(+16)
+2026-10-09T20:38:03Z s=f5032668 FINDING website/components/input/Combobox.css:.select-chevron learn=test: make e2e checks the rotation
+2026-10-09T20:38:03Z s=f5032668 FINDING website/components/playground.tsx:PictureRow|PICTURE_TYPE_PATTERN learn=test: make e2e sets the type by name and checks refusal
+2026-10-09T20:38:03Z s=f5032668 FINDING website/components/playground.tsx:drawPictures|scripts/e2e.mjs learn=memory: rows that contain a Combobox hold nested li and input elements
+2026-10-09T20:54:50Z s=f5032668 DONE fp=66cf71da6d64 cov=94.0% paths=Makefile,README.md,scripts/e2e.mjs,test/id3v2-frames.test.ts(+16)
+2026-10-09T20:54:50Z s=f5032668 FINDING website/lib/raw-tags.ts:plainBody|writeID3 learn=test: lib/raw-tags.test.ts and make e2e
+2026-10-09T20:54:50Z s=f5032668 FINDING website/lib/raw-tags.ts:idPattern learn=test: unit test 'ID patterns' and make e2e
+2026-10-09T21:22:21Z s=f5032668 DONE fp=24baa6772fec cov=94.0% paths=Makefile,README.md,scripts/e2e.mjs,test/id3v2-frames.test.ts(+18)
+2026-10-09T21:22:21Z s=f5032668 FINDING website/components/input/HexInput.tsx|RowList.tsx|lib/raw-tags.ts learn=test: lib/raw-tags.test.ts and make e2e
+2026-10-09T21:22:21Z s=f5032668 FINDING website/components/input/RowList.tsx:changed learn=test: make e2e types text after a hex-to-text switch; MEMORY line on defuss render
+2026-10-09T21:22:31Z s=f5032668 DONE fp=e94abfa507f5 cov=94.0% paths=Makefile,README.md,scripts/e2e.mjs,test/id3v2-frames.test.ts(+18)
+2026-10-09T21:40:54Z s=f5032668 DONE fp=1ee4421007ae cov=94.0% paths=Makefile,README.md,scripts/e2e.mjs,test/id3v2-frames.test.ts(+20)
+2026-10-09T21:40:54Z s=f5032668 FINDING website/components/input/BytesInput.tsx|lib/raw-tags.ts:unknown|textOfHex learn=test: lib/raw-tags.test.ts and make e2e
+2026-10-09T23:04:06Z s=f5032668 DONE fp=ba3f79bdf1ef cov=94.0% paths=Makefile,README.md,scripts/e2e.mjs,test/id3v2-frames.test.ts(+20)
+2026-10-09T23:04:06Z s=f5032668 FINDING website/components/input/Combobox.tsx:strict|remember|settle learn=test: make e2e leaves strict fields with junk and lower case
+2026-10-09T23:27:42Z s=f5032668 DONE fp=03d5975c28a6 cov=94.0% paths=Makefile,README.md,scripts/e2e.mjs,test/id3v2-frames.test.ts(+20)
+2026-10-09T23:27:42Z s=f5032668 FINDING website/components/input/Combobox.css:.combo-list learn=memory: how to see classic scroll bars in the test browser
+2026-10-09T23:38:31Z s=f5032668 DONE fp=105afb3dcddf cov=94.0% paths=Makefile,README.md,scripts/e2e.mjs,test/id3v2-frames.test.ts(+20)
+2026-10-09T23:38:31Z s=f5032668 FINDING website/components/input/Combobox.css:.combo-list box-sizing learn=test: make e2e compares list and field widths
+2026-10-09T23:43:41Z s=f5032668 DONE fp=0a25f98811db cov=94.0% paths=CHANGELOG.md,Makefile,README.md,scripts/e2e.mjs(+21)
+2026-10-09T23:43:41Z s=f5032668 FINDING website/components/playground.tsx:CommentRow pattern learn=none: one-off redundancy, nothing to check mechanically
+2026-10-09T23:43:41Z s=f5032668 FINDING website/assets/site.css:.select select learn=none: a visual style; e2e already checks the page renders, a pixel check would pin styling
+2026-10-09T23:43:41Z s=f5032668 FINDING website/components/input/Combobox.tsx learn=none: behavior unchanged and already covered by make e2e
+2026-10-09T23:43:41Z s=f5032668 FINDING scripts/e2e.mjs:inputCss learn=none: caught by running e2e; no recurring pattern
+2026-10-09T23:43:41Z s=f5032668 FINDING website/components/input/Combobox.tsx:option id learn=none: documented on the id prop
+2026-10-09T23:43:41Z s=f5032668 FINDING website/components/input/Combobox.css learn=none: one-off
+2026-10-09T23:43:41Z s=f5032668 FINDING .githooks/pre-push|Makefile:setup learn=none: the hook is the mechanism itself
+2026-10-09T23:43:41Z s=f5032668 FINDING website/components/input/RowList.tsx learn=none: covered by the existing comment checks
+2026-10-09T23:43:41Z s=f5032668 FINDING website/.gitignore learn=none: ignore rule is the guard
+2026-10-09T23:43:41Z s=f5032668 FINDING scripts/e2e.mjs:frame ID list check learn=memory: cause (stale one-frame position under load) not established; falsifier = the waiting check failing with a box outside the viewport
+2026-10-09T23:43:41Z s=f5032668 FINDING CHANGELOG.md:Unreleased learn=test: make lint runs scripts/release-notes.mjs
+2026-10-09T23:55:54Z s=dfc79eed DONE fp=e132119deb8e cov=94.0% paths=website/tsconfig.json
+2026-10-09T23:55:54Z s=dfc79eed FINDING website/tsconfig.json:13 paths audio-tag/browser learn=memory: depends on the bun version CI installs; a test cannot pin it, MEMORY line records it

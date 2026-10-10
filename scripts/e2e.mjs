@@ -5,7 +5,8 @@
 // 3. Serves the website the way a user opens the installed copy (`npx audio-tag`, the package's bin) and
 //    drives every page and control in Chromium: no console errors or failed requests, no sideways scrolling;
 //    the docs tabs, generated tables, filters, section menu and theme toggle; the playground opening, editing
-//    and downloading every input file with its byte map and hex, adding and removing a cover, Reset, the
+//    and downloading every input file with its byte map and hex, adding, describing and removing several pictures
+//    and comments, Reset, the
 //    discard dialog and the recorder (on a fake microphone). The repository's server covers 404.html, which is
 //    left out of the package; its /audio-tag/ paths are mapped to website/dist/ as on GitHub Pages. Screenshots and downloads go to output/e2e/.
 // Any failed check exits 1.
@@ -126,11 +127,13 @@ function serve(cwd, command, args, env = {}) {
 }
 // the installed copy through the package's bin, the link npx, yarn and bunx run for `audio-tag`, on another port
 // (starting at all proves the link, the shebang and the executable bit). The link itself, not `npm exec audio-tag`,
-// so SIGTERM below reaches the server rather than an npm wrapper. The repository server through PORT
-const servers = [
-  await serve(consumer, join(consumer, 'node_modules/.bin/audio-tag'), ['--port', '5291']),
-  await serve(root, 'node', ['scripts/serve.mjs'], { PORT: '5292' }),
-]
+// so SIGTERM below reaches the server rather than an npm wrapper. The repository server through PORT.
+// Stopped on any exit, also a crash that skips the finally below or a second server that fails to start: they
+// outlived such a run once and blocked its ports for the next (EADDRINUSE).
+const servers = []
+process.on('exit', () => { for (const s of servers) s.kill('SIGTERM') })
+servers.push(await serve(consumer, join(consumer, 'node_modules/.bin/audio-tag'), ['--port', '5291']))
+servers.push(await serve(root, 'node', ['scripts/serve.mjs'], { PORT: '5292' }))
 // a fake microphone, so the playground's recorder runs without hardware
 const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'] })
 const { read } = await import(pathToFileURL(join(installed, 'dist/index.js')).href)
@@ -278,16 +281,203 @@ try {
     await page.waitForFunction(() => document.getElementById('cover-count').textContent === '1 of 2', null, { timeout: 5000 }).catch(() => {})
     check(/^3 × 2 px/.test(firstPicture[0]) && firstPicture[1] === '1 of 2' && /^1 × 1 px/.test(secondPicture[0]) && secondPicture[1] === '2 of 2' && (await page.textContent('#cover-count')) === '1 of 2',
       `${label} playground: pictures show pixel size and type, next and previous (${firstPicture.join(', ')} / ${secondPicture.join(', ')})`)
-    // playground: cover picture, removing it, Reset, the discard dialog and the microphone recorder
-    const loaded = inputs.at(-1)
-    await page.setInputFiles('#f-cover', { name: 'cover.png', mimeType: 'image/png', buffer: PNG })
+    // playground: several pictures and comments with descriptions, removing them, Reset, the discard dialog and
+    // the microphone recorder; sample.pictures.mp3 (ID3v2) keeps every description and type
+    const loaded = 'sample.pictures.mp3'
+    // two picks into the picture drop zone: the second must not add the first one again
+    await page.setInputFiles('#f-cover', { name: 'a.png', mimeType: 'image/png', buffer: PNG })
+    await page.setInputFiles('#f-cover', [{ name: 'b.png', mimeType: 'image/png', buffer: PNG }, { name: 'c.gif', mimeType: 'image/gif', buffer: PNG }])
+    await page.fill('#picture-list > li:nth-child(3) .edit-row-fields > input', 'e2e picture') // the description, after the type combobox
+    // the picture type is a combobox of the type names: a name sets the type (5 = Leaflet page); unknown names are refused
+    const typeField = (row) => page.locator(`#picture-list > li:nth-child(${row}) [role=combobox]`)
+    await typeField(4).fill('Leaflet page')
+    await typeField(4).press('Escape')
+    await typeField(3).fill('Not a type')
+    const refused = await typeField(3).evaluate((field) => !field.checkValidity())
+    await typeField(3).press('Tab') // leaving it puts the last picture type back
+    const reverted = await typeField(3).inputValue()
+    await typeField(3).fill('Other')
+    await typeField(3).press('Escape')
+    check(refused && reverted === 'Other' && (await typeField(4).inputValue()) === 'Leaflet page', `${label} playground: the picture type takes a type name, refuses an unknown one and puts back "${reverted}" when left`)
+    // languages: one picked from the list like a select (click opens all, typing filters, Enter picks), one typed
+    // that the list lacks
+    for (const [description, language, text] of [['e2e mood', 'ger', 'calm'], ['', 'gsw', 'second comment']]) {
+      await page.click('#add-comment')
+      await page.fill('#comment-list li:last-child input >> nth=0', description)
+      const field = page.locator('#comment-list li:last-child [role=combobox]')
+      if (language === 'ger') {
+        await field.click()
+        const all = await page.locator('#comment-list li:last-child [role=option]:visible').count()
+        await field.fill(language)
+        const filtered = await page.locator('#comment-list li:last-child [role=option]:visible').allTextContents()
+        await field.press('Enter')
+        check(all > 10 && filtered.join() === 'deuGerman' && (await field.inputValue()) === 'deu' && (await field.getAttribute('aria-expanded')) === 'false',
+          `${label} playground: the comment language opens like a select (${all} languages), "ger" filters to ${filtered.join()} and Enter picks ${await field.inputValue()}`)
+      } else await field.fill(language)
+      await page.fill('#comment-list li:last-child textarea', text)
+    }
+    // genre: the combobox lists every genre on click; after a comma, typing and Enter complete only the last genre
+    await page.click('#f-genre')
+    const genres = await page.locator('#genres [role=option]:visible').count()
+    // the list is as wide as its field (padding, border and scroll bar inside), not wider
+    const widths = await page.evaluate(() => [document.getElementById('f-genre'), document.getElementById('genres')].map((element) => Math.round(element.getBoundingClientRect().width)))
+    check(widths[0] === widths[1], `${label} playground: the genre list is as wide as its field (${widths.join(' / ')} px)`)
+    // wheeling past the end of the open list scrolls the list, not the page under it (overscroll-behavior: contain)
+    await page.locator('#genres').hover() // waits until the list stops moving with its field, then points at it
+    const pageBefore = await page.evaluate(() => scrollY)
+    for (let i = 0; i < 12; i++) { await page.mouse.wheel(0, 600); await page.waitForTimeout(80) }
+    await page.waitForFunction(() => { const list = document.getElementById('genres'); return list.scrollTop + list.clientHeight >= list.scrollHeight - 1 }, null, { timeout: 3000 }).catch(() => {})
+    const wheeled = await page.evaluate((y) => { const list = document.getElementById('genres'); return { pageMoved: Math.round(scrollY - y), listAtEnd: list.scrollTop + list.clientHeight >= list.scrollHeight - 1, open: list.matches(':popover-open') } }, pageBefore)
+    check(wheeled.listAtEnd && wheeled.pageMoved === 0, `${label} playground: wheeling past the end of the genre list leaves the page still (${JSON.stringify(wheeled)})`)
+    await page.fill('#f-genre', 'Hip-Hop, ro')
+    await page.press('#f-genre', 'Enter')
+    check(genres === 148 && (await page.inputValue('#f-genre')) === 'Hip-Hop, Rock', `${label} playground: genre lists ${genres} genres; "Hip-Hop, ro" + Enter gives "${await page.inputValue('#f-genre')}"`)
+    // reopened, the list checks the genres in the field, like a select marks its option
+    await page.click('#f-genre')
+    const checked = await page.locator('#genres [data-checked]').allTextContents()
+    const markShown = await page.locator('#genres [data-checked] .combo-check').first().evaluate((mark) => getComputedStyle(mark).visibility)
+    await page.press('#f-genre', 'Escape')
+    check(checked.join() === 'Hip-Hop,Rock' && markShown === 'visible', `${label} playground: the genre list checks ${checked.join(', ')} (mark ${markShown})`)
+    // the component CSS (components/input/*.css, linked as assets/components.css) applies: the arrow sits in its field, the list is a fixed popover
+    const inputCss = await page.evaluate(() => [...['#picture-list .select-chevron', '#comment-list .combo-list'].map((selector) => getComputedStyle(document.querySelector(selector)).position), getComputedStyle(document.querySelector('#comment-list .combo-list')).scrollbarWidth])
+    check(inputCss.join() === 'absolute,fixed,thin', `${label} playground: Combobox CSS applies (${inputCss.join()})`)
+    // the arrows: a pointer over both; the combobox arrow opens and closes the list like a select's
+    const cursors = await page.evaluate(() => ['#picture-list .select-chevron', '#comment-list li:first-child .select-chevron'].map((selector) => {
+      document.querySelector(selector).scrollIntoView({ block: 'center', behavior: 'instant' }) // elementFromPoint sees only the viewport; site.css scrolls smoothly
+      const box = document.querySelector(selector).getBoundingClientRect()
+      return getComputedStyle(document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2)).cursor
+    }))
+    const arrow = page.locator('#comment-list li:first-child .combo-toggle')
+    // the arrow turns up while the list is open and back when it closes (measured after its 0.15 s transition)
+    const turned = (rotate) => page.waitForFunction((r) => getComputedStyle(document.querySelector('#comment-list li:first-child .select-chevron')).rotate === r, rotate, { timeout: 2000 }).then(() => rotate, () => 'not ' + rotate)
+    await arrow.click()
+    const opened = await page.locator('#comment-list li:first-child [role=listbox]').isVisible()
+    const turnedOpen = await turned('180deg')
+    await arrow.click()
+    const closed = await page.locator('#comment-list li:first-child [role=listbox]').isHidden()
+    const turnedBack = await turned('none')
+    check(cursors.join() === 'pointer,pointer' && opened && closed && turnedOpen === '180deg' && turnedBack === 'none',
+      `${label} playground: the arrows show a pointer (${cursors.join()}); the language arrow opens (${opened}, arrow ${turnedOpen}) and closes (${closed}, arrow ${turnedBack}) the list`)
+    // the file's own comment: a language picked with the mouse
+    await page.click('#comment-list li:first-child [role=combobox]')
+    await page.click('#comment-list li:first-child [role=option][data-value="fra"]')
+    check((await page.inputValue('#comment-list li:first-child [role=combobox]')) === 'fra' && await page.locator('#comment-list li:first-child [role=listbox]').isHidden(),
+      `${label} playground: a click on a language picks it and closes the list`)
     let download = await save()
-    await download.saveAs(join(out, `${label}-cover-${loaded}`))
-    check(read(new Uint8Array(readFileSync(join(out, `${label}-cover-${loaded}`)))).metadata.pictures?.[0]?.mimeType === 'image/png', `${label} playground: cover picture saved`)
-    await page.check('#f-nocover')
+    await download.saveAs(join(out, `${label}-lists-${loaded}`))
+    const lists = read(new Uint8Array(readFileSync(join(out, `${label}-lists-${loaded}`)))).metadata
+    check(JSON.stringify(lists.genre) === '["Hip-Hop","Rock"]', `${label} playground: genres saved (${JSON.stringify(lists.genre)})`)
+    check(lists.pictures?.length === 4 && lists.pictures[2].description === 'e2e picture' && lists.pictures[3].type === 5 &&
+      JSON.stringify(lists.comments?.map((c) => [c.language, c.description, c.text])) === JSON.stringify([['fra', '', 'Comment'], ['deu', 'e2e mood', 'calm'], ['gsw', '', 'second comment']]),
+      `${label} playground: several pictures and comments saved with descriptions (${lists.pictures?.length} pictures, ${lists.comments?.length} comments)`)
+    check((await page.locator('#picture-list > li').count()) === 4 && (await page.inputValue('#comment-list li:nth-child(2) input >> nth=0')) === 'e2e mood',
+      `${label} playground: the form shows the saved pictures and comments`)
+    // each picture box shows the preview's details: pixel size, format and byte size
+    const boxInfo = await page.waitForFunction(() => /^3 × 2 px · PNG · \d+ B$/.test(document.querySelector('#picture-list > li .picture-info')?.textContent ?? ''), null, { timeout: 5000 }).then(() => true, () => false)
+    check(boxInfo, `${label} playground: picture boxes show pixel size, format and size (${await page.textContent('#picture-list > li .picture-info')})`)
+    for (const list of ['#picture-list', '#comment-list']) while (await page.locator(`${list} li`).count()) await page.click(`${list} li:first-child button`)
     download = await save()
-    await download.saveAs(join(out, `${label}-nocover-${loaded}`))
-    check(!read(new Uint8Array(readFileSync(join(out, `${label}-nocover-${loaded}`)))).metadata.pictures?.length, `${label} playground: cover picture removed`)
+    await download.saveAs(join(out, `${label}-nolists-${loaded}`))
+    const emptied = read(new Uint8Array(readFileSync(join(out, `${label}-nolists-${loaded}`)))).metadata
+    check(!emptied.pictures?.length && !emptied.comments?.length, `${label} playground: pictures and comments removed`)
+    // playground: other tags, the stored frames as rows of ID, description and value; sample.pictures.mp3 holds
+    // only main-form frames, so frames are added, saved, read back and shown again with their IDs
+    if ((await page.getAttribute('#other-tags', 'open')) === null) await page.click('#other-tags summary')
+    const rawBefore = await page.locator('#raw-list > li').count()
+    const addFrame = async (values) => {
+      await page.click('#add-frame')
+      for (const [index, value] of values.entries()) await page.fill(`#raw-list > li:last-child input >> nth=${index}`, value)
+      await page.press('#raw-list > li:last-child input >> nth=0', 'Escape') // close the ID list
+    }
+    await addFrame(['TCOM', '', 'Comp A'])
+    await addFrame(['TXXX', 'CATALOGNUMBER', 'AB-123'])
+    await addFrame(['WXXX', 'Spotify', 'https://open.spotify.com/album/e2e'])
+    // experimental frames (no spec defines them) hold TEXT or BYTE as chosen: XTST bytes in the hex input, which drops
+    // stray characters, and XSTR a string stored as UTF-8; switching shows the same bytes the other way
+    const last = '#raw-list > li:last-child'
+    const mode = `${last} [data-key="value"] .combo > input`, bytesValue = `${last} [data-key="value"] .bytes-value input`
+    const setMode = async (value) => { await page.fill(mode, value); await page.press(mode, 'Escape') }
+    await page.click('#add-frame')
+    await page.fill(`${last} input >> nth=0`, 'XTST')
+    await page.press(`${last} input >> nth=0`, 'Escape')
+    await setMode('BYTE')
+    await page.fill(bytesValue, '01-02zz03')
+    await page.click('#add-frame')
+    await page.fill(`${last} input >> nth=0`, 'XSTR')
+    await page.press(`${last} input >> nth=0`, 'Escape')
+    const newMode = await page.inputValue(mode)
+    await page.fill(bytesValue, 'héllo wörld')
+    await setMode('BYTE')
+    const asBytes = await page.inputValue(bytesValue)
+    await setMode('TEXT')
+    const asText = await page.inputValue(bytesValue)
+    // the chooser holds only TEXT or BYTE: leaving it with other text puts the mode back, a value in any case is completed
+    await page.fill(mode, 'BLA')
+    await page.press(mode, 'Tab')
+    const afterJunk = [await page.inputValue(mode), await page.inputValue(bytesValue)]
+    await page.fill(mode, 'byte')
+    await page.press(mode, 'Tab')
+    const afterLower = [await page.inputValue(mode), await page.inputValue(bytesValue)]
+    check(newMode === 'TEXT' && asBytes === '68 c3 a9 6c 6c 6f 20 77 c3 b6 72 6c 64' && asText === 'héllo wörld' &&
+      afterJunk.join() === 'TEXT,héllo wörld' && afterLower.join() === 'BYTE,68 c3 a9 6c 6c 6f 20 77 c3 b6 72 6c 64',
+      `${label} playground: an unknown frame starts as TEXT, shows its bytes as BYTE and back, and its chooser keeps TEXT or BYTE (${afterJunk.join(' | ')}; ${afterLower[0]})`)
+    // an ID of the wrong length for ID3v2.4 is refused before saving, like the picture type
+    await page.click('#add-frame')
+    await page.fill('#raw-list > li:last-child input >> nth=0', 'TCM')
+    const idRefused = await page.locator('#raw-list > li:last-child input >> nth=0').evaluate((field) => !field.checkValidity())
+    // the value follows the ID: a hex input for a binary frame, a text field for a text frame; the list says which is which
+    const valueIsHex = () => page.locator('#raw-list > li:last-child [data-key="value"] input').evaluate((field) => field.classList.contains('hex-input'))
+    await page.fill('#raw-list > li:last-child input >> nth=0', 'PRIV')
+    const hexForPriv = await valueIsHex()
+    const optionText = async (id) => (await page.locator(`#raw-list > li:last-child [role=option][data-value="${id}"]`).textContent()).trim()
+    const labels = [await optionText('PRIV'), await optionText('TCOM')]
+    await page.fill('#raw-list > li:last-child input >> nth=0', 'TPE3')
+    // switched from bytes to text, the field takes text: no hex rule left over from the input it replaced
+    await page.fill('#raw-list > li:last-child [data-key="value"] input', 'Plain text')
+    const textForTpe3 = !(await valueIsHex()) && await page.locator('#raw-list > li:last-child [data-key="value"] input').evaluate((field) => field.checkValidity())
+    await page.press('#raw-list > li:last-child input >> nth=0', 'Escape')
+    await page.click('#raw-list > li:last-child > button')
+    const xtstValue = await page.locator('#raw-list > li:nth-last-child(2) [data-key="value"] .bytes-value input').inputValue()
+    check(hexForPriv && textForTpe3 && labels.join() === 'PRIV(BYTE) Private frame,TCOM(TEXT) Composer' && xtstValue === '01 02 03',
+      `${label} playground: the frame value is a hex input for (BYTE) IDs and text for (TEXT) ones (${labels.join(' / ')}; typed bytes shown as "${xtstValue}")`)
+    download = await save()
+    await download.saveAs(join(out, `${label}-other-${loaded}`))
+    const other = read(new Uint8Array(readFileSync(join(out, `${label}-other-${loaded}`)))).metadata
+    const savedFrames = read(new Uint8Array(readFileSync(join(out, `${label}-other-${loaded}`)))).id3v2.frames
+    const xtst = savedFrames.find((frame) => frame.id === 'XTST'), xstr = savedFrames.find((frame) => frame.id === 'XSTR')
+    const otherSaved = { composer: other.composer, userText: other.userText, userUrls: other.userUrls, title: other.title, xtst: xtst && [...xtst.data].join(), xstr: xstr && new TextDecoder().decode(xstr.data), idRefused }
+    check(JSON.stringify(otherSaved) === JSON.stringify({ composer: ['Comp A'], userText: { CATALOGNUMBER: 'AB-123' }, userUrls: { Spotify: 'https://open.spotify.com/album/e2e' }, title: 'Two pictures', xtst: '1,2,3', xstr: 'héllo wörld', idRefused: true }),
+      `${label} playground: other tags add frames by ID, saved and read back (${JSON.stringify(otherSaved)})`)
+    const shownIds = await page.locator('#raw-list > li').evaluateAll((items) => items.map((item) => item.querySelector('input').value).join())
+    // read back: the string opens as TEXT, the bytes 01 02 03 (not readable text) as BYTE
+    const reopened = await page.locator('#raw-list > li [data-key="value"] .bytes-input').evaluateAll((fields) => fields.map((field) => `${field.dataset.mode}:${field.querySelector('.bytes-value input').value}`).join())
+    check(reopened === 'BYTE:01 02 03,TEXT:héllo wörld', `${label} playground: saved unknown frames open as ${reopened}`)
+    check(rawBefore === 0 && shownIds === 'TCOM,TXXX,WXXX,XTST,XSTR' && (await page.textContent('#other-count')) === '· 5' && /ID3v2\.4 frames/.test(await page.textContent('#raw-desc')),
+      `${label} playground: other tags show the stored frames by ID (${shownIds}, count ${await page.textContent('#other-count')})`)
+    // the ID list of the last row opens over the page, not cut by the form card or the accordion (both hide overflow)
+    await page.click('#raw-list > li:last-child [role=combobox]')
+    // it follows its field on scroll events, so it is measured once settled: under heavy host load one check saw it
+    // a frame before a scroll event re-placed it (HYPOTHESIS; not reproduced at 1x or 6x CPU throttling)
+    await page.evaluate(() => {
+      window.e2ePlaced = () => {
+        const list = document.querySelector('#raw-list > li:last-child .combo-list'), box = list.getBoundingClientRect()
+        const inView = box.left >= 0 && box.right <= innerWidth && box.top >= 0 && box.bottom <= innerHeight
+        const onTop = list.contains(document.elementFromPoint(box.left + 6, box.top + box.height / 2))
+        return { open: list.matches(':popover-open'), inView, onTop, box: [box.left, box.top, box.right, box.bottom].map(Math.round), viewport: [innerWidth, innerHeight] }
+      }
+    })
+    await page.waitForFunction(() => { const r = window.e2ePlaced(); return r.open && r.inView && r.onTop }, null, { timeout: 3000 }).catch(() => {})
+    const idList = await page.evaluate(() => window.e2ePlaced())
+    await page.press('#raw-list > li:last-child [role=combobox]', 'Escape')
+    check(idList.open && idList.inView && idList.onTop, `${label} playground: the frame ID list opens whole and on top (${JSON.stringify(idList)})`)
+    // an M4A shows its iTunes items, here a composer item added by key
+    await page.setInputFiles('#pick', join(root, 'input', 'sample.m4a'))
+    await page.waitForFunction(() => document.getElementById('file-name').textContent === 'sample.m4a')
+    await addFrame(['©wrt', 'M4A composer'])
+    download = await save()
+    await download.saveAs(join(out, `${label}-other-sample.m4a`))
+    check(/iTunes items/.test(await page.textContent('#raw-desc')) && JSON.stringify(read(new Uint8Array(readFileSync(join(out, `${label}-other-sample.m4a`)))).metadata.composer) === '["M4A composer"]',
+      `${label} playground: an M4A shows iTunes items and saves a ©wrt item`)
     const title = await page.inputValue('#f-title')
     await page.fill('#f-title', 'not saved')
     await page.click('#reset')

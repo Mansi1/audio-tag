@@ -1,0 +1,10 @@
+/* Other tags (OtherTags.tsx): description, rows, add button and the frames shown only, one below the other. */
+.other-tags { display: grid; gap: 0.75rem; justify-items: start; }
+.other-count { color: var(--muted-foreground); font-weight: 400; }
+.raw-fixed { margin: 0.25rem 0 0; padding-left: 1.25rem; font-size: 0.8rem; color: var(--muted-foreground); overflow-wrap: anywhere; }
+.raw-fixed code { color: var(--foreground); }
+/* on a phone the value gets its own line under ID and description */
+@media (max-width: 30rem) {
+  #raw-list .row-fields { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important; }
+  #raw-list .row-fields > :last-child { grid-column: 1 / -1; }
+}
